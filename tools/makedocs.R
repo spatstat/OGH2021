@@ -9,3 +9,6 @@ for(i in 1:1){
                     output_format = rmarkdown::github_document(html_preview = FALSE),
                     output_dir = "docs/labs/")
 }
+rmarkdown::render("notes/notes01.Rmd",
+                  output_format = rmarkdown::github_document(html_preview = FALSE),
+                  output_dir = "docs/notes/")

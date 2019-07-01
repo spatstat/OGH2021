@@ -15,4 +15,5 @@ Source code on:
 
 Notes:
 
-- [Notes](./notes/notes01.Rmd)
+- [Notes](./notes/notes01.html)
+
