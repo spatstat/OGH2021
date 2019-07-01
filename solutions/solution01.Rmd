@@ -1,0 +1,33 @@
+---
+title: 'Lab 1: Introduction'
+---
+
+```{r, include = FALSE}
+# This option turns evaluation of R code off in this document. Remove it
+# if you use it as a template for solving the lab exercise.
+knitr::opts_chunk$set(eval = TRUE)
+```
+
+If you have not already done so, you’ll need to start R and load the `spatstat`
+package by typing
+```{r, message=FALSE}
+library(spatstat)
+```
+
+### Exercise 1
+
+Intro...
+
+1.  Task 1
+
+    ```{r}
+    print("Task 1")
+    ```
+
+2.  Task 2
+
+    ```{r}
+    print("Task 1")
+    ```
+
+### Exercise 2

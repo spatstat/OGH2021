@@ -1,0 +1,13 @@
+---
+title: "Notes"
+author: "Adrian Baddeley and Ege Rubak"
+date: "7/1/2019"
+output: html
+---
+
+## Introduction
+
+```{r}
+library(spatstat)
+```
+
