@@ -12,8 +12,8 @@ encodebackslash <- function(x) gsub("/", "\\\\\\\\/", x)
 hackit <- function(fnam) {
   ## edit the output to replace absolute file path by relative path
   thispath <- encodebackslash(getwd())
-  relroot  <- ".."
-  system(paste0("sed s/", thispath, "/", relroot, "/ ", fnam, " > tmp"))
+  newroot  <- encodebackslash("http://spatstat.org/ECAS2019")
+  system(paste0("sed s/", thispath, "/", newroot, "/ ", fnam, " > tmp"))
   system(paste("mv tmp", fnam))
 }
 
