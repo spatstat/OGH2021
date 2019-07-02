@@ -18,7 +18,7 @@ Objectives
 
 ### Nonparametric estimation of spatially-varying intensity
 
-```{r}
+```{r, fig.width=5}
 library(spatstat)
 X <- japanesepines
 A <- quadratcount(X, 3, 3)
