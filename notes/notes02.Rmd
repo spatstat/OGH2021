@@ -1,0 +1,74 @@
+---
+title: "Notes for session 2"
+author: "Adrian Baddeley and Ege Rubak"
+date: "2019-07-02"
+output: html
+---
+
+# Intensity
+
+
+## Intensity and probability density
+
+Definition
+
+Objectives
+
+## Nonparametric estimation
+
+### Nonparametric estimation of spatially-varying intensity
+
+```{r}
+library(spatstat)
+X <- japanesepines
+A <- quadratcount(X, 3, 3)
+Z <- density(X)
+Z <- density(X, bw.diggle)
+plot(Z, main="")
+```
+
+### Nonparametric estimation of spatially-varying, mark-dependent intensity
+
+```{r}
+M <- split(mucosa)
+B <- density(M, bw.diggle)
+plot(B, main="")
+```
+
+Ratio of intensities
+
+```{r}
+plot(relrisk(mucosa, casecontrol=FALSE))
+```
+
+### Nonparametric estimation of intensity depending on a covariate
+
+```{r}
+E <- split(mucosa)$ECL
+g <- rhohat(E, "y")
+plot(g)
+```
+
+```{r}
+X <- murchison$gold
+L <- murchison$faults
+X <- rescale(X, 1000, "km")
+L <- rescale(L, 1000, "km")
+D <- distfun(L)
+h <- rhohat(X, D)
+plot(h)
+```
+
+## Parametric modelling
+
+### Loglinear model for intensity
+
+$$\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)$$
+
+### Fit using Poisson likelihood
+
+```{r}
+fit <- ppm(X ~ D)
+coef(fit)
+plot(effectfun(fit, "D"), xlim=c(0, 20))
+```
