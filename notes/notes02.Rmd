@@ -65,10 +65,32 @@ plot(h)
 
 $$\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)$$
 
+Explain about canonical variables vs original variables
+
 ### Fit using Poisson likelihood
 
 ```{r}
 fit <- ppm(X ~ D)
 coef(fit)
+confint(fit)
+anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
+plot(predict(fit))
+```
+
+```{r}
+Jfit <- ppm(japanesepines ~ x + y)
+Jfit
+confint(Jfit)
+Jfit2 <- ppm(japanesepines ~ polynom(x,y,2))
+Jfit2
+plot(predict(Jfit2))
+```
+
+```{r}
+anova(Jfit, Jfit2, test="Chi")
+```
+
+```{r}
+step(Jfit2)
 ```
