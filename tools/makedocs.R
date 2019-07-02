@@ -4,17 +4,34 @@
 notes <- 1:2
 sols <- 1
 labs <- 1
+
+fname <- function(prefix, i, suffix) {
+  paste0(prefix, formatC(i, width=2, flag=0), suffix)
+}
+hackit <- function(fnam) {
+  ## edit the output to replace absolute file path by relative path
+  thispath <- paste0(getwd(), "/")
+  thispath <- gsub("/", "\\\\\\\\/", thispath)
+  system(paste0("sed s/", thispath, "// ", fnam, " > tmp"))
+  system(paste("mv tmp", fnam))
+}
+
 for(i in sols)
-  rmarkdown::render(paste0("solutions/solution", formatC(i, width=2, flag=0), ".Rmd"),
+  rmarkdown::render(fname("solutions/solution", i, ".Rmd"),
                     output_format = rmarkdown::github_document(html_preview = FALSE),
                     output_dir = "docs/solutions/")
 
 for(i in labs)
-  rmarkdown::render(paste0("labs/lab", formatC(i, width=2, flag=0), ".Rmd"),
+  rmarkdown::render(fname("labs/lab", i, ".Rmd"),
                     output_format = rmarkdown::github_document(html_preview = FALSE),
                     output_dir = "docs/labs/")
 
-for(i in notes) 
-  rmarkdown::render(paste0("notes/notes", formatC(i, width=2, flag=0), ".Rmd"),
+for(i in notes) {
+  rmarkdown::render(fname("notes/notes", i, ".Rmd"),
                     output_format = rmarkdown::github_document(html_preview = FALSE),
-                  output_dir = "docs/notes/")
+                    output_dir = "docs/notes/")
+  hackit(fname("docs/notes/notes", i, ".md"))
+}
+
+
+
