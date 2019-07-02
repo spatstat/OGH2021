@@ -8,11 +8,12 @@ labs <- 1
 fname <- function(prefix, i, suffix) {
   paste0(prefix, formatC(i, width=2, flag=0), suffix)
 }
+encodebackslash <- function(x) gsub("/", "\\\\\\\\/", x)
 hackit <- function(fnam) {
   ## edit the output to replace absolute file path by relative path
-  thispath <- paste0(getwd(), "/")
-  thispath <- gsub("/", "\\\\\\\\/", thispath)
-  system(paste0("sed s/", thispath, "// ", fnam, " > tmp"))
+  thispath <- encodebackslash(getwd())
+  relroot  <- encodebackslash("../")
+  system(paste0("sed s/", thispath, "/", relroot, "/ ", fnam, " > tmp"))
   system(paste("mv tmp", fnam))
 }
 
