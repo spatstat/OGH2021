@@ -18,18 +18,18 @@ copy_to_docs <- function(x){
 
 for(i in sols){
   f <- rmarkdown::render(fname("solutions/solution", i, ".Rmd"),
-                         output_format = rmarkdown::github_document(html_preview = FALSE))
+                         output_format = rmarkdown::github_document(html_preview = FALSE, pandoc_args = "--webtex"))
   copy_to_docs(f)
 }
 
 for(i in labs){
   f <- rmarkdown::render(fname("labs/lab", i, ".Rmd"),
-                         output_format = rmarkdown::github_document(html_preview = FALSE))
+                         output_format = rmarkdown::github_document(html_preview = FALSE, pandoc_args = "--webtex"))
   copy_to_docs(f)
 }
 
 for(i in notes) {
   f <- rmarkdown::render(fname("notes/notes", i, ".Rmd"),
-                         output_format = rmarkdown::github_document(html_preview = FALSE))
+                         output_format = rmarkdown::github_document(html_preview = FALSE, pandoc_args = "--webtex"))
   copy_to_docs(f)
 }

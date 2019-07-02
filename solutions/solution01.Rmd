@@ -32,3 +32,6 @@ Intro...
 
 ### Exercise 2
 
+With math
+$$\sqrt{\frac{2\pi r^2}{2\pi}} = r$$
+
