@@ -7,3 +7,6 @@
 .Rproj.user
 *_site
 *~
+solutions/*_files/
+notes/*_files/
+labs/*_files/

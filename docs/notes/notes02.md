@@ -3,18 +3,15 @@ Notes for session 2
 Adrian Baddeley and Ege Rubak
 2019-07-02
 
-Intensity
-=========
+# Intensity
 
-Intensity and probability density
----------------------------------
+## Intensity and probability density
 
 Definition
 
 Objectives
 
-Nonparametric estimation
-------------------------
+## Nonparametric estimation
 
 ### Nonparametric estimation of spatially-varying intensity
 
@@ -27,7 +24,7 @@ Z <- density(X, bw.diggle)
 plot(Z, main="")
 ```
 
-<img src="http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="70%" />
+<img src="notes02_files/figure-gfm/unnamed-chunk-1-1.png" width="70%" />
 
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
 
@@ -37,7 +34,7 @@ B <- density(M, bw.diggle)
 plot(B, main="")
 ```
 
-![](http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 Ratio of intensities
 
@@ -45,7 +42,7 @@ Ratio of intensities
 plot(relrisk(mucosa, casecontrol=FALSE))
 ```
 
-![](http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -55,7 +52,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 X <- murchison$gold
@@ -67,14 +64,13 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-Parametric modelling
---------------------
+## Parametric modelling
 
 ### Loglinear model for intensity
 
-log *λ*(*u*)=*β*<sub>1</sub>*Z*<sub>1</sub>(*u*)+…+*β*<sub>*p*</sub>*Z*<sub>*p*</sub>(*u*)
+\[\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)\]
 
 Explain about canonical variables vs original variables
 
@@ -113,13 +109,13 @@ anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 plot(predict(fit))
 ```
 
-![](http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-6-2.png)
+![](notes02_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -173,7 +169,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](http://spatstat.org/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")

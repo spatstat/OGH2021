@@ -27,7 +27,8 @@ Intro...
 2.  Task 2
 
     ```{r}
-    print("Task 1")
+    plot(1,1, main="Task 2")
     ```
 
 ### Exercise 2
+
