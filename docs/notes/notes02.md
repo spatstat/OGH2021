@@ -27,7 +27,7 @@ Z <- density(X, bw.diggle)
 plot(Z, main="")
 ```
 
-<img src="..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="70%" />
+<img src="../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="70%" />
 
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
 
@@ -37,7 +37,7 @@ B <- density(M, bw.diggle)
 plot(B, main="")
 ```
 
-![](..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 Ratio of intensities
 
@@ -45,7 +45,7 @@ Ratio of intensities
 plot(relrisk(mucosa, casecontrol=FALSE))
 ```
 
-![](..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -55,7 +55,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 X <- murchison$gold
@@ -67,7 +67,7 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 Parametric modelling
 --------------------
@@ -113,13 +113,13 @@ anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 plot(predict(fit))
 ```
 
-![](..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-6-2.png)
+![](../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-6-2.png)
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -173,7 +173,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](..//docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](../docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
