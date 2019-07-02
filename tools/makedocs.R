@@ -8,24 +8,28 @@ labs <- 1
 fname <- function(prefix, i, suffix) {
   paste0(prefix, formatC(i, width=2, flag=0), suffix)
 }
-move_to_docs <- function(x){
-  file.rename(x, sub("ECAS2019", "ECAS2019/docs", x, fixed = TRUE))
+copy_to_docs <- function(x){
+  file.copy(x, sub("ECAS2019", "ECAS2019/docs", x, fixed = TRUE))
+  ## Substitute .md extension to copy figure directory
+  from_dir <- sub(".md", "_files/", x, fixed = TRUE)
+  to_dir <- sub("ECAS2019", "ECAS2019/docs", dirname(x), fixed = TRUE)
+  file.copy(from_dir, to_dir, recursive = TRUE)
 }
 
 for(i in sols){
   f <- rmarkdown::render(fname("solutions/solution", i, ".Rmd"),
                          output_format = rmarkdown::github_document(html_preview = FALSE))
-  move_to_docs(f)
+  copy_to_docs(f)
 }
 
 for(i in labs){
   f <- rmarkdown::render(fname("labs/lab", i, ".Rmd"),
                          output_format = rmarkdown::github_document(html_preview = FALSE))
-  move_to_docs(f)
+  copy_to_docs(f)
 }
 
 for(i in notes) {
   f <- rmarkdown::render(fname("notes/notes", i, ".Rmd"),
                          output_format = rmarkdown::github_document(html_preview = FALSE))
-  move_to_docs(f)
+  copy_to_docs(f)
 }
