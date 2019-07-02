@@ -9,7 +9,7 @@ fname <- function(prefix, i, suffix) {
   paste0(prefix, formatC(i, width=2, flag=0), suffix)
 }
 copy_to_docs <- function(x){
-  file.copy(x, sub("ECAS2019", "ECAS2019/docs", x, fixed = TRUE))
+  file.copy(x, sub("ECAS2019", "ECAS2019/docs", x, fixed = TRUE), overwrite = TRUE)
   ## Substitute .md extension to copy figure directory
   from_dir <- sub(".md", "_files/", x, fixed = TRUE)
   to_dir <- sub("ECAS2019", "ECAS2019/docs", dirname(x), fixed = TRUE)

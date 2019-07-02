@@ -70,7 +70,10 @@ plot(h)
 
 ### Loglinear model for intensity
 
-\[\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)\]
+  
+![\\log\\lambda(u) = \\beta\_1 Z\_1(u) + \\ldots + \\beta\_p
+Z\_p(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_1%20Z_1%28u%29%20%2B%20%5Cldots%20%2B%20%5Cbeta_p%20Z_p%28u%29
+"\\log\\lambda(u) = \\beta_1 Z_1(u) + \\ldots + \\beta_p Z_p(u)")  
 
 Explain about canonical variables vs original variables
 

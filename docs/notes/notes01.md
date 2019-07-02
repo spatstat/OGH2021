@@ -25,14 +25,16 @@ Spatial coordinates of locations
 
 ### Window
 
-Specify window \(W\) where events could have been observed (this is
-sometimes a problem)
+Specify window ![W](https://latex.codecogs.com/png.latex?W "W") where
+events could have been observed (this is sometimes a problem)
 
 ### Covariates
 
 Explanatory variables
 
-Could be functions \(Z(u), \quad u \in W\)
+Could be functions ![Z(u), \\quad u \\in
+W](https://latex.codecogs.com/png.latex?Z%28u%29%2C%20%5Cquad%20u%20%5Cin%20W
+"Z(u), \\quad u \\in W")
 
 Could be other spatial objects which must usually be translated into
 spatial functions.
