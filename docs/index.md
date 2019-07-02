@@ -15,5 +15,6 @@ Source code on:
 
 Notes:
 
-- [Notes](./notes/notes01.html)
+- [Notes 1](./notes/notes01.html)
+- [Notes 2](./notes/notes02.html)
 
