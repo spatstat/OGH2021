@@ -27,7 +27,7 @@ Z <- density(X, bw.diggle)
 plot(Z, main="")
 ```
 
-![](/home/adrian/new-courses/spatstatLisbon/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-1-1.png)
+<img src="/home/adrian/new-courses/spatstatLisbon/ECAS2019/docs/notes/notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="70%" />
 
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
 
