@@ -48,7 +48,7 @@ plot(B[["ECL"]]/(B[["ECL"]] + B[["other"]]))
 ![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 ``` r
-plot(relrisk(mucosa, casecontrol=FALSE), equal.scales=TRUE)
+plot(relrisk(mucosa, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
@@ -293,7 +293,7 @@ coef(model0)
     ##    4.699357    2.286730
 
 ``` r
-plot(predict(model0), equal.scales=TRUE)
+plot(predict(model0), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
@@ -326,7 +326,7 @@ coef(model1)
     ##    5.131273    2.286730   -1.156055
 
 ``` r
-plot(predict(model1), equal.scales=TRUE)
+plot(predict(model1), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
@@ -360,7 +360,7 @@ coef(model2)
     ##     5.884603     1.452251    -3.862202     2.938790
 
 ``` r
-plot(predict(model2), equal.scales=TRUE)
+plot(predict(model2), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
@@ -394,7 +394,7 @@ coef(model1xy)
     ##  5.135026706  2.286729721 -0.007512035 -1.156055806
 
 ``` r
-plot(predict(model1xy), equal.scales=TRUE)
+plot(predict(model1xy), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
@@ -434,7 +434,7 @@ coef(model2xy)
     ##   2.93878953
 
 ``` r
-plot(predict(model2xy), equal.scales=TRUE)
+plot(predict(model2xy), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
@@ -475,7 +475,7 @@ coef(model3)
     ##  -2.5066916
 
 ``` r
-plot(predict(model3), equal.scales=TRUE)
+plot(predict(model3), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
@@ -542,7 +542,7 @@ coef(model4)
     ##            5.059764           -3.342710            2.439852
 
 ``` r
-plot(predict(model4), equal.scales=TRUE)
+plot(predict(model4), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
@@ -550,19 +550,13 @@ plot(predict(model4), equal.scales=TRUE)
 *relrisk.ppm*
 
 ``` r
-plot(relrisk(model4, casecontrol=FALSE), equal.scales=TRUE)
+plot(relrisk(model4, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
-plot(relrisk(model3, casecontrol=FALSE), equal.scales=TRUE)
+plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
-
-    ## Warning in .axisPars(usr, log = log, nintLog = nint): relative range of
-    ## values ( 0 * EPS) is small (axis 0)
-
-    ## Warning in .axisPars(usr, log = log, nintLog = nint): relative range of
-    ## values ( 0 * EPS) is small (axis 0)
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
