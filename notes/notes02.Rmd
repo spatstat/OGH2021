@@ -94,3 +94,72 @@ anova(Jfit, Jfit2, test="Chi")
 ```{r}
 step(Jfit2)
 ```
+
+```{r}
+plot(simulate(Jfit2))
+```
+
+```{r}
+plot(simulate(Jfit2, nsim=12))
+```
+
+### Intensity depends on marks
+
+```{r}
+model0 <- ppm(mucosa ~ marks)
+model0
+coef(model0)
+plot(predict(model0))
+```
+
+```{r}
+model1 <- ppm(mucosa ~ marks + y)
+model1
+coef(model1)
+plot(predict(model1))
+```
+
+```{r}
+model2 <- ppm(mucosa ~ marks * y)
+model2
+coef(model2)
+plot(predict(model2))
+```
+
+```{r}
+model1xy <- ppm(mucosa ~ marks + x + y)
+model1xy
+coef(model1xy)
+plot(predict(model1xy))
+```
+
+```{r}
+model2xy <- ppm(mucosa ~ marks * (x + y))
+model2xy
+coef(model2xy)
+plot(predict(model2xy))
+```
+
+```{r}
+model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
+model3
+coef(model3)
+plot(predict(model3))
+```
+
+```{r}
+model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
+model4
+coef(model4)
+plot(predict(model4))
+```
+
+_relrisk.ppm_
+
+```{r}
+plot(relrisk(model4, casecontrol=FALSE))
+```
+
+```{r}
+plot(relrisk(model3, casecontrol=FALSE))
+```

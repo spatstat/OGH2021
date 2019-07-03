@@ -3,15 +3,18 @@ Notes for session 2
 Adrian Baddeley and Ege Rubak
 2019-07-02
 
-# Intensity
+Intensity
+=========
 
-## Intensity and probability density
+Intensity and probability density
+---------------------------------
 
 Definition
 
 Objectives
 
-## Nonparametric estimation
+Nonparametric estimation
+------------------------
 
 ### Nonparametric estimation of spatially-varying intensity
 
@@ -24,7 +27,7 @@ Z <- density(X, bw.diggle)
 plot(Z, main="")
 ```
 
-<img src="notes02_files/figure-gfm/unnamed-chunk-1-1.png" width="70%" />
+<img src="notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="70%" />
 
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
 
@@ -34,7 +37,7 @@ B <- density(M, bw.diggle)
 plot(B, main="")
 ```
 
-![](notes02_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 Ratio of intensities
 
@@ -42,7 +45,7 @@ Ratio of intensities
 plot(relrisk(mucosa, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -52,7 +55,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](notes02_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 X <- murchison$gold
@@ -64,16 +67,14 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](notes02_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-## Parametric modelling
+Parametric modelling
+--------------------
 
 ### Loglinear model for intensity
 
-  
-![\\log\\lambda(u) = \\beta\_1 Z\_1(u) + \\ldots + \\beta\_p
-Z\_p(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_1%20Z_1%28u%29%20%2B%20%5Cldots%20%2B%20%5Cbeta_p%20Z_p%28u%29
-"\\log\\lambda(u) = \\beta_1 Z_1(u) + \\ldots + \\beta_p Z_p(u)")  
+![\\log\\lambda(u) = \\beta\_1 Z\_1(u) + \\ldots + \\beta\_p Z\_p(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_1%20Z_1%28u%29%20%2B%20%5Cldots%20%2B%20%5Cbeta_p%20Z_p%28u%29 "\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)")
 
 Explain about canonical variables vs original variables
 
@@ -112,13 +113,13 @@ anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](notes02_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](notes02_files/figure-markdown_github/unnamed-chunk-6-2.png)
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -172,7 +173,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -242,3 +243,320 @@ step(Jfit2)
     ## Intensity: 65
     ##             Estimate      S.E.  CI95.lo  CI95.hi Ztest     Zval
     ## log(lambda) 4.174387 0.1240347 3.931284 4.417491   *** 33.65499
+
+``` r
+plot(simulate(Jfit2))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
+
+``` r
+plot(simulate(Jfit2, nsim=12))
+```
+
+    ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
+
+### Intensity depends on marks
+
+``` r
+model0 <- ppm(mucosa ~ marks)
+model0
+```
+
+    ## Stationary multitype Poisson process
+    ## 
+    ## Possible marks: 'ECL' and 'other'
+    ## 
+    ## Log intensity:  ~marks
+    ## 
+    ## Intensities:
+    ##   beta_ECL beta_other 
+    ##   109.8765  1081.4815 
+    ## 
+    ##             Estimate      S.E.  CI95.lo  CI95.hi Ztest     Zval
+    ## (Intercept) 4.699357 0.1059998 4.491602 4.907113   *** 44.33365
+    ## marksother  2.286730 0.1112542 2.068675 2.504784   *** 20.55409
+
+``` r
+coef(model0)
+```
+
+    ## (Intercept)  marksother 
+    ##    4.699357    2.286730
+
+``` r
+plot(predict(model0))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
+
+``` r
+model1 <- ppm(mucosa ~ marks + y)
+model1
+```
+
+    ## Nonstationary multitype Poisson process
+    ## 
+    ## Possible marks: 'ECL' and 'other'
+    ## 
+    ## Log intensity:  ~marks + y
+    ## 
+    ## Fitted trend coefficients:
+    ## (Intercept)  marksother           y 
+    ##    5.131273    2.286730   -1.156055 
+    ## 
+    ##              Estimate      S.E.   CI95.lo    CI95.hi Ztest      Zval
+    ## (Intercept)  5.131273 0.1164479  4.903039  5.3595066   *** 44.064966
+    ## marksother   2.286730 0.1112542  2.068675  2.5047840   *** 20.554089
+    ## y           -1.156055 0.1406821 -1.431787 -0.8803236   *** -8.217504
+
+``` r
+coef(model1)
+```
+
+    ## (Intercept)  marksother           y 
+    ##    5.131273    2.286730   -1.156055
+
+``` r
+plot(predict(model1))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
+
+``` r
+model2 <- ppm(mucosa ~ marks * y)
+model2
+```
+
+    ## Nonstationary multitype Poisson process
+    ## 
+    ## Possible marks: 'ECL' and 'other'
+    ## 
+    ## Log intensity:  ~marks * y
+    ## 
+    ## Fitted trend coefficients:
+    ##  (Intercept)   marksother            y marksother:y 
+    ##     5.884603     1.452251    -3.862202     2.938790 
+    ## 
+    ##               Estimate      S.E.   CI95.lo   CI95.hi Ztest      Zval
+    ## (Intercept)   5.884603 0.1635842  5.563984  6.205222   *** 35.972936
+    ## marksother    1.452251 0.1749458  1.109364  1.795139   ***  8.301149
+    ## y            -3.862202 0.5616953 -4.963104 -2.761299   *** -6.875973
+    ## marksother:y  2.938790 0.5804890  1.801053  4.076528   ***  5.062611
+
+``` r
+coef(model2)
+```
+
+    ##  (Intercept)   marksother            y marksother:y 
+    ##     5.884603     1.452251    -3.862202     2.938790
+
+``` r
+plot(predict(model2))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
+
+``` r
+model1xy <- ppm(mucosa ~ marks + x + y)
+model1xy
+```
+
+    ## Nonstationary multitype Poisson process
+    ## 
+    ## Possible marks: 'ECL' and 'other'
+    ## 
+    ## Log intensity:  ~marks + x + y
+    ## 
+    ## Fitted trend coefficients:
+    ##  (Intercept)   marksother            x            y 
+    ##  5.135026706  2.286729721 -0.007512035 -1.156055806 
+    ## 
+    ##                 Estimate      S.E.    CI95.lo    CI95.hi Ztest       Zval
+    ## (Intercept)  5.135026706 0.1290806  4.8820333  5.3880201   *** 39.7815429
+    ## marksother   2.286729721 0.1112542  2.0686754  2.5047840   *** 20.5540892
+    ## x           -0.007512035 0.1115200 -0.2260873  0.2110632       -0.0673604
+    ## y           -1.156055806 0.1406820 -1.4317876 -0.8803241   *** -8.2175076
+
+``` r
+coef(model1xy)
+```
+
+    ##  (Intercept)   marksother            x            y 
+    ##  5.135026706  2.286729721 -0.007512035 -1.156055806
+
+``` r
+plot(predict(model1xy))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
+
+``` r
+model2xy <- ppm(mucosa ~ marks * (x + y))
+model2xy
+```
+
+    ## Nonstationary multitype Poisson process
+    ## 
+    ## Possible marks: 'ECL' and 'other'
+    ## 
+    ## Log intensity:  ~marks * (x + y)
+    ## 
+    ## Fitted trend coefficients:
+    ##  (Intercept)   marksother            x            y marksother:x 
+    ##   5.85306325   1.49110635   0.06275125  -3.86220183  -0.07739871 
+    ## marksother:y 
+    ##   2.93878953 
+    ## 
+    ##                 Estimate      S.E.    CI95.lo    CI95.hi Ztest       Zval
+    ## (Intercept)   5.85306325 0.2473601  5.3682464  6.3378801   *** 23.6621186
+    ## marksother    1.49110635 0.2616142  0.9783520  2.0038607   ***  5.6996392
+    ## x             0.06275125 0.3672459 -0.6570374  0.7825399        0.1708699
+    ## y            -3.86220183 0.5616962 -4.9631062 -2.7612975   *** -6.8759620
+    ## marksother:x -0.07739871 0.3854477 -0.8328623  0.6780649       -0.2008021
+    ## marksother:y  2.93878953 0.5804899  1.8010502  4.0765289   ***  5.0626022
+
+``` r
+coef(model2xy)
+```
+
+    ##  (Intercept)   marksother            x            y marksother:x 
+    ##   5.85306325   1.49110635   0.06275125  -3.86220183  -0.07739871 
+    ## marksother:y 
+    ##   2.93878953
+
+``` r
+plot(predict(model2xy))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
+
+``` r
+model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
+model3
+```
+
+    ## Nonstationary multitype Poisson process
+    ## 
+    ## Possible marks: 'ECL' and 'other'
+    ## 
+    ## Log intensity:  ~marks + (x + y + I(x^2) + I(x * y) + I(y^2))
+    ## 
+    ## Fitted trend coefficients:
+    ## (Intercept)  marksother           x           y      I(x^2)    I(x * y) 
+    ##   4.8407551   2.2867297   0.2828123   0.8046386  -0.2449076  -0.1328756 
+    ##      I(y^2) 
+    ##  -2.5066916 
+    ## 
+    ##               Estimate      S.E.    CI95.lo    CI95.hi Ztest       Zval
+    ## (Intercept)  4.8407551 0.1865057  4.4752107  5.2062995   *** 25.9550007
+    ## marksother   2.2867297 0.1112542  2.0686754  2.5047840   *** 20.5540892
+    ## x            0.2828123 0.4840067 -0.6658233  1.2314479        0.5843149
+    ## y            0.8046386 0.6087936 -0.3885748  1.9978521        1.3216937
+    ## I(x^2)      -0.2449076 0.4346487 -1.0968034  0.6069882       -0.5634611
+    ## I(x * y)    -0.1328756 0.5195314 -1.1511385  0.8853873       -0.2557605
+    ## I(y^2)      -2.5066916 0.7025926 -3.8837479 -1.1296354   *** -3.5677739
+
+``` r
+coef(model3)
+```
+
+    ## (Intercept)  marksother           x           y      I(x^2)    I(x * y) 
+    ##   4.8407551   2.2867297   0.2828123   0.8046386  -0.2449076  -0.1328756 
+    ##      I(y^2) 
+    ##  -2.5066916
+
+``` r
+plot(predict(model3))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+
+``` r
+model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
+model4
+```
+
+    ## Nonstationary multitype Poisson process
+    ## 
+    ## Possible marks: 'ECL' and 'other'
+    ## 
+    ## Log intensity:  ~marks * (x + y + I(x^2) + I(x * y) + I(y^2))
+    ## 
+    ## Fitted trend coefficients:
+    ##         (Intercept)          marksother                   x 
+    ##            5.018632            2.040831            4.310737 
+    ##                   y              I(x^2)            I(x * y) 
+    ##           -2.261047           -4.905847            3.086670 
+    ##              I(y^2)        marksother:x        marksother:y 
+    ##           -5.199005           -4.388268            3.579736 
+    ##   marksother:I(x^2) marksother:I(x * y)   marksother:I(y^2) 
+    ##            5.059764           -3.342710            2.439852 
+    ## 
+    ##                      Estimate      S.E.     CI95.lo    CI95.hi Ztest
+    ## (Intercept)          5.018632 0.5006414   4.0373924  5.9998706   ***
+    ## marksother           2.040831 0.5278293   1.0063043  3.0753570   ***
+    ## x                    4.310737 1.7516879   0.8774918  7.7439820     *
+    ## y                   -2.261047 2.2251226  -6.6222072  2.1001133      
+    ## I(x^2)              -4.905847 1.6650184  -8.1692227 -1.6424705    **
+    ## I(x * y)             3.086670 2.6191912  -2.0468503  8.2201905      
+    ## I(y^2)              -5.199005 3.0833891 -11.2423363  0.8443271      
+    ## marksother:x        -4.388268 1.8233568  -7.9619815 -0.8145540     *
+    ## marksother:y         3.579736 2.3165955  -0.9607074  8.1201802      
+    ## marksother:I(x^2)    5.059764 1.7252514   1.6783335  8.4411947    **
+    ## marksother:I(x * y) -3.342710 2.6736718  -8.5830101  1.8975907      
+    ## marksother:I(y^2)    2.439852 3.1699025  -3.7730426  8.6527470      
+    ##                           Zval
+    ## (Intercept)         10.0244036
+    ## marksother           3.8664599
+    ## x                    2.4609047
+    ## y                   -1.0161449
+    ## I(x^2)              -2.9464219
+    ## I(x * y)             1.1784822
+    ## I(y^2)              -1.6861331
+    ## marksother:x        -2.4066971
+    ## marksother:y         1.5452574
+    ## marksother:I(x^2)    2.9327692
+    ## marksother:I(x * y) -1.2502319
+    ## marksother:I(y^2)    0.7696931
+
+``` r
+coef(model4)
+```
+
+    ##         (Intercept)          marksother                   x 
+    ##            5.018632            2.040831            4.310737 
+    ##                   y              I(x^2)            I(x * y) 
+    ##           -2.261047           -4.905847            3.086670 
+    ##              I(y^2)        marksother:x        marksother:y 
+    ##           -5.199005           -4.388268            3.579736 
+    ##   marksother:I(x^2) marksother:I(x * y)   marksother:I(y^2) 
+    ##            5.059764           -3.342710            2.439852
+
+``` r
+plot(predict(model4))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+
+*relrisk.ppm*
+
+``` r
+plot(relrisk(model4, casecontrol=FALSE))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+
+``` r
+plot(relrisk(model3, casecontrol=FALSE))
+```
+
+    ## Warning in .axisPars(usr, log = log, nintLog = nint): relative range of
+    ## values ( 0 * EPS) is small (axis 0)
+
+    ## Warning in .axisPars(usr, log = log, nintLog = nint): relative range of
+    ## values ( 0 * EPS) is small (axis 0)
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)

@@ -3,21 +3,23 @@ Notes for session 1
 Adrian Baddeley and Ege Rubak
 2019-07-02
 
-## Introduction
+Introduction
+------------
 
 Spatial data: attributed to spatial location
 
 Three main types of spatial data
 
-  - spatial variable (field) eg temperature
-  - regional aggregate data eg accident counts in each state
-  - spatial point patterns eg locations of crimes/accidents
+-   spatial variable (field) eg temperature
+-   regional aggregate data eg accident counts in each state
+-   spatial point patterns eg locations of crimes/accidents
 
 This workshop is on spatial point patterns
 
 We will use the *spatstat* package in *R*
 
-## Spatial point patterns
+Spatial point patterns
+----------------------
 
 ### Points
 
@@ -25,33 +27,28 @@ Spatial coordinates of locations
 
 ### Window
 
-Specify window ![W](https://latex.codecogs.com/png.latex?W "W") where
-events could have been observed (this is sometimes a problem)
+Specify window ![W](https://latex.codecogs.com/png.latex?W "W") where events could have been observed (this is sometimes a problem)
 
 ### Covariates
 
 Explanatory variables
 
-Could be functions ![Z(u), \\quad u \\in
-W](https://latex.codecogs.com/png.latex?Z%28u%29%2C%20%5Cquad%20u%20%5Cin%20W
-"Z(u), \\quad u \\in W")
+Could be functions ![Z(u), \\quad u \\in W](https://latex.codecogs.com/png.latex?Z%28u%29%2C%20%5Cquad%20u%20%5Cin%20W "Z(u), \quad u \in W")
 
-Could be other spatial objects which must usually be translated into
-spatial functions.
+Could be other spatial objects which must usually be translated into spatial functions.
 
 ### Marks
 
-Attributes of the individual events or things eg type of cell, type of
-accident
+Attributes of the individual events or things eg type of cell, type of accident
 
-Methodologically different from covariates: marks are part of the
-“response”, not the “explanatory variable”
+Methodologically different from covariates: marks are part of the "response", not the "explanatory variable"
 
 ### Examples
 
 Some examples where we reinforce the terms introduced above
 
-## Software and data
+Software and data
+-----------------
 
 ### Spatstat
 
@@ -63,8 +60,8 @@ library(spatstat)
 
 Data may be provided in many different file formats
 
-  - text file, CSV file
-  - shapefile
+-   text file, CSV file
+-   shapefile
 
 Brief pointers on data wrangling
 
