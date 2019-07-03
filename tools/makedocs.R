@@ -1,7 +1,7 @@
 ## To be run from the root of the repository
 ## The lines below are just a rough sketch of what needs to be done to update
 ## the docs when changing labs/solutions. It hasn't really been tested...
-notes <- 1:2
+notes <- 1:3
 sols <- 1
 labs <- 1
 

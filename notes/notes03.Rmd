@@ -1,0 +1,118 @@
+---
+title: "Notes for session 3"
+author: "Adrian Baddeley and Ege Rubak"
+date: "2019-07-03"
+output: html
+---
+
+# Dependence between points
+
+```{r, echo=FALSE}
+Xlist <- solist(inhibition=cells,
+		random=japanesepines,
+		clustering=redwood)
+plot(Xlist, main="")		
+```
+
+## Exploratory tools
+
+### K-function
+
+```{r, echo=FALSE}
+Klist <- anylapply(Xlist, Kest)
+plot(Klist, main="")
+```
+
+### pair correlation function
+
+```{r, echo=FALSE}
+glist <- anylapply(Xlist, pcf)
+plot(glist, main="")
+```
+
+## Explicit Models for clustered data
+
+```{r}
+plot(redwood)
+```
+
+```{r}
+fitT <- kppm(redwood ~ 1, "Thomas")
+fitT
+```
+
+```{r}
+plot(simulate(fitT, nsim=12))
+```
+
+```{r}
+kppm(redwood ~ x+y, "Thomas")
+```
+
+```{r}
+kppm(redwood ~ x+y, "LGCP")
+```
+
+## Models for inhibited data
+
+```{r}
+plot(cells)
+```
+
+```{r}
+jp <- residualspaper$Fig1
+plot(jp)
+```
+
+### Gibbs models
+
+```{r}
+ppm(cells~ 1, Hardcore())
+```
+
+```{r}
+minnndist(cells)
+```
+
+```{r}
+ppm(cells ~ 1, Strauss(0.1))
+```
+
+```{r}
+fit <- ppm(cells ~ 1, Strauss(0.1))
+plot(simulate(fit, nsim=4))
+```
+
+
+```{r}
+plot(pcfinhom(jp))
+```
+
+```{r}
+minnndist(jp)
+```
+
+```{r}
+ppm(jp ~ x+y, Strauss(0.2))
+```
+
+```{r}
+ppm(jp ~ x+y, Strauss(0.5))
+```
+
+### Determinantal point process models
+
+```{r}
+dppm(jp ~ x+y, dppGauss)
+```
+
+```{r}
+fit <- dppm(jp ~ polynom(x,y,2),
+            dppMatern,
+	    statistic="pcf", statargs=list(stoyan=0.2))
+plot(predict(fit))	    
+```
+
+```{r}
+plot(simulate(fit))
+```
