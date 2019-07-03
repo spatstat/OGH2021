@@ -12,8 +12,11 @@ copy_to_docs <- function(x){
   file.copy(x, sub("ECAS2019", "ECAS2019/docs", x, fixed = TRUE), overwrite = TRUE)
   ## Substitute .md extension to copy figure directory
   from_dir <- sub(".md", "_files/", x, fixed = TRUE)
-  to_dir <- sub("ECAS2019", "ECAS2019/docs", dirname(x), fixed = TRUE)
-  file.copy(from_dir, to_dir, recursive = TRUE)
+  if(dir.exists(from_dir)) {
+    to_dir <- sub("ECAS2019", "ECAS2019/docs", dirname(x), fixed = TRUE)
+    if(!dir.exists(to_dir)) dir.create(to_dir)
+    file.copy(from_dir, to_dir, recursive = TRUE)
+  }
 }
 
 for(i in sols){
