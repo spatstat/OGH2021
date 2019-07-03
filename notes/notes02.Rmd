@@ -35,10 +35,15 @@ B <- density(M, bw.diggle)
 plot(B, main="")
 ```
 
-Ratio of intensities
+The spatially-varying probability of each type
+can be computed from the ratio of intensities:
 
 ```{r}
-plot(relrisk(mucosa, casecontrol=FALSE))
+plot(B[["ECL"]]/(B[["ECL"]] + B[["other"]]))
+```
+
+```{r}
+plot(relrisk(mucosa, casecontrol=FALSE), equal.scales=TRUE)
 ```
 
 ### Nonparametric estimation of intensity depending on a covariate
@@ -109,57 +114,57 @@ plot(simulate(Jfit2, nsim=12))
 model0 <- ppm(mucosa ~ marks)
 model0
 coef(model0)
-plot(predict(model0))
+plot(predict(model0), equal.scales=TRUE)
 ```
 
 ```{r}
 model1 <- ppm(mucosa ~ marks + y)
 model1
 coef(model1)
-plot(predict(model1))
+plot(predict(model1), equal.scales=TRUE)
 ```
 
 ```{r}
 model2 <- ppm(mucosa ~ marks * y)
 model2
 coef(model2)
-plot(predict(model2))
+plot(predict(model2), equal.scales=TRUE)
 ```
 
 ```{r}
 model1xy <- ppm(mucosa ~ marks + x + y)
 model1xy
 coef(model1xy)
-plot(predict(model1xy))
+plot(predict(model1xy), equal.scales=TRUE)
 ```
 
 ```{r}
 model2xy <- ppm(mucosa ~ marks * (x + y))
 model2xy
 coef(model2xy)
-plot(predict(model2xy))
+plot(predict(model2xy), equal.scales=TRUE)
 ```
 
 ```{r}
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
 model3
 coef(model3)
-plot(predict(model3))
+plot(predict(model3), equal.scales=TRUE)
 ```
 
 ```{r}
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
 model4
 coef(model4)
-plot(predict(model4))
+plot(predict(model4), equal.scales=TRUE)
 ```
 
 _relrisk.ppm_
 
 ```{r}
-plot(relrisk(model4, casecontrol=FALSE))
+plot(relrisk(model4, casecontrol=FALSE), equal.scales=TRUE)
 ```
 
 ```{r}
-plot(relrisk(model3, casecontrol=FALSE))
+plot(relrisk(model3, casecontrol=FALSE), equal.scales=TRUE)
 ```

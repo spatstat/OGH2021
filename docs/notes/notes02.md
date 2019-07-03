@@ -39,13 +39,19 @@ plot(B, main="")
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
-Ratio of intensities
+The spatially-varying probability of each type can be computed from the ratio of intensities:
 
 ``` r
-plot(relrisk(mucosa, casecontrol=FALSE))
+plot(B[["ECL"]]/(B[["ECL"]] + B[["other"]]))
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
+
+``` r
+plot(relrisk(mucosa, casecontrol=FALSE), equal.scales=TRUE)
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -55,7 +61,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 ``` r
 X <- murchison$gold
@@ -67,7 +73,7 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 Parametric modelling
 --------------------
@@ -113,13 +119,13 @@ anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 ``` r
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-6-2.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-7-2.png)
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -173,7 +179,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -248,7 +254,7 @@ step(Jfit2)
 plot(simulate(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 ``` r
 plot(simulate(Jfit2, nsim=12))
@@ -256,7 +262,7 @@ plot(simulate(Jfit2, nsim=12))
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 ### Intensity depends on marks
 
@@ -287,10 +293,10 @@ coef(model0)
     ##    4.699357    2.286730
 
 ``` r
-plot(predict(model0))
+plot(predict(model0), equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 ``` r
 model1 <- ppm(mucosa ~ marks + y)
@@ -320,10 +326,10 @@ coef(model1)
     ##    5.131273    2.286730   -1.156055
 
 ``` r
-plot(predict(model1))
+plot(predict(model1), equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -354,10 +360,10 @@ coef(model2)
     ##     5.884603     1.452251    -3.862202     2.938790
 
 ``` r
-plot(predict(model2))
+plot(predict(model2), equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 ``` r
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -388,10 +394,10 @@ coef(model1xy)
     ##  5.135026706  2.286729721 -0.007512035 -1.156055806
 
 ``` r
-plot(predict(model1xy))
+plot(predict(model1xy), equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -428,10 +434,10 @@ coef(model2xy)
     ##   2.93878953
 
 ``` r
-plot(predict(model2xy))
+plot(predict(model2xy), equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -469,10 +475,10 @@ coef(model3)
     ##  -2.5066916
 
 ``` r
-plot(predict(model3))
+plot(predict(model3), equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -536,21 +542,21 @@ coef(model4)
     ##            5.059764           -3.342710            2.439852
 
 ``` r
-plot(predict(model4))
-```
-
-![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
-
-*relrisk.ppm*
-
-``` r
-plot(relrisk(model4, casecontrol=FALSE))
+plot(predict(model4), equal.scales=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
+*relrisk.ppm*
+
 ``` r
-plot(relrisk(model3, casecontrol=FALSE))
+plot(relrisk(model4, casecontrol=FALSE), equal.scales=TRUE)
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+
+``` r
+plot(relrisk(model3, casecontrol=FALSE), equal.scales=TRUE)
 ```
 
     ## Warning in .axisPars(usr, log = log, nintLog = nint): relative range of
@@ -559,4 +565,4 @@ plot(relrisk(model3, casecontrol=FALSE))
     ## Warning in .axisPars(usr, log = log, nintLog = nint): relative range of
     ## values ( 0 * EPS) is small (axis 0)
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
