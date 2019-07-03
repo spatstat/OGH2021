@@ -15,6 +15,8 @@ Source code on:
 
 Notes:
 
-- [Notes 1](./notes/notes01.html)
-- [Notes 2](./notes/notes02.html)
+- [Notes for Session 1](./notes/notes01.html)
+- [Notes for Session 2](./notes/notes02.html)
+- [Notes for Session 3](./notes/notes03.html)
+
 
