@@ -1,12 +1,20 @@
 ## Course on Analysing Spatial Point Patterns, ECAS Lisbon 2019
 
-This website contains all the materials for an R course on
+This is the website for participants in the R course on
 _Analysing Spatial Point Patterns_ given by Adrian Baddeley and Ege Rubak as part of the
 [European Courses in Advanced Statistics](https://ecas2019.math.tecnico.ulisboa.pt/index.html) in Lisbon, July 15 2019.
 
-**This material is currently a draft in preparation**
+### System requirements
 
-The course is based on short lectures and software demonstrations followed by "lab" exercises on the computer.
+In order to follow the exercises, 
+you will need to have installed the following on your computer:
+
+* [R](http://r-project.org) or [Rstudio](http://rstudio.com)
+* the `R` package [spatstat](http://cran.r-project.org/package=spatstat)
+
+### Course materials (draft)
+
+The course comprises short lectures and software demonstrations followed by "lab" exercises on the computer.
 
 Notes                                       |   Labs                     |  Solutions
 ------------------------------------------- | -------------------------- | --------------------------------------------------
@@ -18,5 +26,7 @@ Notes                                       |   Labs                     |  Solu
 
 The `Rmarkdown` source code is available at
 [https://github.com/spatstat/ECAS2019](https://github.com/spatstat/ECAS2019)
+
+**This material is Copyright (C) Adrian Baddeley and Ege Rubak 2019**
 
 
