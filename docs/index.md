@@ -8,7 +8,7 @@ _Analysing Spatial Point Patterns_ given by Adrian Baddeley and Ege Rubak as par
 
 The course is based on short lectures and software demonstrations followed by "lab" exercises on the computer.
 
-                                            |                            |
+Notes                                       |   Labs                     |  Solutions
 ------------------------------------------- | -------------------------- | --------------------------------------------------
 [Notes for Session 1](./notes/notes01.html) | [Lab 1](./labs/lab01.html) | [Solutions to Lab 1](./solutions/solution01.html)
 [Notes for Session 2](./notes/notes02.html) | [Lab 2](./labs/lab02.html) | [Solutions to Lab 2](./solutions/solution02.html)
