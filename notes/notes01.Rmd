@@ -16,9 +16,9 @@ _Spatial data_= data attributed to spatial locations
 
 Three main types of spatial data:
 
-* spatial variable (field) eg temperature
-* regional aggregate data eg accident counts in each state
-* spatial point patterns eg locations of crimes/accidents
+* _spatial variable ("field")_, eg temperature
+* _regional aggregate data_, eg accident counts in each state
+* _spatial point patterns_, eg locations of crimes/accidents
 
 ```{r, echo=FALSE, results="hide", fig.width=9, fig.height=3, out.width="100%"}
 W <- Window(austates)
@@ -111,9 +111,12 @@ A point pattern dataset is represented an object belonging to the class
 `"ppp"` (planar point pattern). Some datasets are included in the package:
 
 ```{r}
-plot(gordon)
-class(gordon)
 gordon
+class(gordon)
+```
+
+```{r}
+plot(gordon)
 ```
 
 The spatial coordinates of the points can be extracted by

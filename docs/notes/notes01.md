@@ -10,9 +10,9 @@ Introduction
 
 Three main types of spatial data:
 
--   spatial variable (field) eg temperature
--   regional aggregate data eg accident counts in each state
--   spatial point patterns eg locations of crimes/accidents
+-   *spatial variable ("field")*, eg temperature
+-   *regional aggregate data*, eg accident counts in each state
+-   *spatial point patterns*, eg locations of crimes/accidents
 
 <img src="notes01_files/figure-markdown_github/unnamed-chunk-2-1.png" width="100%" />
 
@@ -71,10 +71,13 @@ library(spatstat)
 A point pattern dataset is represented an object belonging to the class `"ppp"` (planar point pattern). Some datasets are included in the package:
 
 ``` r
-plot(gordon)
+gordon
 ```
 
-![](notes01_files/figure-markdown_github/unnamed-chunk-9-1.png)
+    ## Planar point pattern: 99 points
+    ## window: polygonal boundary
+    ## enclosing rectangle: [-26.408475, 26.408475] x [-36.32095, 36.32095] 
+    ## metres
 
 ``` r
 class(gordon)
@@ -83,13 +86,10 @@ class(gordon)
     ## [1] "ppp"
 
 ``` r
-gordon
+plot(gordon)
 ```
 
-    ## Planar point pattern: 99 points
-    ## window: polygonal boundary
-    ## enclosing rectangle: [-26.408475, 26.408475] x [-36.32095, 36.32095] 
-    ## metres
+![](notes01_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 The spatial coordinates of the points can be extracted by `as.data.frame`:
 
