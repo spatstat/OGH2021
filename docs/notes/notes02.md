@@ -19,7 +19,7 @@ We will usually assume that the point process has an *intensity function* ![\\la
 
 ![ E\[ n(B \\cap X) \] = \\int\_B \\lambda(u) \\, {\\rm d}u ](https://latex.codecogs.com/png.latex?%20E%5B%20n%28B%20%5Ccap%20X%29%20%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%20 " E[ n(B \cap X) ] = \int_B \lambda(u) \, {\rm d}u ")
 
- for any region ![B \\subset R^2](https://latex.codecogs.com/png.latex?B%20%5Csubset%20R%5E2 "B \subset R^2"), where $n(B X) = $ number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B").
+ for any region ![B \\subset R^2](https://latex.codecogs.com/png.latex?B%20%5Csubset%20R%5E2 "B \subset R^2"), where ![n(B \\cap X)](https://latex.codecogs.com/png.latex?n%28B%20%5Ccap%20X%29 "n(B \cap X)") denotes the number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B").
 
 Intensity is closely related to probability density. If ![X](https://latex.codecogs.com/png.latex?X "X") is a Poisson point process with intensity function ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)"), then each individual point inside ![W](https://latex.codecogs.com/png.latex?W "W") has probability density ![f(u) = \\lambda(u)/\\Lambda\_W](https://latex.codecogs.com/png.latex?f%28u%29%20%3D%20%5Clambda%28u%29%2F%5CLambda_W "f(u) = \lambda(u)/\Lambda_W"), where ![\\Lambda\_W = \\int\_W \\lambda(u) \\, {\\rm d}u](https://latex.codecogs.com/png.latex?%5CLambda_W%20%3D%20%5Cint_W%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du "\Lambda_W = \int_W \lambda(u) \, {\rm d}u").
 
@@ -30,17 +30,26 @@ Because of the close relationship between intensity and probability density, met
 
 ### Nonparametric estimation of spatially-varying intensity
 
-EDITED UP TO HERE
+Given a point pattern ![x = \\{ x\_1, \\ldots, x\_n \\}](https://latex.codecogs.com/png.latex?x%20%3D%20%5C%7B%20x_1%2C%20%5Cldots%2C%20x_n%20%5C%7D "x = \{ x_1, \ldots, x_n \}") in a window ![W](https://latex.codecogs.com/png.latex?W "W") the kernel estimate of intensity is
+
+![
+   \\widehat\\lambda(u) = \\sum\_{i=1}^n k(u - x\_i)
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Cwidehat%5Clambda%28u%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20k%28u%20-%20x_i%29%0A "
+   \widehat\lambda(u) = \sum_{i=1}^n k(u - x_i)
+")
+
+ where ![k(x)](https://latex.codecogs.com/png.latex?k%28x%29 "k(x)") is the smoothing kernel. Corrections for edge effects may also be included.
 
 ``` r
 library(spatstat)
-X <- japanesepines
-Z <- density(X)
-Z <- density(X, bw.diggle)
-plot(Z, main="")
+plot(japanesepines)
+Z <- density(japanesepines, sigma=0.1)
+plot(Z)
 ```
 
-<img src="notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="70%" />
+<img src="notes02_files/figure-markdown_github/unnamed-chunk-2-1.png" width="100%" />
+
+The command in `spatstat` to compute the kernel estimate of intensity is `density.ppp`, a method for the generic function `density`.
 
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
 
@@ -50,7 +59,7 @@ B <- density(M, bw.diggle)
 plot(B, main="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 The spatially-varying probability of each type can be computed from the ratio of intensities:
 
@@ -58,13 +67,13 @@ The spatially-varying probability of each type can be computed from the ratio of
 plot(B[["ECL"]]/(B[["ECL"]] + B[["other"]]))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 plot(relrisk(mucosa, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -74,7 +83,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 X <- murchison$gold
@@ -86,7 +95,7 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 Parametric modelling
 --------------------
@@ -132,13 +141,13 @@ anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 ``` r
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-7-2.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-8-2.png)
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -192,7 +201,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -267,7 +276,7 @@ step(Jfit2)
 plot(simulate(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 ``` r
 plot(simulate(Jfit2, nsim=12))
@@ -275,7 +284,7 @@ plot(simulate(Jfit2, nsim=12))
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 ### Intensity depends on marks
 
@@ -309,7 +318,7 @@ coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 ``` r
 model1 <- ppm(mucosa ~ marks + y)
@@ -342,7 +351,7 @@ coef(model1)
 plot(predict(model1))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -376,7 +385,7 @@ coef(model2)
 plot(predict(model2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 ``` r
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -410,7 +419,7 @@ coef(model1xy)
 plot(predict(model1xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -450,7 +459,7 @@ coef(model2xy)
 plot(predict(model2xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -491,7 +500,7 @@ coef(model3)
 plot(predict(model3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -558,7 +567,7 @@ coef(model4)
 plot(predict(model4))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 *relrisk.ppm*
 
@@ -566,10 +575,10 @@ plot(predict(model4))
 plot(relrisk(model4, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 ``` r
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)

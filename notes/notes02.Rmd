@@ -25,8 +25,8 @@ _intensity function_ $\lambda(u)$ defined at every spatial location $u$.
 Then $\lambda(u)$ is the spatially-varying expected number of points
 per unit area. It is formally defined to satisfy
 $$ E[ n(B \cap X) ] = \int_B \lambda(u) \, {\rm d}u $$
-for any region $B \subset R^2$, where $n(B \cap X) = $ number of points
-falling in $B$.
+for any region $B \subset R^2$,
+where $n(B \cap X)$ denotes the number of points falling in $B$.
 
 Intensity is closely related to probability density.
 If $X$ is a Poisson point process with intensity function $\lambda(u)$,
@@ -42,15 +42,32 @@ function are very similar to methods for density estimation.
 
 ### Nonparametric estimation of spatially-varying intensity
 
-EDITED UP TO HERE
+Given a point pattern $x = \{ x_1, \ldots, x_n \}$ in a window $W$
+the kernel estimate of intensity is
+$$
+   \widehat\lambda(u) = \sum_{i=1}^n k(u - x_i)
+$$
+where $k(x)$ is the smoothing kernel. Corrections for edge effects may
+also be included.
 
-```{r, fig.width=5, out.width='70%'}
+```{r, eval=FALSE}
 library(spatstat)
-X <- japanesepines
-Z <- density(X)
-Z <- density(X, bw.diggle)
-plot(Z, main="")
+plot(japanesepines)
+Z <- density(japanesepines, sigma=0.1)
+plot(Z)
 ```
+
+```{r, fig.height=3, fig.width=12, out.width='100%', echo=FALSE, results="hide"}
+library(spatstat)
+plot(solist(japanesepines=japanesepines,
+             "density(japanesepines, 0.1)"=density(japanesepines, 0.1),
+             "density(japanesepines, 0.2)"=density(japanesepines, 0.2),
+             "density(japanesepines, 0.3)"=density(japanesepines, 0.3)),
+	      main="")
+```
+
+The command in `spatstat` to compute the kernel estimate of intensity
+is `density.ppp`, a method for the generic function `density`. 
 
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
 
