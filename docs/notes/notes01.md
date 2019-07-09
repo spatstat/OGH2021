@@ -14,7 +14,7 @@ Three main types of spatial data
 -   regional aggregate data eg accident counts in each state
 -   spatial point patterns eg locations of crimes/accidents
 
-![](notes01_files/figure-markdown_github/unnamed-chunk-2-1.png)
+<img src="notes01_files/figure-markdown_github/unnamed-chunk-2-1.png" width="100%" />
 
 This workshop is on spatial point patterns
 

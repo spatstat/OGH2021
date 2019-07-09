@@ -20,10 +20,10 @@ Three main types of spatial data
 * regional aggregate data eg accident counts in each state
 * spatial point patterns eg locations of crimes/accidents
 
-```{r, echo=FALSE, results="hide"}
+```{r, echo=FALSE, results="hide", fig.width=9, fig.height=3, out.width="100%"}
 W <- Window(austates)
 aW <- area.owin(W)
-mu <- function(x,y){ (50+y)/aW }
+mu <- function(x,y){ (50+y)/(4*aW) }
 XX <- rLGCP("exp", mu, list(var=20/aW, scale=5), win=W)
 Lam <- attr(XX, "Lambda")[W, drop=FALSE]
 f <- 10 + 30 * (Lam - min(Lam))/diff(range(Lam))
