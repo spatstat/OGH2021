@@ -76,7 +76,7 @@ Many covariates take the form of a function $Z(u), \quad u \in W$
 defined at every spatial location $u$.
 
 ```{r, echo=FALSE, results="hide"}
-plot(Z, main="")
+plot(Z, main="",box=FALSE)
 ```
 
 Alternatively, other kinds of spatial data can be treated as
