@@ -6,22 +6,35 @@ Adrian Baddeley and Ege Rubak
 Intensity
 =========
 
-Intensity and probability density
----------------------------------
+Often the main objective is to study the "density" of points in the point pattern and to investigate any spatial variation in this density.
 
 Definition
+----------
 
-Objectives
+The observed *point pattern* ![x](https://latex.codecogs.com/png.latex?x "x") will be regarded as a realisation of a random *point process* ![X](https://latex.codecogs.com/png.latex?X "X").
+
+The *intensity* of the point process is the expected number of points per unit area. It may be a constant ![\\lambda \\ge 0](https://latex.codecogs.com/png.latex?%5Clambda%20%5Cge%200 "\lambda \ge 0"), or it may be spatially varying.
+
+We will usually assume that the point process has an *intensity function* ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") defined at every spatial location ![u](https://latex.codecogs.com/png.latex?u "u"). Then ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") is the spatially-varying expected number of points per unit area. It is formally defined to satisfy
+
+![ E\[ n(B \\cap X) \] = \\int\_B \\lambda(u) \\, {\\rm d}u ](https://latex.codecogs.com/png.latex?%20E%5B%20n%28B%20%5Ccap%20X%29%20%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%20 " E[ n(B \cap X) ] = \int_B \lambda(u) \, {\rm d}u ")
+
+ for any region ![B \\subset R^2](https://latex.codecogs.com/png.latex?B%20%5Csubset%20R%5E2 "B \subset R^2"), where $n(B X) = $ number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B").
+
+Intensity is closely related to probability density. If ![X](https://latex.codecogs.com/png.latex?X "X") is a Poisson point process with intensity function ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)"), then each individual point inside ![W](https://latex.codecogs.com/png.latex?W "W") has probability density ![f(u) = \\lambda(u)/\\Lambda\_W](https://latex.codecogs.com/png.latex?f%28u%29%20%3D%20%5Clambda%28u%29%2F%5CLambda_W "f(u) = \lambda(u)/\Lambda_W"), where ![\\Lambda\_W = \\int\_W \\lambda(u) \\, {\\rm d}u](https://latex.codecogs.com/png.latex?%5CLambda_W%20%3D%20%5Cint_W%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du "\Lambda_W = \int_W \lambda(u) \, {\rm d}u").
 
 Nonparametric estimation
 ------------------------
 
+Because of the close relationship between intensity and probability density, methods for nonparametric estimation of the intensity function are very similar to methods for density estimation.
+
 ### Nonparametric estimation of spatially-varying intensity
+
+EDITED UP TO HERE
 
 ``` r
 library(spatstat)
 X <- japanesepines
-A <- quadratcount(X, 3, 3)
 Z <- density(X)
 Z <- density(X, bw.diggle)
 plot(Z, main="")

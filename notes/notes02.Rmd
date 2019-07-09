@@ -7,21 +7,46 @@ output: html
 
 # Intensity
 
+Often the main objective is to study
+the "density" of points in the point pattern
+and to investigate any spatial variation in this density.
 
-## Intensity and probability density
+## Definition
 
-Definition
+The observed _point pattern_ $x$ will be regarded as a realisation
+of a random *point process* $X$.
 
-Objectives
+The _intensity_ of the point process is the expected number of points
+per unit area. It may be a constant $\lambda \ge 0$,
+or it may be spatially varying.
+
+We will usually assume that the point process has an
+_intensity function_ $\lambda(u)$ defined at every spatial location $u$.
+Then $\lambda(u)$ is the spatially-varying expected number of points
+per unit area. It is formally defined to satisfy
+$$ E[ n(B \cap X) ] = \int_B \lambda(u) \, {\rm d}u $$
+for any region $B \subset R^2$, where $n(B \cap X) = $ number of points
+falling in $B$.
+
+Intensity is closely related to probability density.
+If $X$ is a Poisson point process with intensity function $\lambda(u)$,
+then each individual point inside $W$ has probability density
+$f(u) = \lambda(u)/\Lambda_W$, where
+$\Lambda_W = \int_W \lambda(u) \, {\rm d}u$.
 
 ## Nonparametric estimation
 
+Because of the close relationship between intensity and
+probability density, methods for nonparametric estimation of the intensity
+function are very similar to methods for density estimation.
+
 ### Nonparametric estimation of spatially-varying intensity
+
+EDITED UP TO HERE
 
 ```{r, fig.width=5, out.width='70%'}
 library(spatstat)
 X <- japanesepines
-A <- quadratcount(X, 3, 3)
 Z <- density(X)
 Z <- density(X, bw.diggle)
 plot(Z, main="")
