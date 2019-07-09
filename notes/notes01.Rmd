@@ -7,6 +7,11 @@ output: html
 
 ## Introduction
 
+```{r, echo=FALSE, results="hide"}
+library(spatstat)
+requireversion(spatstat, "1.60-1.005")
+```
+
 Spatial data: attributed to spatial location
 
 Three main types of spatial data
@@ -14,6 +19,19 @@ Three main types of spatial data
 * spatial variable (field) eg temperature
 * regional aggregate data eg accident counts in each state
 * spatial point patterns eg locations of crimes/accidents
+
+```{r, echo=FALSE, results="hide"}
+W <- Window(austates)
+aW <- area.owin(W)
+mu <- function(x,y){ (50+y)/aW }
+XX <- rLGCP("exp", mu, list(var=20/aW, scale=5), win=W)
+Lam <- attr(XX, "Lambda")[W, drop=FALSE]
+f <- 10 + 30 * (Lam - min(Lam))/diff(range(Lam))
+agg <- list(do.labels=TRUE, labels=rpois(7, 20))
+plot(solist(f, austates, XX),
+     panel.args=function(i, ...) if(i==2) agg else list(),
+     main="", main.panel="")
+```
 
 This workshop is on spatial point patterns
 
