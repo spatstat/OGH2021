@@ -73,58 +73,149 @@ $$
 where $k(x)$ is the smoothing kernel and $e(u, v)$ is a correction for
 edge effects.
 
-```{r, eval=FALSE}
+```{r}
 library(spatstat)
 plot(japanesepines)
 Z <- density(japanesepines, sigma=0.1)
 plot(Z)
 ```
 
-```{r, fig.height=3, fig.width=12, out.width='100%'}
-library(spatstat)
-plot(solist(japanesepines=japanesepines,
-             "density(japanesepines, 0.1)"=density(japanesepines, 0.1),
-             "density(japanesepines, 0.2)"=density(japanesepines, 0.2),
-             "density(japanesepines, 0.3)"=density(japanesepines, 0.3)),
-	      main="")
-```
-
 The command in `spatstat` to compute the kernel estimate of intensity
 is `density.ppp`, a method for the generic function `density`. 
 
+The argument `sigma` is the bandwidth of the smoothing kernel.
+
+```{r, fig.height=3, fig.width=12, out.width='100%'}
+library(spatstat)
+plot(solist(data=japanesepines,
+             "sigma=0.1"=density(japanesepines, 0.1),
+             "sigma=0.2"=density(japanesepines, 0.2),
+             "sigma=0.3"=density(japanesepines, 0.3)),
+	      main="", nrows=1)
+```
+
+Bandwidth can be selected automatically:
+
+```{r}
+bw.ppl(japanesepines)
+bw.diggle(japanesepines)
+bw.scott(japanesepines)
+```
+
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
+
+A marked point pattern, with marks which are categorical values,
+effectively classifies the points into different types.
+
+```{r}
+mucosa
+plot(mucosa)
+```
+
+Extract the sub-patterns of points of each type:
 
 ```{r}
 M <- split(mucosa)
-B <- density(M, bw.diggle)
-plot(B, main="")
+M
+class(M)
+plot(M)
 ```
 
-The spatially-varying probability of each type
-can be computed from the ratio of intensities:
+Apply kernel smoothing to each sub-pattern
+using `density.splitppp`:
 
 ```{r}
-plot(B[["ECL"]]/(B[["ECL"]] + B[["other"]]))
+B <- density(M, sigma=bw.ppl)
+B
+plot(B)
 ```
 
+Suppose $\lambda_i(u)$ is the intensity function of the points
+of type $i$, for $i=1,2,\ldots,m$.
+The intensity function of all points regardless of type is
+$$ \lambda_{\bullet}(u) = \sum_{i=1}^m \lambda_i(u). $$
+Under reasonable assumptions,
+the probability that a random point at location $u$ belongs to type $i$ is
+$$
+   p_i(u) = \frac{\lambda_i(u)}{\lambda_{\bullet}(u)}.
+$$
+We could calculate this by hand in `spatstat`:
+
 ```{r}
-plot(relrisk(mucosa, casecontrol=FALSE))
+lambdaECL <- B[["ECL"]]
+lambdaOther <- B[["other"]]
+lambdaDot <- lambdaECL + lambdaOther
+pECL <- lambdaECL/lambdaDot
+pOther <- lambdaOther/lambdaDot
+plot(pECL)
+```
+
+These calculations are automated in the function `relrisk` (relative risk):
+
+```{r, fig.height=3, fig.width=7, result.width='100%'}
+V <- relrisk(mucosa, bw.ppl, casecontrol=FALSE)
+plot(V)
+```
+
+Bandwidth selection for the ratio is different
+from bandwidth selection for the intensity. We recommend using
+the special algorithm `bw.relrisk`:
+
+```{r, fig.height=3, fig.width=7, result.width='100%'}
+bw.relrisk(mucosa)
+Vr <- relrisk(mucosa, bw.relrisk, casecontrol=FALSE)
+plot(Vr)
 ```
 
 ### Nonparametric estimation of intensity depending on a covariate
 
+In some applications we believe that the intensity depends on a spatial
+covariate $Z$, in the form
+$$
+    \lambda(u) = \rho(Z(u))
+$$
+where $\rho(z)$ is an unknown function which we want to estimate.
+A nonparametric estimator of $\rho$ is
+$$
+\hat\rho(z) = \frac{\sum_{i=1}^n k(Z(x_i) - z)}{\int_W k(Z(u) - z) \, {\rm d} u}
+$$
+where $k()$ is a one-dimensional smoothing kernel. This is computed by
+`rhohat`.
+
+*Example*: mucosa data, enterochromaffin-like cells (ECL)
+
 ```{r}
 E <- split(mucosa)$ECL
+plot(E)
+```
+
+The wall of the gut is at the bottom of the picture.
+Cell density appears to decline as we go further away from the wall.
+Use the string `"y"` to refer to the $y$ coordinate:
+
+```{r}
 g <- rhohat(E, "y")
 plot(g)
 ```
 
-```{r}
+*Example*: Murchison gold survey.
+
+```{r, fig.height=4, fig.width=10, result.width='100%'}
 X <- murchison$gold
 L <- murchison$faults
 X <- rescale(X, 1000, "km")
 L <- rescale(L, 1000, "km")
 D <- distfun(L)
+plot(solist(gold=X, faults=L, distance=D), main="")
+```
+
+Gold deposits are frequently found near a geological fault line.
+Here we converted the fault line pattern into a spatial covariate
+$$
+    D(u) = \mbox{ distance from } u \mbox{ to nearest fault }
+$$
+
+```{r}
 h <- rhohat(X, D)
 plot(h)
 ```
