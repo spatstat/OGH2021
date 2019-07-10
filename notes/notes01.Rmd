@@ -162,6 +162,12 @@ finpines
 head(marks(finpines))
 ```
 
+Other kinds of objects in `spatstat` include:
+
+* pixel images: class `"im"`
+* spatial patterns of line segments: class `"psp"`
+* spatial tessellations: class `"tess"`
+
 ### Wrangling data
 
 In this workshop, we will use datasets which are already

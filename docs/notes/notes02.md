@@ -197,7 +197,7 @@ These calculations are automated in the function `relrisk` (relative risk):
 
 ``` r
 V <- relrisk(mucosa, bw.ppl, casecontrol=FALSE)
-plot(V)
+plot(V, main="")
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
@@ -213,7 +213,7 @@ bw.relrisk(mucosa)
 
 ``` r
 Vr <- relrisk(mucosa, bw.relrisk, casecontrol=FALSE)
-plot(Vr)
+plot(Vr, main="")
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
@@ -287,13 +287,53 @@ plot(h)
 Parametric modelling
 --------------------
 
+We can formulate a parametric model for the intensity and fit it to the point pattern data, using the `spatstat` function `ppm` (point process model).
+
 ### Loglinear model for intensity
+
+In its simplest form, `ppm` fits a *Poisson point process model* to the point pattern data by maximum likelihood.
+
+A Poisson point process is completely specified by its intensity function. So the procedure for formulating a Poisson model is simply to write a mathematical expression for the intensity function.
+
+In `ppm` the intensity is assumed to be a **loglinear** function of the **parameters**. That is,
 
 ![\\log\\lambda(u) = \\beta\_1 Z\_1(u) + \\ldots + \\beta\_p Z\_p(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_1%20Z_1%28u%29%20%2B%20%5Cldots%20%2B%20%5Cbeta_p%20Z_p%28u%29 "\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)")
 
-Explain about canonical variables vs original variables
+ where ![\\beta\_1, \\ldots, \\beta\_p](https://latex.codecogs.com/png.latex?%5Cbeta_1%2C%20%5Cldots%2C%20%5Cbeta_p "\beta_1, \ldots, \beta_p") are parameters to be estimated, and ![Z\_1, \\ldots, Z\_p](https://latex.codecogs.com/png.latex?Z_1%2C%20%5Cldots%2C%20Z_p "Z_1, \ldots, Z_p") are spatial covariates.
 
-### Fit using Poisson likelihood
+To fit this model to a point pattern dataset `X`, we type
+
+``` r
+ppm(X ~ Z1 + Z2 + .. Zp)
+```
+
+where `Z1, Z2, ..., Zp` are pixel images or functions.
+
+Important notes:
+
+1.  The model is expressed in terms of the **log** of the intensity.
+
+2.  The covariates ![Z\_1(u), \\ldots, Z\_p(u)](https://latex.codecogs.com/png.latex?Z_1%28u%29%2C%20%5Cldots%2C%20Z_p%28u%29 "Z_1(u), \ldots, Z_p(u)") (called the "canonical covariates") can be anything; they are not necessarily the same as the original variables that we were given; they could be transformations and combinations of the original variables.
+
+### Fit by maximum likelihood
+
+The Poisson process with intensity function ![\\lambda\_\\theta(u)](https://latex.codecogs.com/png.latex?%5Clambda_%5Ctheta%28u%29 "\lambda_\theta(u)"), controlled by a parameter vector ![\\theta](https://latex.codecogs.com/png.latex?%5Ctheta "\theta"), has log-likelihood
+
+![
+    \\log L(\\theta) = \\sum\_{i=1}^n \\log \\lambda\_\\theta(x\_i)
+                    - \\int\_W \\lambda\_\\theta(u) \\, {\\rm d} u.
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Clog%20L%28%5Ctheta%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20%5Clog%20%5Clambda_%5Ctheta%28x_i%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-%20%5Cint_W%20%5Clambda_%5Ctheta%28u%29%20%5C%2C%20%7B%5Crm%20d%7D%20u.%0A "
+    \log L(\theta) = \sum_{i=1}^n \log \lambda_\theta(x_i)
+                    - \int_W \lambda_\theta(u) \, {\rm d} u.
+")
+
+ The value of ![\\theta](https://latex.codecogs.com/png.latex?%5Ctheta "\theta") which maximises ![\\log L(\\theta)](https://latex.codecogs.com/png.latex?%5Clog%20L%28%5Ctheta%29 "\log L(\theta)") is taken as the parameter estimate ![\\hat\\theta](https://latex.codecogs.com/png.latex?%5Chat%5Ctheta "\hat\theta").
+
+From ![\\hat\\theta](https://latex.codecogs.com/png.latex?%5Chat%5Ctheta "\hat\theta") we can compute the fitted intensity ![\\hat\\lambda(u) = \\lambda\_{\\hat\\theta}(u)](https://latex.codecogs.com/png.latex?%5Chat%5Clambda%28u%29%20%3D%20%5Clambda_%7B%5Chat%5Ctheta%7D%28u%29 "\hat\lambda(u) = \lambda_{\hat\theta}(u)") and hence we can generate simulated realisations.
+
+Using the likelihood we are able to compute confidence intervals, perform analysis of deviance, conduct hypothesis tests, etc.
+
+*Example*: Murchison gold data
 
 ``` r
 fit <- ppm(X ~ D)
@@ -325,16 +365,26 @@ anova(fit, test="Chi")
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ``` r
-plot(effectfun(fit, "D"), xlim=c(0, 20))
-```
-
-![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
-
-``` r
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-16-2.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+
+``` r
+plot(effectfun(fit, "D"), xlim=c(0, 20))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+
+``` r
+plot(simulate(fit, nsim=12))
+```
+
+    ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+
+The symnbols `x, y` refer to the Cartesian coordinates, and can be used to model spatial variation in the intensity when no other covariates are available:
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -388,7 +438,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -463,7 +513,7 @@ step(Jfit2)
 plot(simulate(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 ``` r
 plot(simulate(Jfit2, nsim=12))
@@ -471,7 +521,7 @@ plot(simulate(Jfit2, nsim=12))
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-24-1.png)
 
 ### Intensity depends on marks
 
@@ -505,7 +555,7 @@ coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 ``` r
 model1 <- ppm(mucosa ~ marks + y)
@@ -538,7 +588,7 @@ coef(model1)
 plot(predict(model1))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-26-1.png)
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -572,7 +622,7 @@ coef(model2)
 plot(predict(model2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-24-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-27-1.png)
 
 ``` r
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -606,7 +656,7 @@ coef(model1xy)
 plot(predict(model1xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -646,7 +696,7 @@ coef(model2xy)
 plot(predict(model2xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -687,7 +737,7 @@ coef(model3)
 plot(predict(model3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-27-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -754,7 +804,7 @@ coef(model4)
 plot(predict(model4))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-31-1.png)
 
 *relrisk.ppm*
 
@@ -762,10 +812,10 @@ plot(predict(model4))
 plot(relrisk(model4, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 ``` r
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-33-1.png)

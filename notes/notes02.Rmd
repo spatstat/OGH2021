@@ -153,7 +153,7 @@ These calculations are automated in the function `relrisk` (relative risk):
 
 ```{r, fig.height=3, fig.width=7, result.width='100%'}
 V <- relrisk(mucosa, bw.ppl, casecontrol=FALSE)
-plot(V)
+plot(V, main="")
 ```
 
 Bandwidth selection for the ratio is different
@@ -163,7 +163,7 @@ the special algorithm `bw.relrisk`:
 ```{r, fig.height=3, fig.width=7, result.width='100%'}
 bw.relrisk(mucosa)
 Vr <- relrisk(mucosa, bw.relrisk, casecontrol=FALSE)
-plot(Vr)
+plot(Vr, main="")
 ```
 
 ### Nonparametric estimation of intensity depending on a covariate
@@ -221,22 +221,81 @@ plot(h)
 
 ## Parametric modelling
 
+We can formulate a parametric model for the intensity 
+and fit it to the point pattern data, using the `spatstat`
+function `ppm` (point process model). 
+
 ### Loglinear model for intensity
 
+In its simplest form, `ppm` fits a _Poisson point process model_
+to the point pattern data by maximum likelihood.
+
+A Poisson point process is completely specified by its
+intensity function. So the procedure for formulating a Poisson model
+is simply to write a mathematical expression for the intensity function.
+
+ In `ppm` the intensity is assumed to be a
+**loglinear** function of the **parameters**. That is,
 $$\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)$$
+where $\beta_1, \ldots, \beta_p$ are parameters to be estimated,
+and $Z_1, \ldots, Z_p$ are spatial covariates.
 
-Explain about canonical variables vs original variables
+To fit this model to a point pattern dataset `X`, we type
+```{r, eval=FALSE}
+ppm(X ~ Z1 + Z2 + .. Zp)
+```
+where `Z1, Z2, ..., Zp` are pixel images or functions.
 
-### Fit using Poisson likelihood
+Important notes:
+
+ 1. The model is expressed in terms of the **log** of the intensity.
+
+ 2. The covariates $Z_1(u), \ldots, Z_p(u)$ 
+    (called the "canonical covariates") can be anything;
+    they are not necessarily the same as the original variables
+    that we were given; they could be transformations and combinations
+    of the original variables.
+
+### Fit by maximum likelihood
+
+The Poisson process
+with intensity function $\lambda_\theta(u)$, controlled by a parameter
+vector $\theta$, has log-likelihood
+$$
+    \log L(\theta) = \sum_{i=1}^n \log \lambda_\theta(x_i)
+                    - \int_W \lambda_\theta(u) \, {\rm d} u.
+$$
+The value of $\theta$ which maximises $\log L(\theta)$ is
+taken as the parameter estimate $\hat\theta$.
+
+From $\hat\theta$ we can compute the
+fitted intensity $\hat\lambda(u) = \lambda_{\hat\theta}(u)$
+and hence we can generate simulated realisations.
+
+Using the likelihood we are able to compute confidence intervals,
+perform analysis of deviance, conduct hypothesis tests, etc.
+
+*Example*: Murchison gold data
 
 ```{r}
 fit <- ppm(X ~ D)
 coef(fit)
 confint(fit)
 anova(fit, test="Chi")
-plot(effectfun(fit, "D"), xlim=c(0, 20))
 plot(predict(fit))
 ```
+
+```{r}
+plot(effectfun(fit, "D"), xlim=c(0, 20))
+```
+
+```{r, result.width='100%'}
+plot(simulate(fit, nsim=12))
+```
+
+The symnbols `x, y` refer to the Cartesian coordinates,
+and can be used to model spatial variation in the intensity
+when no other covariates are available:
 
 ```{r}
 Jfit <- ppm(japanesepines ~ x + y)
