@@ -1,31 +1,92 @@
 ---
 title: "Notes for session 3"
 author: "Adrian Baddeley and Ege Rubak"
-date: "2019-07-03"
+date: "2019-07-15"
 output: html
 ---
 
 # Dependence between points
 
+Another important goal is to detect stochastic dependence between
+points in a point pattern.
+
 ```{r, echo=FALSE}
+Xrandom <- rpoispp(50)
 Xlist <- solist(inhibition=cells,
-		random=japanesepines,
+		random=Xrandom,
 		clustering=redwood)
 plot(Xlist, main="")		
 ```
 
+* The homogeneous Poisson process is regarded as completely random
+(Complete Spatial Randomness, CSR).
+* A point process is called
+_inhibited_ if the distances between points are typically _larger_ than
+expected for a random pattern with the same intensity.
+* A point process is called _clustered_
+if the distances between points are typically _smaller_ than would be
+expected for a random pattern with the same intensity.
+
+The terms _inhibited_ and _clustered_ are analogous, respectively, to
+"negatively correlated" and "positively correlated". They do not imply
+any particular kind of stochastic dependence and they do not explain how
+the pattern was generated. 
+
+Dependence between points is sometimes called _"interaction"_, but this term
+is dangerous because it suggests a particular mechanism for the
+dependence. 
+
 ## Exploratory tools
+
+Traditionally (1976-2005) dependence between points was investigated
+using exploratory tools such as Ripley's $K$ function
+and the pair correlation function. While these methods are useful
+and convenient, they have limitations. They have become so popular that
+many user communities are not interested in learning better methods
+that have been developed in recent years.
+In this workshop, as an experiment we are reducing the coverage of these
+methods to a minimum, so that we can concentrate on the more modern methods.
 
 ### K-function
 
-```{r, echo=FALSE}
+The (Ripley) $K$-function assumes the point process has
+constant intensity $\lambda$. It is defined so that,
+for a typical random point in the point process,
+the number of other random points lying closer than a distance $r$
+has expected value $\lambda \, K(r)$.
+
+For a completely random (homogeneous
+Poisson) process, $K(r) = \pi r^2$. An inhibited process will usually
+have $K(r) < \pi r^2$, while a clustered process will have
+$K(r) > \pi r^2$, for appropriate values of $r$.
+
+An estimate of the $K$ function can be computed for a point pattern dataset
+`X` by typing `K <- Kest(X)`.
+
+```{r, echo=FALSE, fig.height=3, fig.width=9.5, result.width='100%'}
 Klist <- anylapply(Xlist, Kest)
 plot(Klist, main="")
 ```
 
 ### pair correlation function
 
-```{r, echo=FALSE}
+The pair correlation function $g(r)$ can be defined as
+$g(r) = K^\prime(r)/(2\pi r)$ where $K^\prime(r)$ is the derivative
+of the $K$ function. The pair correlation function
+can be interpreted as the probability that two points in the point process
+will be separated by a distance equal to $r$, normalised by the corresponding
+probability for a completely random (Poisson) process.
+
+For a completely random (homogeneous
+Poisson) process, $g(r) = 1$. An inhibited process will usually
+have $g(r) < 1$, while a clustered process will have
+$g(r) > 1$, for appropriate values of $r$.
+
+An estimate of the pair correlation function
+can be computed for a point pattern dataset
+`X` by typing `g <- pcf(X)`.
+
+```{r, echo=FALSE, fig.height=3, fig.width=9.5, result.width='100%'}
 glist <- anylapply(Xlist, pcf)
 plot(glist, main="")
 ```
@@ -35,6 +96,37 @@ plot(glist, main="")
 ```{r}
 plot(redwood)
 ```
+
+### Cluster processes
+
+A cluster process is generated in two stages.
+
+1. a point pattern of _"parent"_ points $X$ is generated;
+2. around each parent point $x_i$, a finite pattern of _"offspring"_
+points $y_{i1}, \ldots, y_{in_i}$ is generated;
+3. the offspring of all parents are collected together into a
+single point pattern $Y$.
+
+In a _Thomas cluster process_,
+
+1. the parents are a homogeneous Poisson process with intensity $\kappa$;
+2. each parent has a Poisson number (with mean $\mu$) of offspring,
+which are displaced from the parent by independent Gaussian vectors
+with standard deviation $\sigma$.
+
+Here are simulated realisations of a Thomas process:
+
+```{r, result.width='100%'}
+plot(rThomas(kappa=10, sigma=0.2, mu=5, nsim=12),
+     main="", main.panel="")
+```
+
+Maximum likelihood fitting of cluster processes is difficult because
+the likelihood is quite complicated. However, 
+the $K$-function of such cluster processes is known analytically,
+so the model can be fitted by the method of moments (matching the
+model's theoretical $K$-function to the empirical $K$-function of the
+data). This is performed by the `spatstat` function `kppm`.
 
 ```{r}
 fitT <- kppm(redwood ~ 1, "Thomas")
@@ -48,6 +140,19 @@ plot(simulate(fitT, nsim=12))
 ```{r}
 kppm(redwood ~ x+y, "Thomas")
 ```
+
+### Cox processes
+
+A _Cox process_ is formed in two steps:
+
+1. a random function $\Lambda(u)$ is generated;
+2. Given the realisation of the random function,
+a Poisson point process is generated with intensity function $\Lambda(u)$.
+
+In a _log-Gaussian Cox process_, the random function $\Lambda(u)$
+is such that $\log \Lambda(u)$ is a Gaussian random function.
+
+These models can be fitted by the same technique:
 
 ```{r}
 kppm(redwood ~ x+y, "LGCP")
@@ -65,6 +170,36 @@ plot(jp)
 ```
 
 ### Gibbs models
+
+Gibbs models were developed in theoretical physics to describe the
+behaviour of molecular gases. A point pattern $x$ represents a
+spatial configuration of molecules.
+The probability of a particular configuration $x$ is
+$$
+    p(x) = Z \exp(- U(x))
+$$
+where $U(x)$ is the potential energy of the configuration,
+and $Z$ is a normalising constant. In fact $p(x)$ is a probability density
+relative to the completely random (homogeneous Poisson) point process.
+
+To visualise this, imagine that we first generate an infinite "ensemble"
+of realisations of the homogeneous Poisson process. Then each realisation
+is either deleted or retained (in its entirety)
+depending on its potential energy;
+a realisation $x$ is retained with probability $\exp(-U(x))$.
+Then what remains is an ensemble of realisations of the Gibbs process.
+
+The simplest example is the _hard core process_ in which the points represent
+the centres of discs of diameter $d$ which cannot overlap. A realisation $x$
+has potential energy $U(x) = -\infty$ if any pair of points in $x$ lies closer
+than distance $d$; otherwise it has potential $U(x) = 0$.
+Now generate an infinite ensemble of realisations of the Poisson process.
+Then delete any configuration which contains a pair of points
+closer than distance $d$. The remaining realisations are an ensemble
+of realisations of the hard core process.
+
+Gibbs models can be fitted to point pattern data
+by maximising Besag's _pseudolikelihood_. This is performed by `ppm`.
 
 ```{r}
 ppm(cells~ 1, Hardcore())
@@ -101,6 +236,14 @@ ppm(jp ~ x+y, Strauss(0.5))
 ```
 
 ### Determinantal point process models
+
+Determinantal point process models are a relatively new class of models
+with many attractive theoretical properties, but are not yet well understood
+for modelling purposes.
+
+The likelihood is determined by
+the first and second moments (the intensity and the pair correlation function).
+These models can be fitted in `spatstat` using the function `dppm`.
 
 ```{r}
 dppm(jp ~ x+y, dppGauss)

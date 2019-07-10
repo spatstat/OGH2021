@@ -57,7 +57,7 @@ for any region $B \subset R^2$,
 where $n(B \cap X)$ denotes the number of points falling in $B$.
 
 Intensity is closely related to probability density.
-If $X$ is a Poisson point process with intensity function $\lambda(u)$,
+If $X$ is a point process with intensity function $\lambda(u)$,
 then each individual point inside $W$ has probability density
 $f(u) = \lambda(u)/\Lambda_W$, where
 $\Lambda_W = \int_W \lambda(u) \, {\rm d}u$.
@@ -243,16 +243,66 @@ We can formulate a parametric model for the intensity
 and fit it to the point pattern data, using the `spatstat`
 function `ppm` (point process model). 
 
+In its simplest form, `ppm` fits a _Poisson point process model_
+to the point pattern data.
+
+### Poisson point process
+
+The _homogeneous Poisson process_ with intensity $\lambda > 0$
+in two-dimensional space is characterised by the following properties:
+
+* for any region $B$, the random number $n(X \cap B)$ of points falling in $B$
+follows a Poisson distribution;
+* for any region $B$, the expected number of points falling in $B$
+is $E[n(X \cap B)] = \lambda \, \mbox{area}(B)$;
+* for any region $B$, given that $n(X \cap B) = n$, the
+$n$ points are independent and uniformly distributed inside $B$;
+* for any _disjoint_ regions $B_1,\ldots, B_m$, the
+numbers $n(X \cap B_1), \ldots, n(X \cap B_m)$ of points falling in each
+region are independent random variables.
+
+Here are some realisations of the homogeneous Poisson process with
+intensity 100 (points per unit area):
+
+```{r, result.width='100%'}
+plot(rpoispp(100, nsim=12), main="", main.panel="")
+```
+
+The *inhomogeneous* Poisson process with intensity *function* $\lambda(u)$
+is characterised by the following properties:
+
+* for any region $B$, the random number $n(X \cap B)$ of points falling in $B$
+follows a Poisson distribution;
+* for any region $B$, the expected number of points falling in $B$ is
+$$
+  E[n(X \cap B)] = \int_B \lambda(u) \, {\rm d}u;
+$$
+* for any region $B$, given that $n(X \cap B) = n$, the
+$n$ points are independent and *identically* distributed inside $B$
+with probability density $f(u)= \lambda(u)/\Lambda$,
+where $\Lambda = \int_B \lambda(u) \, {\rm d}u$;
+* for any _disjoint_ regions $B_1,\ldots, B_m$, the
+numbers $n(X \cap B_1), \ldots, n(X \cap B_m)$ of points falling in each
+region are independent random variables.
+
+Here are some realisations of the inhomogeneous Poisson process with
+intensity function $\lambda((x,y)) = 100 x$:
+
+```{r, result.width='100%'}
+lam <- function(x,y) { 100 * x}
+plot(rpoispp(lam, nsim=12), main="", main.panel="")
+```
+
 ### Loglinear model for intensity
 
-In its simplest form, `ppm` fits a _Poisson point process model_
+`ppm` can fit a _Poisson point process model_
 to the point pattern data by maximum likelihood.
 
 A Poisson point process is completely specified by its
 intensity function. So the procedure for formulating a Poisson model
 is simply to write a mathematical expression for the intensity function.
 
- In `ppm` the intensity is assumed to be a
+In `ppm` the intensity is assumed to be a
 **loglinear** function of the **parameters**. That is,
 $$\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)$$
 where $\beta_1, \ldots, \beta_p$ are parameters to be estimated,
@@ -295,12 +345,10 @@ perform analysis of deviance, conduct hypothesis tests, etc.
 
 *Example*: Murchison gold data
 
+Using the Murchison data from above,
+
 ```{r}
 fit <- ppm(X ~ D)
-coef(fit)
-confint(fit)
-anova(fit, test="Chi")
-plot(predict(fit))
 ```
 
 The formula implies that the model is
@@ -311,13 +359,27 @@ regression coefficients. In other words, the model says that
 the intensity of gold deposits is an exponentially decreasing
 function of distance from the nearest fault.
 
+The result of `ppm` is a fitted model object of class `"ppm"`.
+There are many methods for this class:
+
 ```{r}
-plot(effectfun(fit, "D"), xlim=c(0, 20))
+fit
+coef(fit)
+confint(fit)
+anova(fit, test="Chi")
+plot(predict(fit))
 ```
 
 ```{r, result.width='100%'}
 plot(simulate(fit, drop=TRUE))
 plot(L, add=TRUE, col=3)
+```
+
+To visualise the intensity of the model as a function
+of one of the covariates, we can use the command `effectfun`:
+
+```{r}
+plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
 *Example*: Japanese Pines data
@@ -355,7 +417,7 @@ plot(simulate(Jfit2))
 plot(simulate(Jfit2, nsim=12))
 ```
 
-### Intensity depends on marks
+### Intensity depending on marks
 
 In a _multi-type_ point pattern
 the points have marks which are categorical values:

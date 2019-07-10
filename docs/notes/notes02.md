@@ -34,7 +34,7 @@ We will usually assume that the point process has an *intensity function* ![\\la
 
  for any region ![B \\subset R^2](https://latex.codecogs.com/png.latex?B%20%5Csubset%20R%5E2 "B \subset R^2"), where ![n(B \\cap X)](https://latex.codecogs.com/png.latex?n%28B%20%5Ccap%20X%29 "n(B \cap X)") denotes the number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B").
 
-Intensity is closely related to probability density. If ![X](https://latex.codecogs.com/png.latex?X "X") is a Poisson point process with intensity function ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)"), then each individual point inside ![W](https://latex.codecogs.com/png.latex?W "W") has probability density ![f(u) = \\lambda(u)/\\Lambda\_W](https://latex.codecogs.com/png.latex?f%28u%29%20%3D%20%5Clambda%28u%29%2F%5CLambda_W "f(u) = \lambda(u)/\Lambda_W"), where ![\\Lambda\_W = \\int\_W \\lambda(u) \\, {\\rm d}u](https://latex.codecogs.com/png.latex?%5CLambda_W%20%3D%20%5Cint_W%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du "\Lambda_W = \int_W \lambda(u) \, {\rm d}u").
+Intensity is closely related to probability density. If ![X](https://latex.codecogs.com/png.latex?X "X") is a point process with intensity function ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)"), then each individual point inside ![W](https://latex.codecogs.com/png.latex?W "W") has probability density ![f(u) = \\lambda(u)/\\Lambda\_W](https://latex.codecogs.com/png.latex?f%28u%29%20%3D%20%5Clambda%28u%29%2F%5CLambda_W "f(u) = \lambda(u)/\Lambda_W"), where ![\\Lambda\_W = \\int\_W \\lambda(u) \\, {\\rm d}u](https://latex.codecogs.com/png.latex?%5CLambda_W%20%3D%20%5Cint_W%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du "\Lambda_W = \int_W \lambda(u) \, {\rm d}u").
 
 Nonparametric estimation
 ------------------------
@@ -232,7 +232,7 @@ segregation.test(mucosa, sigma=0.15, verbose=FALSE)
     ##  Monte Carlo test of spatial segregation of types
     ## 
     ## data:  mucosa
-    ## T = 0.33288, p-value = 0.5
+    ## T = 0.33288, p-value = 0.4
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -305,9 +305,51 @@ Parametric modelling
 
 We can formulate a parametric model for the intensity and fit it to the point pattern data, using the `spatstat` function `ppm` (point process model).
 
+In its simplest form, `ppm` fits a *Poisson point process model* to the point pattern data.
+
+### Poisson point process
+
+The *homogeneous Poisson process* with intensity ![\\lambda &gt; 0](https://latex.codecogs.com/png.latex?%5Clambda%20%3E%200 "\lambda > 0") in two-dimensional space is characterised by the following properties:
+
+-   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the random number ![n(X \\cap B)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29 "n(X \cap B)") of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") follows a Poisson distribution;
+-   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the expected number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") is ![E\[n(X \\cap B)\] = \\lambda \\, \\mbox{area}(B)](https://latex.codecogs.com/png.latex?E%5Bn%28X%20%5Ccap%20B%29%5D%20%3D%20%5Clambda%20%5C%2C%20%5Cmbox%7Barea%7D%28B%29 "E[n(X \cap B)] = \lambda \, \mbox{area}(B)");
+-   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), given that ![n(X \\cap B) = n](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29%20%3D%20n "n(X \cap B) = n"), the ![n](https://latex.codecogs.com/png.latex?n "n") points are independent and uniformly distributed inside ![B](https://latex.codecogs.com/png.latex?B "B");
+-   for any *disjoint* regions ![B\_1,\\ldots, B\_m](https://latex.codecogs.com/png.latex?B_1%2C%5Cldots%2C%20B_m "B_1,\ldots, B_m"), the numbers ![n(X \\cap B\_1), \\ldots, n(X \\cap B\_m)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B_1%29%2C%20%5Cldots%2C%20n%28X%20%5Ccap%20B_m%29 "n(X \cap B_1), \ldots, n(X \cap B_m)") of points falling in each region are independent random variables.
+
+Here are some realisations of the homogeneous Poisson process with intensity 100 (points per unit area):
+
+``` r
+plot(rpoispp(100, nsim=12), main="", main.panel="")
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+
+The *inhomogeneous* Poisson process with intensity *function* ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") is characterised by the following properties:
+
+-   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the random number ![n(X \\cap B)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29 "n(X \cap B)") of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") follows a Poisson distribution;
+-   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the expected number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") is
+
+    ![
+      E\[n(X \\cap B)\] = \\int\_B \\lambda(u) \\, {\\rm d}u;
+    ](https://latex.codecogs.com/png.latex?%0A%20%20E%5Bn%28X%20%5Ccap%20B%29%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%3B%0A "
+      E[n(X \cap B)] = \int_B \lambda(u) \, {\rm d}u;
+    ")
+
+-   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), given that ![n(X \\cap B) = n](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29%20%3D%20n "n(X \cap B) = n"), the ![n](https://latex.codecogs.com/png.latex?n "n") points are independent and *identically* distributed inside ![B](https://latex.codecogs.com/png.latex?B "B") with probability density ![f(u)= \\lambda(u)/\\Lambda](https://latex.codecogs.com/png.latex?f%28u%29%3D%20%5Clambda%28u%29%2F%5CLambda "f(u)= \lambda(u)/\Lambda"), where ![\\Lambda = \\int\_B \\lambda(u) \\, {\\rm d}u](https://latex.codecogs.com/png.latex?%5CLambda%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du "\Lambda = \int_B \lambda(u) \, {\rm d}u");
+-   for any *disjoint* regions ![B\_1,\\ldots, B\_m](https://latex.codecogs.com/png.latex?B_1%2C%5Cldots%2C%20B_m "B_1,\ldots, B_m"), the numbers ![n(X \\cap B\_1), \\ldots, n(X \\cap B\_m)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B_1%29%2C%20%5Cldots%2C%20n%28X%20%5Ccap%20B_m%29 "n(X \cap B_1), \ldots, n(X \cap B_m)") of points falling in each region are independent random variables.
+
+Here are some realisations of the inhomogeneous Poisson process with intensity function ![\\lambda((x,y)) = 100 x](https://latex.codecogs.com/png.latex?%5Clambda%28%28x%2Cy%29%29%20%3D%20100%20x "\lambda((x,y)) = 100 x"):
+
+``` r
+lam <- function(x,y) { 100 * x}
+plot(rpoispp(lam, nsim=12), main="", main.panel="")
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+
 ### Loglinear model for intensity
 
-In its simplest form, `ppm` fits a *Poisson point process model* to the point pattern data by maximum likelihood.
+`ppm` can fit a *Poisson point process model* to the point pattern data by maximum likelihood.
 
 A Poisson point process is completely specified by its intensity function. So the procedure for formulating a Poisson model is simply to write a mathematical expression for the intensity function.
 
@@ -351,8 +393,37 @@ Using the likelihood we are able to compute confidence intervals, perform analys
 
 *Example*: Murchison gold data
 
+Using the Murchison data from above,
+
 ``` r
 fit <- ppm(X ~ D)
+```
+
+The formula implies that the model is
+
+![\\log\\lambda(u) = \\beta\_0 + \\beta\_1 D(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_0%20%2B%20%5Cbeta_1%20D%28u%29 "\log\lambda(u) = \beta_0 + \beta_1 D(u)")
+
+ where ![D(u)](https://latex.codecogs.com/png.latex?D%28u%29 "D(u)") is the distance covariate (distance from location ![u](https://latex.codecogs.com/png.latex?u "u") to nearest geological fault) and ![\\beta\_0, \\beta\_1](https://latex.codecogs.com/png.latex?%5Cbeta_0%2C%20%5Cbeta_1 "\beta_0, \beta_1") are the regression coefficients. In other words, the model says that the intensity of gold deposits is an exponentially decreasing function of distance from the nearest fault.
+
+The result of `ppm` is a fitted model object of class `"ppm"`. There are many methods for this class:
+
+``` r
+fit
+```
+
+    ## Nonstationary Poisson process
+    ## 
+    ## Log intensity:  ~D
+    ## 
+    ## Fitted trend coefficients:
+    ## (Intercept)           D 
+    ##  -4.3412775  -0.2607664 
+    ## 
+    ##               Estimate       S.E.    CI95.lo    CI95.hi Ztest      Zval
+    ## (Intercept) -4.3412775 0.08556260 -4.5089771 -4.1735779   *** -50.73802
+    ## D           -0.2607664 0.02018789 -0.3003339 -0.2211988   *** -12.91697
+
+``` r
 coef(fit)
 ```
 
@@ -384,26 +455,22 @@ anova(fit, test="Chi")
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
-
-The formula implies that the model is
-
-![\\log\\lambda(u) = \\beta\_0 + \\beta\_1 D(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_0%20%2B%20%5Cbeta_1%20D%28u%29 "\log\lambda(u) = \beta_0 + \beta_1 D(u)")
-
- where ![D(u)](https://latex.codecogs.com/png.latex?D%28u%29 "D(u)") is the distance covariate (distance from location ![u](https://latex.codecogs.com/png.latex?u "u") to nearest geological fault) and ![\\beta\_0, \\beta\_1](https://latex.codecogs.com/png.latex?%5Cbeta_0%2C%20%5Cbeta_1 "\beta_0, \beta_1") are the regression coefficients. In other words, the model says that the intensity of gold deposits is an exponentially decreasing function of distance from the nearest fault.
-
-``` r
-plot(effectfun(fit, "D"), xlim=c(0, 20))
-```
-
-![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 ``` r
 plot(simulate(fit, drop=TRUE))
 plot(L, add=TRUE, col=3)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
+
+To visualise the intensity of the model as a function of one of the covariates, we can use the command `effectfun`:
+
+``` r
+plot(effectfun(fit, "D"), xlim=c(0, 20))
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-24-1.png)
 
 *Example*: Japanese Pines data
 
@@ -411,7 +478,7 @@ plot(L, add=TRUE, col=3)
 plot(japanesepines, pch=16)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 The symbols `x, y` refer to the Cartesian coordinates, and can be used to model spatial variation in the intensity when no other covariates are available:
 
@@ -467,7 +534,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-26-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -542,7 +609,7 @@ step(Jfit2)
 plot(simulate(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 ``` r
 plot(simulate(Jfit2, nsim=12))
@@ -550,9 +617,9 @@ plot(simulate(Jfit2, nsim=12))
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-27-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
-### Intensity depends on marks
+### Intensity depending on marks
 
 In a *multi-type* point pattern the points have marks which are categorical values:
 
@@ -568,7 +635,7 @@ mucosa
 plot(mucosa, cols=c(2,3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-31-1.png)
 
 We can fit a Poisson model in which the intensity depends on the type of point, using the variable name `marks` in the model formula.
 
@@ -602,7 +669,7 @@ coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 In the formula, the `marks` variable is a categorical variable. The effect of the model formula `mucosa ~ marks` is to estimate a different intensity for each level, that is, a different intensity for each type of point. The model formula `mucosa ~ marks` is equivalent to saying that the intensity of the points of type ![i](https://latex.codecogs.com/png.latex?i "i") is
 
@@ -647,7 +714,7 @@ coef(model1)
 plot(predict(model1))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-33-1.png)
 
 The model formula `~marks + y` states that
 
@@ -668,7 +735,7 @@ plot(effectfun(model1, "y", marks="ECL"),
 legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-34-1.png)
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -702,7 +769,7 @@ coef(model2)
 plot(predict(model2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-35-1.png)
 
 The model formula `~marks * y` states that
 
@@ -723,7 +790,7 @@ plot(effectfun(model2, "y", marks="ECL"),
 legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-33-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-36-1.png)
 
 Other examples to discuss:
 
@@ -759,7 +826,7 @@ coef(model1xy)
 plot(predict(model1xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-34-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-37-1.png)
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -799,7 +866,7 @@ coef(model2xy)
 plot(predict(model2xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-35-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-38-1.png)
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -840,7 +907,7 @@ coef(model3)
 plot(predict(model3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-36-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-39-1.png)
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -907,7 +974,7 @@ coef(model4)
 plot(predict(model4))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-37-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-40-1.png)
 
 ### Parametric estimation of spatially-varying probability
 
@@ -917,13 +984,13 @@ When we have fitted a point process model to a multi-type point pattern, we can 
 plot(relrisk(model4, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-38-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-41-1.png)
 
 ``` r
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-39-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-42-1.png)
 
 ### Test for segregation
 
