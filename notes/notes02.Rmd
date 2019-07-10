@@ -108,7 +108,7 @@ effectively classifies the points into different types.
 
 ```{r}
 mucosa
-plot(mucosa)
+plot(mucosa, cols=c(2,3))
 ```
 
 Extract the sub-patterns of points of each type:
@@ -285,16 +285,30 @@ anova(fit, test="Chi")
 plot(predict(fit))
 ```
 
+The formula implies that the model is
+$$\log\lambda(u) = \beta_0 + \beta_1 D(u)$$
+where $D(u)$ is the distance covariate (distance from location $u$
+to nearest geological fault) and $\beta_0, \beta_1$ are the
+regression coefficients. In other words, the model says that
+the intensity of gold deposits is an exponentially decreasing
+function of distance from the nearest fault.
+
 ```{r}
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
 ```{r, result.width='100%'}
-plot(simulate(fit))
-plot(L, add=TRUE, col="blue")
+plot(simulate(fit, drop=TRUE))
+plot(L, add=TRUE, col=3)
 ```
 
-The symnbols `x, y` refer to the Cartesian coordinates,
+*Example*: Japanese Pines data
+
+```{r}
+plot(japanesepines, pch=16)
+```
+
+The symbols `x, y` refer to the Cartesian coordinates,
 and can be used to model spatial variation in the intensity
 when no other covariates are available:
 
@@ -325,12 +339,39 @@ plot(simulate(Jfit2, nsim=12))
 
 ### Intensity depends on marks
 
+In a _multi-type_ point pattern
+the points have marks which are categorical values:
+
+```{r}
+mucosa
+plot(mucosa, cols=c(2,3))
+```
+
+We can fit a Poisson model in which the intensity depends on the
+type of point, using the variable name `marks` in the model formula.
+
 ```{r}
 model0 <- ppm(mucosa ~ marks)
 model0
 coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
+
+In the formula, the `marks` variable is a categorical variable.
+The effect of the model formula `mucosa ~ marks` 
+is to estimate a different intensity for each level, that is,
+a different intensity for each type of point. The model formula
+`mucosa ~ marks` is equivalent to saying that the intensity of the
+points of type $i$ is
+$$
+    \lambda_i(u) = \alpha_i
+$$
+for each $i = 1, 2, \ldots$ where $\alpha_1, \alpha_2, \ldots$ are
+the different constant intensities to be estimated.
+The actual printed output will depend on the convention for handling
+_"contrasts"_ in linear models. 
+
+The `marks` variable can be combined with other explanatory variables:
 
 ```{r}
 model1 <- ppm(mucosa ~ marks + y)
@@ -339,12 +380,31 @@ coef(model1)
 plot(predict(model1))
 ```
 
+The model formula `~marks + y` states that
+$$
+   \log \lambda_i((x,y)) = \gamma_i  + \beta y
+$$
+where $\gamma_1, \gamma_2, \ldots$ and $\beta$ are
+parameters. That is, the dependence on the $y$ coordinate
+has the same "slope" coefficient $\beta$ for each type of point,
+but different types of points have different abundance overall.
+
 ```{r}
 model2 <- ppm(mucosa ~ marks * y)
 model2
 coef(model2)
 plot(predict(model2))
 ```
+
+The model formula `~marks * y` states that
+$$
+   \log \lambda_i((x,y)) = \gamma_i  + \beta_i y
+$$
+where $\gamma_1, \gamma_2, \ldots$ and $\beta_1,\beta_2, \ldots$ are
+parameters. The intensity may
+depend on the $y$ coordinate in a completely different way
+for different types of points.
+
 
 ```{r}
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -374,7 +434,10 @@ coef(model4)
 plot(predict(model4))
 ```
 
-_relrisk.ppm_
+When we have fitted a point process model to a multi-type
+point pattern, we can compute 
+ratios of the intensities of different types.
+This is automated in _relrisk.ppm_:
 
 ```{r}
 plot(relrisk(model4, casecontrol=FALSE))
