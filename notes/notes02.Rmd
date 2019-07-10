@@ -85,12 +85,11 @@ is `density.ppp`, a method for the generic function `density`.
 
 The argument `sigma` is the bandwidth of the smoothing kernel.
 
-```{r, fig.height=3, fig.width=12, out.width='100%'}
-library(spatstat)
+```{r, fig.height=3, fig.width=12, out.width='100%', echo=FALSE}
 plot(solist(data=japanesepines,
+             "sigma=0.05"=density(japanesepines, 0.05),
              "sigma=0.1"=density(japanesepines, 0.1),
-             "sigma=0.2"=density(japanesepines, 0.2),
-             "sigma=0.3"=density(japanesepines, 0.3)),
+             "sigma=0.2"=density(japanesepines, 0.2)),
 	      main="", nrows=1)
 ```
 
@@ -206,7 +205,7 @@ L <- murchison$faults
 X <- rescale(X, 1000, "km")
 L <- rescale(L, 1000, "km")
 D <- distfun(L)
-plot(solist(gold=X, faults=L, distance=D), main="")
+plot(solist(gold=X, faults=L, distance=D), main="", equal.scales=TRUE)
 ```
 
 Gold deposits are frequently found near a geological fault line.

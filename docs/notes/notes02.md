@@ -71,15 +71,6 @@ The command in `spatstat` to compute the kernel estimate of intensity is `densit
 
 The argument `sigma` is the bandwidth of the smoothing kernel.
 
-``` r
-library(spatstat)
-plot(solist(data=japanesepines,
-             "sigma=0.1"=density(japanesepines, 0.1),
-             "sigma=0.2"=density(japanesepines, 0.2),
-             "sigma=0.3"=density(japanesepines, 0.3)),
-          main="", nrows=1)
-```
-
 <img src="notes02_files/figure-markdown_github/unnamed-chunk-4-1.png" width="100%" />
 
 Bandwidth can be selected automatically:
@@ -273,7 +264,7 @@ L <- murchison$faults
 X <- rescale(X, 1000, "km")
 L <- rescale(L, 1000, "km")
 D <- distfun(L)
-plot(solist(gold=X, faults=L, distance=D), main="")
+plot(solist(gold=X, faults=L, distance=D), main="", equal.scales=TRUE)
 ```
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
