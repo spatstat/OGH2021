@@ -21,7 +21,7 @@ observed _point pattern_ $x$ as a realisation
 of a random *point process* $X$.
 
 It is helpful to visualise a point process as a collection ("ensemble")
-of many different possible outcomes:
+of many different possible outcomes. Here is one example:
 
 ```{r, echo=FALSE, results="hide", out.width="100%"}
 plot(rpoispp(30, nsim=16), main="", main.panel="")
@@ -70,7 +70,7 @@ Z <- density(japanesepines, sigma=0.1)
 plot(Z)
 ```
 
-```{r, fig.height=3, fig.width=12, out.width='100%', echo=FALSE, results="hide"}
+```{r, fig.height=3, fig.width=12, out.width='100%'}
 library(spatstat)
 plot(solist(japanesepines=japanesepines,
              "density(japanesepines, 0.1)"=density(japanesepines, 0.1),

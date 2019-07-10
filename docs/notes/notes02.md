@@ -15,7 +15,7 @@ In a statistical approach to data analysis, we think of the observed data as the
 
 To analyse spatial point pattern data, we will regard the observed *point pattern* ![x](https://latex.codecogs.com/png.latex?x "x") as a realisation of a random *point process* ![X](https://latex.codecogs.com/png.latex?X "X").
 
-It is helpful to visualise a point process as a collection ("ensemble") of many different possible outcomes:
+It is helpful to visualise a point process as a collection ("ensemble") of many different possible outcomes. Here is one example:
 
 <img src="notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="100%" />
 
@@ -54,6 +54,15 @@ library(spatstat)
 plot(japanesepines)
 Z <- density(japanesepines, sigma=0.1)
 plot(Z)
+```
+
+``` r
+library(spatstat)
+plot(solist(japanesepines=japanesepines,
+             "density(japanesepines, 0.1)"=density(japanesepines, 0.1),
+             "density(japanesepines, 0.2)"=density(japanesepines, 0.2),
+             "density(japanesepines, 0.3)"=density(japanesepines, 0.3)),
+          main="")
 ```
 
 <img src="notes02_files/figure-markdown_github/unnamed-chunk-3-1.png" width="100%" />
