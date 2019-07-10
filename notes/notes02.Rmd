@@ -24,7 +24,9 @@ It is helpful to visualise a point process as a collection ("ensemble")
 of many different possible outcomes. Here is one example:
 
 ```{r, echo=FALSE, results="hide", out.width="100%"}
-plot(rpoispp(30, nsim=16), main="", main.panel="")
+f <- function(x,y) ifelse(x + y < 1, 20, 100)
+YY <- rpoispp(f, nsim=16)
+plot(YY, main="", main.panel="")
 ```
 
 ## Intensity
@@ -32,6 +34,14 @@ plot(rpoispp(30, nsim=16), main="", main.panel="")
 The _intensity_ of a point process is the expected number of points
 per unit area. It may be a constant $\lambda \ge 0$,
 or it may be spatially varying.
+
+Intensity is an average, over all possible outcomes of the point process.
+We can visualise it by superimposing the ensemble of outcomes:
+
+```{r, echo=FALSE, results="hide"}
+YYY <- do.call(superimpose, unname(YY))
+plot(YYY, main="")
+```
 
 We will usually assume that the point process has an
 _intensity function_ $\lambda(u)$ defined at every spatial location $u$.

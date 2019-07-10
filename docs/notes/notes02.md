@@ -24,6 +24,10 @@ Intensity
 
 The *intensity* of a point process is the expected number of points per unit area. It may be a constant ![\\lambda \\ge 0](https://latex.codecogs.com/png.latex?%5Clambda%20%5Cge%200 "\lambda \ge 0"), or it may be spatially varying.
 
+Intensity is an average, over all possible outcomes of the point process. We can visualise it by superimposing the ensemble of outcomes:
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
+
 We will usually assume that the point process has an *intensity function* ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") defined at every spatial location ![u](https://latex.codecogs.com/png.latex?u "u"). Then ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") is the spatially-varying expected number of points per unit area. It is formally defined to satisfy
 
 ![ E\[ n(B \\cap X) \] = \\int\_B \\lambda(u) \\, {\\rm d}u ](https://latex.codecogs.com/png.latex?%20E%5B%20n%28B%20%5Ccap%20X%29%20%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%20 " E[ n(B \cap X) ] = \int_B \lambda(u) \, {\rm d}u ")
@@ -65,7 +69,7 @@ plot(solist(japanesepines=japanesepines,
           main="")
 ```
 
-<img src="notes02_files/figure-markdown_github/unnamed-chunk-3-1.png" width="100%" />
+<img src="notes02_files/figure-markdown_github/unnamed-chunk-4-1.png" width="100%" />
 
 The command in `spatstat` to compute the kernel estimate of intensity is `density.ppp`, a method for the generic function `density`.
 
@@ -77,7 +81,7 @@ B <- density(M, bw.diggle)
 plot(B, main="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 The spatially-varying probability of each type can be computed from the ratio of intensities:
 
@@ -85,13 +89,13 @@ The spatially-varying probability of each type can be computed from the ratio of
 plot(B[["ECL"]]/(B[["ECL"]] + B[["other"]]))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 plot(relrisk(mucosa, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -101,7 +105,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 ``` r
 X <- murchison$gold
@@ -113,7 +117,7 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 Parametric modelling
 --------------------
@@ -159,13 +163,13 @@ anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 ``` r
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-9-2.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-10-2.png)
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -219,7 +223,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -294,7 +298,7 @@ step(Jfit2)
 plot(simulate(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 ``` r
 plot(simulate(Jfit2, nsim=12))
@@ -302,7 +306,7 @@ plot(simulate(Jfit2, nsim=12))
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 ### Intensity depends on marks
 
@@ -336,7 +340,7 @@ coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 ``` r
 model1 <- ppm(mucosa ~ marks + y)
@@ -369,7 +373,7 @@ coef(model1)
 plot(predict(model1))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -403,7 +407,7 @@ coef(model2)
 plot(predict(model2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 ``` r
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -437,7 +441,7 @@ coef(model1xy)
 plot(predict(model1xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -477,7 +481,7 @@ coef(model2xy)
 plot(predict(model2xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -518,7 +522,7 @@ coef(model3)
 plot(predict(model3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -585,7 +589,7 @@ coef(model4)
 plot(predict(model4))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 *relrisk.ppm*
 
@@ -593,10 +597,10 @@ plot(predict(model4))
 plot(relrisk(model4, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 ``` r
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-24-1.png)
