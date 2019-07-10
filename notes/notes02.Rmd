@@ -11,6 +11,11 @@ Often the main objective is to study
 the "density" of points in the point pattern
 and to investigate any spatial variation in this density.
 
+```{r, echo=FALSE, results='hide'}
+library(spatstat)
+requireversion(spatstat, "1.60-1.006")
+```
+
 ## Point processes
 
 In a statistical approach to data analysis, we think of the observed data
@@ -164,6 +169,19 @@ the special algorithm `bw.relrisk`:
 bw.relrisk(mucosa)
 Vr <- relrisk(mucosa, bw.relrisk, casecontrol=FALSE)
 plot(Vr, main="")
+```
+
+
+### Segregation of types
+
+"Segregation" occurs if the probability distribution of types of points
+is spatially varying.
+
+A Monte Carlo test of segregation can be performed using the nonparametric
+estimators described above. The function `segregation.test` performs it.
+
+```{r}
+segregation.test(mucosa, sigma=0.15, verbose=FALSE)
 ```
 
 ### Nonparametric estimation of intensity depending on a covariate
@@ -390,6 +408,15 @@ has the same "slope" coefficient $\beta$ for each type of point,
 but different types of points have different abundance overall.
 
 ```{r}
+## This requires spatstat 1.60-1.006 or later
+plot(effectfun(model1, "y", marks="other"),
+     log(.y) ~ .x, ylim=c(4,8), col=2, main="")
+plot(effectfun(model1, "y", marks="ECL"),
+      add=TRUE, col=3, log(.y) ~ .x)
+legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+```
+
+```{r}
 model2 <- ppm(mucosa ~ marks * y)
 model2
 coef(model2)
@@ -405,6 +432,16 @@ parameters. The intensity may
 depend on the $y$ coordinate in a completely different way
 for different types of points.
 
+```{r}
+## This requires spatstat 1.60-1.006 or later
+plot(effectfun(model2, "y", marks="other"),
+     log(.y) ~ .x, col=2, ylim=c(2,8), main="")
+plot(effectfun(model2, "y", marks="ECL"),
+     add=TRUE, col=3, log(.y) ~ .x)
+legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+```
+
+Other examples to discuss:
 
 ```{r}
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -434,6 +471,8 @@ coef(model4)
 plot(predict(model4))
 ```
 
+### Parametric estimation of spatially-varying probability
+
 When we have fitted a point process model to a multi-type
 point pattern, we can compute 
 ratios of the intensities of different types.
@@ -446,3 +485,15 @@ plot(relrisk(model4, casecontrol=FALSE))
 ```{r}
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
+
+### Test for segregation
+
+One way to test for segregation is to compare two models,
+with the null model stating that there is no segregation:
+
+```{r}
+nullmodel <- ppm(mucosa ~ marks + polynom(x, y, 2))
+altmodel <- ppm(mucosa ~ marks * polynom(x, y, 2))
+anova(nullmodel, altmodel, test="Chi")
+```
+

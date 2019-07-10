@@ -17,7 +17,7 @@ To analyse spatial point pattern data, we will regard the observed *point patter
 
 It is helpful to visualise a point process as a collection ("ensemble") of many different possible outcomes. Here is one example:
 
-<img src="notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="100%" />
+<img src="notes02_files/figure-markdown_github/unnamed-chunk-2-1.png" width="100%" />
 
 Intensity
 ---------
@@ -26,7 +26,7 @@ The *intensity* of a point process is the expected number of points per unit are
 
 Intensity is an average, over all possible outcomes of the point process. We can visualise it by superimposing the ensemble of outcomes:
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 We will usually assume that the point process has an *intensity function* ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") defined at every spatial location ![u](https://latex.codecogs.com/png.latex?u "u"). Then ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") is the spatially-varying expected number of points per unit area. It is formally defined to satisfy
 
@@ -58,20 +58,20 @@ library(spatstat)
 plot(japanesepines)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 Z <- density(japanesepines, sigma=0.1)
 plot(Z)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-3-2.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-4-2.png)
 
 The command in `spatstat` to compute the kernel estimate of intensity is `density.ppp`, a method for the generic function `density`.
 
 The argument `sigma` is the bandwidth of the smoothing kernel.
 
-<img src="notes02_files/figure-markdown_github/unnamed-chunk-4-1.png" width="100%" />
+<img src="notes02_files/figure-markdown_github/unnamed-chunk-5-1.png" width="100%" />
 
 Bandwidth can be selected automatically:
 
@@ -112,7 +112,7 @@ mucosa
 plot(mucosa, cols=c(2,3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 Extract the sub-patterns of points of each type:
 
@@ -141,7 +141,7 @@ class(M)
 plot(M)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 Apply kernel smoothing to each sub-pattern using `density.splitppp`:
 
@@ -166,7 +166,7 @@ B
 plot(B)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 Suppose ![\\lambda\_i(u)](https://latex.codecogs.com/png.latex?%5Clambda_i%28u%29 "\lambda_i(u)") is the intensity function of the points of type ![i](https://latex.codecogs.com/png.latex?i "i"), for ![i=1,2,\\ldots,m](https://latex.codecogs.com/png.latex?i%3D1%2C2%2C%5Cldots%2Cm "i=1,2,\ldots,m"). The intensity function of all points regardless of type is
 
@@ -191,7 +191,7 @@ pOther <- lambdaOther/lambdaDot
 plot(pECL)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 These calculations are automated in the function `relrisk` (relative risk):
 
@@ -200,7 +200,7 @@ V <- relrisk(mucosa, bw.ppl, casecontrol=FALSE)
 plot(V, main="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
 Bandwidth selection for the ratio is different from bandwidth selection for the intensity. We recommend using the special algorithm `bw.relrisk`:
 
@@ -216,7 +216,23 @@ Vr <- relrisk(mucosa, bw.relrisk, casecontrol=FALSE)
 plot(Vr, main="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
+
+### Segregation of types
+
+"Segregation" occurs if the probability distribution of types of points is spatially varying.
+
+A Monte Carlo test of segregation can be performed using the nonparametric estimators described above. The function `segregation.test` performs it.
+
+``` r
+segregation.test(mucosa, sigma=0.15, verbose=FALSE)
+```
+
+    ## 
+    ##  Monte Carlo test of spatial segregation of types
+    ## 
+    ## data:  mucosa
+    ## T = 0.33288, p-value = 0.5
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -245,7 +261,7 @@ E <- split(mucosa)$ECL
 plot(E)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 The wall of the gut is at the bottom of the picture. Cell density appears to decline as we go further away from the wall. Use the string `"y"` to refer to the ![y](https://latex.codecogs.com/png.latex?y "y") coordinate:
 
@@ -254,7 +270,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 *Example*: Murchison gold survey.
 
@@ -267,7 +283,7 @@ D <- distfun(L)
 plot(solist(gold=X, faults=L, distance=D), main="", equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 Gold deposits are frequently found near a geological fault line. Here we converted the fault line pattern into a spatial covariate
 
@@ -282,7 +298,7 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 Parametric modelling
 --------------------
@@ -368,7 +384,7 @@ anova(fit, test="Chi")
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 The formula implies that the model is
 
@@ -380,14 +396,14 @@ The formula implies that the model is
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
 plot(simulate(fit, drop=TRUE))
 plot(L, add=TRUE, col=3)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 *Example*: Japanese Pines data
 
@@ -395,7 +411,7 @@ plot(L, add=TRUE, col=3)
 plot(japanesepines, pch=16)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 The symbols `x, y` refer to the Cartesian coordinates, and can be used to model spatial variation in the intensity when no other covariates are available:
 
@@ -451,7 +467,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -526,7 +542,7 @@ step(Jfit2)
 plot(simulate(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-24-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-26-1.png)
 
 ``` r
 plot(simulate(Jfit2, nsim=12))
@@ -534,7 +550,7 @@ plot(simulate(Jfit2, nsim=12))
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-27-1.png)
 
 ### Intensity depends on marks
 
@@ -552,7 +568,7 @@ mucosa
 plot(mucosa, cols=c(2,3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-28-1.png)
 
 We can fit a Poisson model in which the intensity depends on the type of point, using the variable name `marks` in the model formula.
 
@@ -586,7 +602,7 @@ coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-27-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 In the formula, the `marks` variable is a categorical variable. The effect of the model formula `mucosa ~ marks` is to estimate a different intensity for each level, that is, a different intensity for each type of point. The model formula `mucosa ~ marks` is equivalent to saying that the intensity of the points of type ![i](https://latex.codecogs.com/png.latex?i "i") is
 
@@ -631,7 +647,7 @@ coef(model1)
 plot(predict(model1))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
 The model formula `~marks + y` states that
 
@@ -642,6 +658,17 @@ The model formula `~marks + y` states that
 ")
 
  where ![\\gamma\_1, \\gamma\_2, \\ldots](https://latex.codecogs.com/png.latex?%5Cgamma_1%2C%20%5Cgamma_2%2C%20%5Cldots "\gamma_1, \gamma_2, \ldots") and ![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\beta") are parameters. That is, the dependence on the ![y](https://latex.codecogs.com/png.latex?y "y") coordinate has the same "slope" coefficient ![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\beta") for each type of point, but different types of points have different abundance overall.
+
+``` r
+## This requires spatstat 1.60-1.006 or later
+plot(effectfun(model1, "y", marks="other"),
+     log(.y) ~ .x, ylim=c(4,8), col=2, main="")
+plot(effectfun(model1, "y", marks="ECL"),
+      add=TRUE, col=3, log(.y) ~ .x)
+legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-31-1.png)
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -675,7 +702,7 @@ coef(model2)
 plot(predict(model2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 The model formula `~marks * y` states that
 
@@ -686,6 +713,19 @@ The model formula `~marks * y` states that
 ")
 
  where ![\\gamma\_1, \\gamma\_2, \\ldots](https://latex.codecogs.com/png.latex?%5Cgamma_1%2C%20%5Cgamma_2%2C%20%5Cldots "\gamma_1, \gamma_2, \ldots") and ![\\beta\_1,\\beta\_2, \\ldots](https://latex.codecogs.com/png.latex?%5Cbeta_1%2C%5Cbeta_2%2C%20%5Cldots "\beta_1,\beta_2, \ldots") are parameters. The intensity may depend on the ![y](https://latex.codecogs.com/png.latex?y "y") coordinate in a completely different way for different types of points.
+
+``` r
+## This requires spatstat 1.60-1.006 or later
+plot(effectfun(model2, "y", marks="other"),
+     log(.y) ~ .x, col=2, ylim=c(2,8), main="")
+plot(effectfun(model2, "y", marks="ECL"),
+     add=TRUE, col=3, log(.y) ~ .x)
+legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+```
+
+![](notes02_files/figure-markdown_github/unnamed-chunk-33-1.png)
+
+Other examples to discuss:
 
 ``` r
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -719,7 +759,7 @@ coef(model1xy)
 plot(predict(model1xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-34-1.png)
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -759,7 +799,7 @@ coef(model2xy)
 plot(predict(model2xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-35-1.png)
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -800,7 +840,7 @@ coef(model3)
 plot(predict(model3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-36-1.png)
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -867,7 +907,9 @@ coef(model4)
 plot(predict(model4))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-33-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-37-1.png)
+
+### Parametric estimation of spatially-varying probability
 
 When we have fitted a point process model to a multi-type point pattern, we can compute ratios of the intensities of different types. This is automated in *relrisk.ppm*:
 
@@ -875,10 +917,30 @@ When we have fitted a point process model to a multi-type point pattern, we can 
 plot(relrisk(model4, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-34-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-38-1.png)
 
 ``` r
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-35-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-39-1.png)
+
+### Test for segregation
+
+One way to test for segregation is to compare two models, with the null model stating that there is no segregation:
+
+``` r
+nullmodel <- ppm(mucosa ~ marks + polynom(x, y, 2))
+altmodel <- ppm(mucosa ~ marks * polynom(x, y, 2))
+anova(nullmodel, altmodel, test="Chi")
+```
+
+    ## Analysis of Deviance Table
+    ## 
+    ## Model 1: ~marks + (x + y + I(x^2) + I(x * y) + I(y^2))    Poisson
+    ## Model 2: ~marks * (x + y + I(x^2) + I(x * y) + I(y^2))    Poisson
+    ##   Npar Df Deviance  Pr(>Chi)    
+    ## 1    7                          
+    ## 2   12  5   44.834 1.568e-08 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
