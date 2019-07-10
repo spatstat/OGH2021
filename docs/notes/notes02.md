@@ -8,12 +8,21 @@ Intensity
 
 Often the main objective is to study the "density" of points in the point pattern and to investigate any spatial variation in this density.
 
-Definition
-----------
+Point processes
+---------------
 
-The observed *point pattern* ![x](https://latex.codecogs.com/png.latex?x "x") will be regarded as a realisation of a random *point process* ![X](https://latex.codecogs.com/png.latex?X "X").
+In a statistical approach to data analysis, we think of the observed data as the outcome of a random process.
 
-The *intensity* of the point process is the expected number of points per unit area. It may be a constant ![\\lambda \\ge 0](https://latex.codecogs.com/png.latex?%5Clambda%20%5Cge%200 "\lambda \ge 0"), or it may be spatially varying.
+To analyse spatial point pattern data, we will regard the observed *point pattern* ![x](https://latex.codecogs.com/png.latex?x "x") as a realisation of a random *point process* ![X](https://latex.codecogs.com/png.latex?X "X").
+
+It is helpful to visualise a point process as a collection ("ensemble") of many different possible outcomes:
+
+<img src="notes02_files/figure-markdown_github/unnamed-chunk-1-1.png" width="100%" />
+
+Intensity
+---------
+
+The *intensity* of a point process is the expected number of points per unit area. It may be a constant ![\\lambda \\ge 0](https://latex.codecogs.com/png.latex?%5Clambda%20%5Cge%200 "\lambda \ge 0"), or it may be spatially varying.
 
 We will usually assume that the point process has an *intensity function* ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") defined at every spatial location ![u](https://latex.codecogs.com/png.latex?u "u"). Then ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") is the spatially-varying expected number of points per unit area. It is formally defined to satisfy
 
@@ -33,12 +42,12 @@ Because of the close relationship between intensity and probability density, met
 Given a point pattern ![x = \\{ x\_1, \\ldots, x\_n \\}](https://latex.codecogs.com/png.latex?x%20%3D%20%5C%7B%20x_1%2C%20%5Cldots%2C%20x_n%20%5C%7D "x = \{ x_1, \ldots, x_n \}") in a window ![W](https://latex.codecogs.com/png.latex?W "W") the kernel estimate of intensity is
 
 ![
-   \\widehat\\lambda(u) = \\sum\_{i=1}^n k(u - x\_i)
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Cwidehat%5Clambda%28u%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20k%28u%20-%20x_i%29%0A "
-   \widehat\lambda(u) = \sum_{i=1}^n k(u - x_i)
+   \\widehat\\lambda(u) = \\sum\_{i=1}^n k(u - x\_i) e(u, x\_i)
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Cwidehat%5Clambda%28u%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20k%28u%20-%20x_i%29%20e%28u%2C%20x_i%29%0A "
+   \widehat\lambda(u) = \sum_{i=1}^n k(u - x_i) e(u, x_i)
 ")
 
- where ![k(x)](https://latex.codecogs.com/png.latex?k%28x%29 "k(x)") is the smoothing kernel. Corrections for edge effects may also be included.
+ where ![k(x)](https://latex.codecogs.com/png.latex?k%28x%29 "k(x)") is the smoothing kernel and ![e(u, v)](https://latex.codecogs.com/png.latex?e%28u%2C%20v%29 "e(u, v)") is a correction for edge effects.
 
 ``` r
 library(spatstat)
@@ -47,7 +56,7 @@ Z <- density(japanesepines, sigma=0.1)
 plot(Z)
 ```
 
-<img src="notes02_files/figure-markdown_github/unnamed-chunk-2-1.png" width="100%" />
+<img src="notes02_files/figure-markdown_github/unnamed-chunk-3-1.png" width="100%" />
 
 The command in `spatstat` to compute the kernel estimate of intensity is `density.ppp`, a method for the generic function `density`.
 
@@ -59,7 +68,7 @@ B <- density(M, bw.diggle)
 plot(B, main="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 The spatially-varying probability of each type can be computed from the ratio of intensities:
 
@@ -67,13 +76,13 @@ The spatially-varying probability of each type can be computed from the ratio of
 plot(B[["ECL"]]/(B[["ECL"]] + B[["other"]]))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 ``` r
 plot(relrisk(mucosa, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ### Nonparametric estimation of intensity depending on a covariate
 
@@ -83,7 +92,7 @@ g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 ``` r
 X <- murchison$gold
@@ -95,7 +104,7 @@ h <- rhohat(X, D)
 plot(h)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 Parametric modelling
 --------------------
@@ -141,13 +150,13 @@ anova(fit, test="Chi")
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 ``` r
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-8-2.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-9-2.png)
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -201,7 +210,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -276,7 +285,7 @@ step(Jfit2)
 plot(simulate(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 ``` r
 plot(simulate(Jfit2, nsim=12))
@@ -284,7 +293,7 @@ plot(simulate(Jfit2, nsim=12))
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 ### Intensity depends on marks
 
@@ -318,7 +327,7 @@ coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 ``` r
 model1 <- ppm(mucosa ~ marks + y)
@@ -351,7 +360,7 @@ coef(model1)
 plot(predict(model1))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -385,7 +394,7 @@ coef(model2)
 plot(predict(model2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
 
 ``` r
 model1xy <- ppm(mucosa ~ marks + x + y)
@@ -419,7 +428,7 @@ coef(model1xy)
 plot(predict(model1xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -459,7 +468,7 @@ coef(model2xy)
 plot(predict(model2xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -500,7 +509,7 @@ coef(model3)
 plot(predict(model3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -567,7 +576,7 @@ coef(model4)
 plot(predict(model4))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
 
 *relrisk.ppm*
 
@@ -575,10 +584,10 @@ plot(predict(model4))
 plot(relrisk(model4, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-21-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
 
 ``` r
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)

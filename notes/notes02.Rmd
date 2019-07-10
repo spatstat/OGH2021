@@ -11,12 +11,25 @@ Often the main objective is to study
 the "density" of points in the point pattern
 and to investigate any spatial variation in this density.
 
-## Definition
+## Point processes
 
-The observed _point pattern_ $x$ will be regarded as a realisation
+In a statistical approach to data analysis, we think of the observed data
+as the outcome of a random process.
+
+To analyse spatial point pattern data, we will regard the
+observed _point pattern_ $x$ as a realisation
 of a random *point process* $X$.
 
-The _intensity_ of the point process is the expected number of points
+It is helpful to visualise a point process as a collection ("ensemble")
+of many different possible outcomes:
+
+```{r, echo=FALSE, results="hide", out.width="100%"}
+plot(rpoispp(30, nsim=16), main="", main.panel="")
+```
+
+## Intensity
+
+The _intensity_ of a point process is the expected number of points
 per unit area. It may be a constant $\lambda \ge 0$,
 or it may be spatially varying.
 
@@ -45,10 +58,10 @@ function are very similar to methods for density estimation.
 Given a point pattern $x = \{ x_1, \ldots, x_n \}$ in a window $W$
 the kernel estimate of intensity is
 $$
-   \widehat\lambda(u) = \sum_{i=1}^n k(u - x_i)
+   \widehat\lambda(u) = \sum_{i=1}^n k(u - x_i) e(u, x_i)
 $$
-where $k(x)$ is the smoothing kernel. Corrections for edge effects may
-also be included.
+where $k(x)$ is the smoothing kernel and $e(u, v)$ is a correction for
+edge effects.
 
 ```{r, eval=FALSE}
 library(spatstat)
