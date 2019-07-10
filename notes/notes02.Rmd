@@ -290,7 +290,8 @@ plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
 ```{r, result.width='100%'}
-plot(simulate(fit, nsim=12))
+plot(simulate(fit))
+plot(L, add=TRUE, col="blue")
 ```
 
 The symnbols `x, y` refer to the Cartesian coordinates,

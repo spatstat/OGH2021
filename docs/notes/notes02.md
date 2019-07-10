@@ -377,10 +377,9 @@ plot(effectfun(fit, "D"), xlim=c(0, 20))
 ![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 ``` r
-plot(simulate(fit, nsim=12))
+plot(simulate(fit))
+plot(L, add=TRUE, col="blue")
 ```
-
-    ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
 ![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
