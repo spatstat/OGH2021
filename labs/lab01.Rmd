@@ -46,7 +46,7 @@ The Ponderosa data, continued:
 
 3.  from your reading of the help file, predict what will happen if
     we type
-    ```{r}
+    ```{r, eval=FALSE}
     plot(ponderosa, chars="X", cols="green")
     ```
     then check that your guess was correct;
@@ -81,7 +81,7 @@ x <- c(13, 15, 27, 17, 8, 8, 1, 14, 19, 23)
 y <- c(3, 15, 7, 11, 10, 17, 29, 22, 19, 29)
 ```
 Create a point pattern `A` from the data by typing
-```{r, eval=FALSE}
+```r
 A <- ppp(x, y, c(0, 30), c(0,30))
 ```
 and plot the point pattern.

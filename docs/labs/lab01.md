@@ -35,7 +35,7 @@ The Ponderosa data, continued:
     plot(ponderosa, chars="X", cols="green")
     ```
 
-    ![](lab01_files/figure-markdown_github/unnamed-chunk-3-1.png) then check that your guess was correct;
+    then check that your guess was correct;
 
 4.  try different values of the argument `chars`, for example, one of the integers 0 to 25, or a letter of the alphabet. (Note the difference between `chars=3` and `chars="+"`, and the difference between `chars=4` and `chars="X"`).
 
