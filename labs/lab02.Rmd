@@ -198,3 +198,67 @@ intensity function in each case.
 
 Make image plots of the fitted intensities for the inhomogeneous
 models above.
+
+### Exercise 10
+
+The dataset `hamster` is a multitype pattern representing
+the locations of cells of two types, *dividing* and *pyknotic*.
+
+1.  plot the patterns of pyknotic and dividing cells separately;
+
+2.  plot kernel estimates of the intensity functions of pyknotic and
+    dividing cells separately;
+
+3.  use `relrisk` to perform cross-validated bandwidth
+    selection and computation of the relative intensity of pyknotic
+    cells.
+
+### Exercise 11
+
+The dataset `ants` is a multitype point pattern representing the
+locations of nests of two species of ants.
+
+1.  plot the data.
+
+2.  Fit the model `ppm(ants ~ marks)` and interpret the result.
+    Compare the result with `summary(ants)` and explain
+    the similarities.
+
+3.  Fit the model `ppm(ants ~ marks + x)` and write down an
+    expression for the fitted intensity function.
+
+4.  Fit the model `ppm(ants ~ marks * x)` and write down an
+    expression for the fitted intensity function.
+
+5.  Compute the fitted intensities of the three models fitted above 
+    using `predict` and plot the results.
+
+6.  Explain the difference between the models fitted by
+    `ppm(ants ~ marks + x)` and `ppm(ants ~ marks * x)` .
+
+## Exercise 12
+
+The study region for the ants’ nests data `ants` is
+divided into areas of "scrub" and "field". We want to fit a Poisson
+model with different intensities in the field and scrub areas.
+
+The coordinates of two points on the boundary line between field and
+scrub are given in `ants.extra$fieldscrub`. First construct a function that
+determines which side of the line we are on:
+
+```{r}
+fs <- function(x,y) {
+  ends <- ants.extra$fieldscrub
+  angle <- atan(diff(ends$y)/diff(ends$x))
+  normal <- angle + pi/2
+  project <- (x - ends$x[1]) * cos(normal) + (y - ends$y[1]) * sin(normal)
+  factor(ifelse(project > 0, "scrub", "field"))
+}
+```
+
+Now fit the models:
+```{r, eval=FALSE}
+ppm(ants ~ marks + side, data = list(side=fs))
+ppm(ants ~ marks * side, data = list(side=fs))
+```
+and interpret the results.
