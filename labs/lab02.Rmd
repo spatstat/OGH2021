@@ -8,7 +8,8 @@ title: 'Lab 2: Intensity'
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
-This session covers exploratory tools for investigating intensity.  
+This session covers exploratory tools
+and formal model-fitting procedures for investigating intensity.
 
 ```{r, include=FALSE}
 library(spatstat)

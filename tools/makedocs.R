@@ -2,8 +2,8 @@
 ## The lines below are just a rough sketch of what needs to be done to update
 ## the docs when changing labs/solutions. It hasn't really been tested...
 notes <- 1:3
+labs <- 1:3
 sols <- 1
-labs <- 1:2
 
 fname <- function(prefix, i, suffix) {
   paste0(prefix, formatC(i, width=2, flag=0), suffix)

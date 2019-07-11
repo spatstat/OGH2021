@@ -1,7 +1,7 @@
 Lab 2: Intensity
 ================
 
-This session covers exploratory tools for investigating intensity.
+This session covers exploratory tools and formal model-fitting procedures for investigating intensity.
 
 ### Exercise 1
 
