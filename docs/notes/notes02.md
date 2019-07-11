@@ -232,7 +232,7 @@ segregation.test(mucosa, sigma=0.15, verbose=FALSE)
     ##  Monte Carlo test of spatial segregation of types
     ## 
     ## data:  mucosa
-    ## T = 0.33288, p-value = 0.4
+    ## T = 0.33288, p-value = 0.45
 
 ### Nonparametric estimation of intensity depending on a covariate
 
