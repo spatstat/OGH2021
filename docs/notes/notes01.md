@@ -1,20 +1,20 @@
 Notes for session 1
 ================
 Adrian Baddeley and Ege Rubak
-2019-07-15
+July 15, 2019
 
-Introduction
-------------
+## Introduction
 
 *Spatial data*= data attributed to spatial locations
 
 Three main types of spatial data:
 
--   *spatial variable ("field")*, eg temperature
--   *regional aggregate data*, eg accident counts in each state
--   *spatial point patterns*, eg locations of crimes/accidents
+  - *spatial variable (“field”)*, eg temperature
+  - *regional aggregate data*, eg accident counts in each state
+  - *spatial point patterns*, eg locations of
+crimes/accidents
 
-<img src="notes01_files/figure-markdown_github/unnamed-chunk-2-1.png" width="100%" />
+<img src="notes01_files/figure-gfm/unnamed-chunk-2-1.png" width="100%" />
 
 This workshop is about the analysis of *spatial point patterns*
 
@@ -24,43 +24,56 @@ We will use the `spatstat` package in `R`
 library(spatstat)
 ```
 
-Spatial point pattern terminology
----------------------------------
+## Spatial point pattern terminology
 
 ### Points
 
-The "points" in a point pattern are the spatial locations where the events or objects were observed. They are specified by spatial coordinates.
+The “points” in a point pattern are the spatial locations where the
+events or objects were observed. They are specified by spatial
+coordinates. **NOTE:** In all that follows and for all functions in
+`spatstat` the coordinates are assumed to be **projected coordinates in
+Euclidean space**. Do not analyse geographic coordinates (latitude and
+longitude) directly in `spatstat` – project them first\!
 
-![](notes01_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](notes01_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ### Window
 
-The window ![W](https://latex.codecogs.com/png.latex?W "W") is the spatial region where points were (or could have been) observed.
+The window ![W](https://latex.codecogs.com/png.latex?W "W") is the
+spatial region where points were (or could have been) observed.
 
-![](notes01_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](notes01_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ### Covariates
 
-Covariates are explanatory variables (which might "explain" any spatial variation in the abundance of points, for example).
+Covariates are explanatory variables (which might “explain” any spatial
+variation in the abundance of points, for example).
 
-Many covariates take the form of a function ![Z(u), \\quad u \\in W](https://latex.codecogs.com/png.latex?Z%28u%29%2C%20%5Cquad%20u%20%5Cin%20W "Z(u), \quad u \in W") defined at every spatial location ![u](https://latex.codecogs.com/png.latex?u "u").
+Many covariates take the form of a function ![Z(u), \\quad u \\in
+W](https://latex.codecogs.com/png.latex?Z%28u%29%2C%20%5Cquad%20u%20%5Cin%20W
+"Z(u), \\quad u \\in W") defined at every spatial location
+![u](https://latex.codecogs.com/png.latex?u "u").
 
-![](notes01_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](notes01_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-Alternatively, other kinds of spatial data can be treated as explanatory data. Usually we need to translate them into spatial functions for use in analysis.
+Alternatively, other kinds of spatial data can be treated as explanatory
+data. Usually we need to translate them into spatial functions for use
+in analysis.
 
 ### Marks
 
 Marks are attributes of the individual events or things.
 
-In a spatial point pattern of trees, the trees might be classified into different species, and each tree carries a mark ("label") indicating which species it belongs to.
+In a spatial point pattern of trees, the trees might be classified into
+different species, and each tree carries a mark (“label”) indicating
+which species it belongs to.
 
-![](notes01_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes01_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
-Marks are methodologically different from covariates: marks are part of the "response", not the " explanatory variable"
+Marks are methodologically different from covariates: marks are part of
+the “response”, not the " explanatory variable"
 
-Software and data
------------------
+## Software and data
 
 ### Spatstat
 
@@ -68,7 +81,9 @@ Software and data
 library(spatstat)
 ```
 
-A point pattern dataset is represented an object belonging to the class `"ppp"` (planar point pattern). Some datasets are included in the package:
+A point pattern dataset is represented an object belonging to the class
+`"ppp"` (planar point pattern). Some datasets are included in the
+package:
 
 ``` r
 gordon
@@ -89,9 +104,10 @@ class(gordon)
 plot(gordon)
 ```
 
-![](notes01_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](notes01_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-The spatial coordinates of the points can be extracted by `as.data.frame`:
+The spatial coordinates of the points can be extracted by
+`as.data.frame`:
 
 ``` r
 head(as.data.frame(gordon))
@@ -122,9 +138,11 @@ class(W)
 
     ## [1] "owin"
 
-This is an object of class `"owin"` (observation window) representing a spatial region.
+This is an object of class `"owin"` (observation window) representing a
+spatial region.
 
-If the points also carry *marks*, the marks can be extracted by `marks()` or `as.data.frame`:
+If the points also carry *marks*, the marks can be extracted by
+`marks()` or `as.data.frame`:
 
 ``` r
 hyytiala
@@ -156,7 +174,8 @@ marks(hyytiala)
     ## [166] rowan rowan aspen
     ## Levels: aspen birch pine rowan
 
-If the marks are a `factor` (categorical variable) then this specifies a classification of the points into different groups.
+If the marks are a `factor` (categorical variable) then this specifies a
+classification of the points into different groups.
 
 The marks could also be numeric:
 
@@ -237,28 +256,37 @@ head(marks(finpines))
     ## 5        3    3.1
     ## 6        4    4.3
 
-Other kinds of objects in `spatstat` include:
+Other kinds of spatial objects in `spatstat` include:
 
--   pixel images: class `"im"`
--   spatial patterns of line segments: class `"psp"`
--   spatial tessellations: class `"tess"`
+  - pixel images: class `"im"`
+  - spatial patterns of line segments: class `"psp"`
+  - spatial tessellations: class `"tess"`
 
 ### Wrangling data
 
-In this workshop, we will use datasets which are already installed in *spatstat*, because time is short.
+In this workshop, we will use datasets which are already installed in
+*spatstat*, because time is short.
 
 In practice, you would need to import your own data into `R`.
 
 Data can be provided in many different file formats
 
--   text file, CSV file
--   shapefile
--   `netcdf` file
+  - text file, CSV file
+  - shapefile
+  - `netcdf` file
 
-The `spatstat` package does not support reading and writing of files in different formats. This would be poor software design.
+The `spatstat` package does not support reading and writing of files in
+different formats. This would be poor software design.
 
-Instead, if you need to read files in a particular format, we recommend that you find an appropriate `R` package which is designed to read and write that specific file format. Once the data have been read into `R`, then you can use *another* `R` package to convert the data into objects recognised by `spatstat`.
+Instead, if you need to read files in a particular format, we recommend
+that you find an appropriate `R` package which is designed to read and
+write that specific file format. Once the data have been read into `R`,
+then you can use *another* `R` package to convert the data into objects
+recognised by `spatstat`.
 
-It is often enough to use the functions `read.table` and `read.csv` in the base `R` system which will read simple text files containing columns of data and store them in `R` as a `data.frame`.
+It is often enough to use the functions `read.table` and `read.csv` in
+the base `R` system which will read simple text files containing columns
+of data and store them in `R` as a `data.frame`.
 
-For full details please read the [free copy of Chapter 3 of our book](http://book.spatstat.org/sample-chapters/chapter03.pdf)
+For full details please read the [free copy of Chapter 3 of our
+book](http://book.spatstat.org/sample-chapters/chapter03.pdf)

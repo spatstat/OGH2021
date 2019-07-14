@@ -1,8 +1,7 @@
 ---
 title: "Notes for session 2"
 author: "Adrian Baddeley and Ege Rubak"
-date: "2019-07-02"
-output: html
+date: "July 15, 2019"
 ---
 
 # Intensity
@@ -13,7 +12,6 @@ and to investigate any spatial variation in this density.
 
 ```{r, echo=FALSE, results='hide'}
 library(spatstat)
-requireversion(spatstat, "1.60-1.006")
 ```
 
 ## Point processes
@@ -410,11 +408,11 @@ step(Jfit2)
 ```
 
 ```{r}
-plot(simulate(Jfit2))
+plot(simulate(Jfit2), main = "")
 ```
 
 ```{r}
-plot(simulate(Jfit2, nsim=12))
+plot(simulate(Jfit2, nsim=12), main = "")
 ```
 
 ### Intensity depending on marks
@@ -471,11 +469,15 @@ but different types of points have different abundance overall.
 
 ```{r}
 ## This requires spatstat 1.60-1.006 or later
-plot(effectfun(model1, "y", marks="other"),
-     log(.y) ~ .x, ylim=c(4,8), col=2, main="")
-plot(effectfun(model1, "y", marks="ECL"),
-      add=TRUE, col=3, log(.y) ~ .x)
-legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+if(packageVersion("spatstat") < "1.60-1.006"){
+  message("This version of spatstat cannot produce the relevant type of effect plot.")
+} else{
+  plot(effectfun(model1, "y", marks="other"),
+       log(.y) ~ .x, ylim=c(4,8), col=2, main="")
+  plot(effectfun(model1, "y", marks="ECL"),
+        add=TRUE, col=3, log(.y) ~ .x)
+  legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))
+}
 ```
 
 ```{r}
@@ -496,11 +498,15 @@ for different types of points.
 
 ```{r}
 ## This requires spatstat 1.60-1.006 or later
-plot(effectfun(model2, "y", marks="other"),
-     log(.y) ~ .x, col=2, ylim=c(2,8), main="")
-plot(effectfun(model2, "y", marks="ECL"),
-     add=TRUE, col=3, log(.y) ~ .x)
-legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+if(packageVersion("spatstat") < "1.60-1.006"){
+  message("This version of spatstat cannot produce the relevant type of effect plot.")
+} else{
+  plot(effectfun(model2, "y", marks="other"),
+       log(.y) ~ .x, col=2, ylim=c(2,8), main="")
+  plot(effectfun(model2, "y", marks="ECL"),
+       add=TRUE, col=3, log(.y) ~ .x)
+  legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))
+}
 ```
 
 Other examples to discuss:

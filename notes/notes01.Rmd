@@ -1,8 +1,7 @@
 ---
 title: "Notes for session 1"
 author: "Adrian Baddeley and Ege Rubak"
-date: "2019-07-15"
-output: html
+date: "July 15, 2019"
 ---
 
 ## Introduction
@@ -43,7 +42,10 @@ library(spatstat)
 
 The "points" in a point pattern are the spatial locations
 where the events or objects were observed. They are specified
-by spatial coordinates.
+by spatial coordinates. **NOTE:** In all that follows and for all functions in
+`spatstat` the coordinates are assumed to be **projected coordinates in Euclidean
+space**. Do not analyse geographic coordinates (latitude and longitude) directly
+in `spatstat` -- project them first!
 
 ```{r, echo=FALSE, results="hide"}
 xx <- c(0.3, 0.5, 0.7)
@@ -162,7 +164,7 @@ finpines
 head(marks(finpines))
 ```
 
-Other kinds of objects in `spatstat` include:
+Other kinds of spatial objects in `spatstat` include:
 
 * pixel images: class `"im"`
 * spatial patterns of line segments: class `"psp"`
@@ -198,4 +200,3 @@ store them in `R` as a `data.frame`.
 
 For full details please read the
 [free copy of Chapter 3 of our book](http://book.spatstat.org/sample-chapters/chapter03.pdf)
-

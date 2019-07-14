@@ -1,8 +1,7 @@
 ---
 title: "Notes for session 3"
 author: "Adrian Baddeley and Ege Rubak"
-date: "2019-07-15"
-output: html
+date: "July 15, 2019"
 ---
 
 # Dependence between points
@@ -10,7 +9,8 @@ output: html
 Another important goal is to detect stochastic dependence between
 points in a point pattern.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE, fig.width=12, fig.height=5}
+library(spatstat)
 Xrandom <- rpoispp(50)
 Xlist <- solist(inhibition=cells,
 		random=Xrandom,

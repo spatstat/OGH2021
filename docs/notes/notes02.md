@@ -1,77 +1,117 @@
 Notes for session 2
 ================
 Adrian Baddeley and Ege Rubak
-2019-07-02
+July 15, 2019
 
-Intensity
-=========
+# Intensity
 
-Often the main objective is to study the "density" of points in the point pattern and to investigate any spatial variation in this density.
+Often the main objective is to study the “density” of points in the
+point pattern and to investigate any spatial variation in this density.
 
-Point processes
----------------
+## Point processes
 
-In a statistical approach to data analysis, we think of the observed data as the outcome of a random process.
+In a statistical approach to data analysis, we think of the observed
+data as the outcome of a random process.
 
-To analyse spatial point pattern data, we will regard the observed *point pattern* ![x](https://latex.codecogs.com/png.latex?x "x") as a realisation of a random *point process* ![X](https://latex.codecogs.com/png.latex?X "X").
+To analyse spatial point pattern data, we will regard the observed
+*point pattern* ![x](https://latex.codecogs.com/png.latex?x "x") as a
+realisation of a random *point process*
+![X](https://latex.codecogs.com/png.latex?X "X").
 
-It is helpful to visualise a point process as a collection ("ensemble") of many different possible outcomes. Here is one example:
+It is helpful to visualise a point process as a collection (“ensemble”)
+of many different possible outcomes. Here is one
+example:
 
-<img src="notes02_files/figure-markdown_github/unnamed-chunk-2-1.png" width="100%" />
+<img src="notes02_files/figure-gfm/unnamed-chunk-2-1.png" width="100%" />
 
-Intensity
----------
+## Intensity
 
-The *intensity* of a point process is the expected number of points per unit area. It may be a constant ![\\lambda \\ge 0](https://latex.codecogs.com/png.latex?%5Clambda%20%5Cge%200 "\lambda \ge 0"), or it may be spatially varying.
+The *intensity* of a point process is the expected number of points per
+unit area. It may be a constant ![\\lambda
+\\ge 0](https://latex.codecogs.com/png.latex?%5Clambda%20%5Cge%200
+"\\lambda \\ge 0"), or it may be spatially varying.
 
-Intensity is an average, over all possible outcomes of the point process. We can visualise it by superimposing the ensemble of outcomes:
+Intensity is an average, over all possible outcomes of the point
+process. We can visualise it by superimposing the ensemble of outcomes:
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-We will usually assume that the point process has an *intensity function* ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") defined at every spatial location ![u](https://latex.codecogs.com/png.latex?u "u"). Then ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") is the spatially-varying expected number of points per unit area. It is formally defined to satisfy
+We will usually assume that the point process has an *intensity
+function*
+![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29
+"\\lambda(u)") defined at every spatial location
+![u](https://latex.codecogs.com/png.latex?u "u"). Then
+![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29
+"\\lambda(u)") is the spatially-varying expected number of points per
+unit area. It is formally defined to satisfy   
+![ E\[ n(B \\cap X) \] = \\int\_B \\lambda(u) \\, {\\rm d}u
+](https://latex.codecogs.com/png.latex?%20E%5B%20n%28B%20%5Ccap%20X%29%20%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%20
+" E[ n(B \\cap X) ] = \\int_B \\lambda(u) \\, {\\rm d}u ")  
+for any region ![B \\subset
+R^2](https://latex.codecogs.com/png.latex?B%20%5Csubset%20R%5E2
+"B \\subset R^2"), where ![n(B \\cap
+X)](https://latex.codecogs.com/png.latex?n%28B%20%5Ccap%20X%29
+"n(B \\cap X)") denotes the number of points falling in
+![B](https://latex.codecogs.com/png.latex?B "B").
 
-![ E\[ n(B \\cap X) \] = \\int\_B \\lambda(u) \\, {\\rm d}u ](https://latex.codecogs.com/png.latex?%20E%5B%20n%28B%20%5Ccap%20X%29%20%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%20 " E[ n(B \cap X) ] = \int_B \lambda(u) \, {\rm d}u ")
+Intensity is closely related to probability density. If
+![X](https://latex.codecogs.com/png.latex?X "X") is a point process with
+intensity function
+![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29
+"\\lambda(u)"), then each individual point inside
+![W](https://latex.codecogs.com/png.latex?W "W") has probability density
+![f(u) =
+\\lambda(u)/\\Lambda\_W](https://latex.codecogs.com/png.latex?f%28u%29%20%3D%20%5Clambda%28u%29%2F%5CLambda_W
+"f(u) = \\lambda(u)/\\Lambda_W"), where ![\\Lambda\_W = \\int\_W
+\\lambda(u) \\, {\\rm
+d}u](https://latex.codecogs.com/png.latex?%5CLambda_W%20%3D%20%5Cint_W%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du
+"\\Lambda_W = \\int_W \\lambda(u) \\, {\\rm d}u").
 
- for any region ![B \\subset R^2](https://latex.codecogs.com/png.latex?B%20%5Csubset%20R%5E2 "B \subset R^2"), where ![n(B \\cap X)](https://latex.codecogs.com/png.latex?n%28B%20%5Ccap%20X%29 "n(B \cap X)") denotes the number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B").
+## Nonparametric estimation
 
-Intensity is closely related to probability density. If ![X](https://latex.codecogs.com/png.latex?X "X") is a point process with intensity function ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)"), then each individual point inside ![W](https://latex.codecogs.com/png.latex?W "W") has probability density ![f(u) = \\lambda(u)/\\Lambda\_W](https://latex.codecogs.com/png.latex?f%28u%29%20%3D%20%5Clambda%28u%29%2F%5CLambda_W "f(u) = \lambda(u)/\Lambda_W"), where ![\\Lambda\_W = \\int\_W \\lambda(u) \\, {\\rm d}u](https://latex.codecogs.com/png.latex?%5CLambda_W%20%3D%20%5Cint_W%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du "\Lambda_W = \int_W \lambda(u) \, {\rm d}u").
-
-Nonparametric estimation
-------------------------
-
-Because of the close relationship between intensity and probability density, methods for nonparametric estimation of the intensity function are very similar to methods for density estimation.
+Because of the close relationship between intensity and probability
+density, methods for nonparametric estimation of the intensity function
+are very similar to methods for density estimation.
 
 ### Nonparametric estimation of spatially-varying intensity
 
-Given a point pattern ![x = \\{ x\_1, \\ldots, x\_n \\}](https://latex.codecogs.com/png.latex?x%20%3D%20%5C%7B%20x_1%2C%20%5Cldots%2C%20x_n%20%5C%7D "x = \{ x_1, \ldots, x_n \}") in a window ![W](https://latex.codecogs.com/png.latex?W "W") the kernel estimate of intensity is
-
+Given a point pattern ![x = \\{ x\_1, \\ldots, x\_n
+\\}](https://latex.codecogs.com/png.latex?x%20%3D%20%5C%7B%20x_1%2C%20%5Cldots%2C%20x_n%20%5C%7D
+"x = \\{ x_1, \\ldots, x_n \\}") in a window
+![W](https://latex.codecogs.com/png.latex?W "W") the kernel estimate of
+intensity is   
 ![
-   \\widehat\\lambda(u) = \\sum\_{i=1}^n k(u - x\_i) e(u, x\_i)
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Cwidehat%5Clambda%28u%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20k%28u%20-%20x_i%29%20e%28u%2C%20x_i%29%0A "
-   \widehat\lambda(u) = \sum_{i=1}^n k(u - x_i) e(u, x_i)
-")
-
- where ![k(x)](https://latex.codecogs.com/png.latex?k%28x%29 "k(x)") is the smoothing kernel and ![e(u, v)](https://latex.codecogs.com/png.latex?e%28u%2C%20v%29 "e(u, v)") is a correction for edge effects.
+\\widehat\\lambda(u) = \\sum\_{i=1}^n k(u - x\_i) e(u, x\_i)
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Cwidehat%5Clambda%28u%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20k%28u%20-%20x_i%29%20e%28u%2C%20x_i%29%0A
+"
+   \\widehat\\lambda(u) = \\sum_{i=1}^n k(u - x_i) e(u, x_i)
+")  
+where ![k(x)](https://latex.codecogs.com/png.latex?k%28x%29 "k(x)") is
+the smoothing kernel and ![e(u,
+v)](https://latex.codecogs.com/png.latex?e%28u%2C%20v%29 "e(u, v)") is a
+correction for edge effects.
 
 ``` r
 library(spatstat)
 plot(japanesepines)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ``` r
 Z <- density(japanesepines, sigma=0.1)
 plot(Z)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-4-2.png)
+![](notes02_files/figure-gfm/unnamed-chunk-4-2.png)<!-- -->
 
-The command in `spatstat` to compute the kernel estimate of intensity is `density.ppp`, a method for the generic function `density`.
+The command in `spatstat` to compute the kernel estimate of intensity is
+`density.ppp`, a method for the generic function `density`.
 
-The argument `sigma` is the bandwidth of the smoothing kernel.
+The argument `sigma` is the bandwidth of the smoothing
+kernel.
 
-<img src="notes02_files/figure-markdown_github/unnamed-chunk-5-1.png" width="100%" />
+<img src="notes02_files/figure-gfm/unnamed-chunk-5-1.png" width="100%" />
 
 Bandwidth can be selected automatically:
 
@@ -98,7 +138,8 @@ bw.scott(japanesepines)
 
 ### Nonparametric estimation of spatially-varying, mark-dependent intensity
 
-A marked point pattern, with marks which are categorical values, effectively classifies the points into different types.
+A marked point pattern, with marks which are categorical values,
+effectively classifies the points into different types.
 
 ``` r
 mucosa
@@ -112,7 +153,7 @@ mucosa
 plot(mucosa, cols=c(2,3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 Extract the sub-patterns of points of each type:
 
@@ -141,7 +182,7 @@ class(M)
 plot(M)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Apply kernel smoothing to each sub-pattern using `density.splitppp`:
 
@@ -166,21 +207,28 @@ B
 plot(B)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
-Suppose ![\\lambda\_i(u)](https://latex.codecogs.com/png.latex?%5Clambda_i%28u%29 "\lambda_i(u)") is the intensity function of the points of type ![i](https://latex.codecogs.com/png.latex?i "i"), for ![i=1,2,\\ldots,m](https://latex.codecogs.com/png.latex?i%3D1%2C2%2C%5Cldots%2Cm "i=1,2,\ldots,m"). The intensity function of all points regardless of type is
-
-![ \\lambda\_{\\bullet}(u) = \\sum\_{i=1}^m \\lambda\_i(u). ](https://latex.codecogs.com/png.latex?%20%5Clambda_%7B%5Cbullet%7D%28u%29%20%3D%20%5Csum_%7Bi%3D1%7D%5Em%20%5Clambda_i%28u%29.%20 " \lambda_{\bullet}(u) = \sum_{i=1}^m \lambda_i(u). ")
-
- Under reasonable assumptions, the probability that a random point at location ![u](https://latex.codecogs.com/png.latex?u "u") belongs to type ![i](https://latex.codecogs.com/png.latex?i "i") is
-
+Suppose
+![\\lambda\_i(u)](https://latex.codecogs.com/png.latex?%5Clambda_i%28u%29
+"\\lambda_i(u)") is the intensity function of the points of type
+![i](https://latex.codecogs.com/png.latex?i "i"), for
+![i=1,2,\\ldots,m](https://latex.codecogs.com/png.latex?i%3D1%2C2%2C%5Cldots%2Cm
+"i=1,2,\\ldots,m"). The intensity function of all points regardless of
+type is   
+![ \\lambda\_{\\bullet}(u) = \\sum\_{i=1}^m \\lambda\_i(u).
+](https://latex.codecogs.com/png.latex?%20%5Clambda_%7B%5Cbullet%7D%28u%29%20%3D%20%5Csum_%7Bi%3D1%7D%5Em%20%5Clambda_i%28u%29.%20
+" \\lambda_{\\bullet}(u) = \\sum_{i=1}^m \\lambda_i(u). ")  
+Under reasonable assumptions, the probability that a random point at
+location ![u](https://latex.codecogs.com/png.latex?u "u") belongs to
+type ![i](https://latex.codecogs.com/png.latex?i "i") is   
 ![
-   p\_i(u) = \\frac{\\lambda\_i(u)}{\\lambda\_{\\bullet}(u)}.
-](https://latex.codecogs.com/png.latex?%0A%20%20%20p_i%28u%29%20%3D%20%5Cfrac%7B%5Clambda_i%28u%29%7D%7B%5Clambda_%7B%5Cbullet%7D%28u%29%7D.%0A "
-   p_i(u) = \frac{\lambda_i(u)}{\lambda_{\bullet}(u)}.
-")
-
- We could calculate this by hand in `spatstat`:
+p\_i(u) = \\frac{\\lambda\_i(u)}{\\lambda\_{\\bullet}(u)}.
+](https://latex.codecogs.com/png.latex?%0A%20%20%20p_i%28u%29%20%3D%20%5Cfrac%7B%5Clambda_i%28u%29%7D%7B%5Clambda_%7B%5Cbullet%7D%28u%29%7D.%0A
+"
+   p_i(u) = \\frac{\\lambda_i(u)}{\\lambda_{\\bullet}(u)}.
+")  
+We could calculate this by hand in `spatstat`:
 
 ``` r
 lambdaECL <- B[["ECL"]]
@@ -191,18 +239,21 @@ pOther <- lambdaOther/lambdaDot
 plot(pECL)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-These calculations are automated in the function `relrisk` (relative risk):
+These calculations are automated in the function `relrisk` (relative
+risk):
 
 ``` r
 V <- relrisk(mucosa, bw.ppl, casecontrol=FALSE)
 plot(V, main="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-Bandwidth selection for the ratio is different from bandwidth selection for the intensity. We recommend using the special algorithm `bw.relrisk`:
+Bandwidth selection for the ratio is different from bandwidth selection
+for the intensity. We recommend using the special algorithm
+`bw.relrisk`:
 
 ``` r
 bw.relrisk(mucosa)
@@ -216,13 +267,16 @@ Vr <- relrisk(mucosa, bw.relrisk, casecontrol=FALSE)
 plot(Vr, main="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ### Segregation of types
 
-"Segregation" occurs if the probability distribution of types of points is spatially varying.
+“Segregation” occurs if the probability distribution of types of points
+is spatially varying.
 
-A Monte Carlo test of segregation can be performed using the nonparametric estimators described above. The function `segregation.test` performs it.
+A Monte Carlo test of segregation can be performed using the
+nonparametric estimators described above. The function
+`segregation.test` performs it.
 
 ``` r
 segregation.test(mucosa, sigma=0.15, verbose=FALSE)
@@ -232,27 +286,32 @@ segregation.test(mucosa, sigma=0.15, verbose=FALSE)
     ##  Monte Carlo test of spatial segregation of types
     ## 
     ## data:  mucosa
-    ## T = 0.33288, p-value = 0.6
+    ## T = 0.33288, p-value = 0.35
 
 ### Nonparametric estimation of intensity depending on a covariate
 
-In some applications we believe that the intensity depends on a spatial covariate ![Z](https://latex.codecogs.com/png.latex?Z "Z"), in the form
-
+In some applications we believe that the intensity depends on a spatial
+covariate ![Z](https://latex.codecogs.com/png.latex?Z "Z"), in the form
+  
 ![
+\\lambda(u) = \\rho(Z(u))
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Clambda%28u%29%20%3D%20%5Crho%28Z%28u%29%29%0A
+"
     \\lambda(u) = \\rho(Z(u))
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Clambda%28u%29%20%3D%20%5Crho%28Z%28u%29%29%0A "
-    \lambda(u) = \rho(Z(u))
-")
-
- where ![\\rho(z)](https://latex.codecogs.com/png.latex?%5Crho%28z%29 "\rho(z)") is an unknown function which we want to estimate. A nonparametric estimator of ![\\rho](https://latex.codecogs.com/png.latex?%5Crho "\rho") is
-
+")  
+where ![\\rho(z)](https://latex.codecogs.com/png.latex?%5Crho%28z%29
+"\\rho(z)") is an unknown function which we want to estimate. A
+nonparametric estimator of
+![\\rho](https://latex.codecogs.com/png.latex?%5Crho "\\rho") is   
 ![
-\\hat\\rho(z) = \\frac{\\sum\_{i=1}^n k(Z(x\_i) - z)}{\\int\_W k(Z(u) - z) \\, {\\rm d} u}
-](https://latex.codecogs.com/png.latex?%0A%5Chat%5Crho%28z%29%20%3D%20%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5En%20k%28Z%28x_i%29%20-%20z%29%7D%7B%5Cint_W%20k%28Z%28u%29%20-%20z%29%20%5C%2C%20%7B%5Crm%20d%7D%20u%7D%0A "
-\hat\rho(z) = \frac{\sum_{i=1}^n k(Z(x_i) - z)}{\int_W k(Z(u) - z) \, {\rm d} u}
-")
-
- where ![k()](https://latex.codecogs.com/png.latex?k%28%29 "k()") is a one-dimensional smoothing kernel. This is computed by `rhohat`.
+\\hat\\rho(z) = \\frac{\\sum\_{i=1}^n k(Z(x\_i) - z)}{\\int\_W k(Z(u) -
+z) \\, {\\rm d} u}
+](https://latex.codecogs.com/png.latex?%0A%5Chat%5Crho%28z%29%20%3D%20%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5En%20k%28Z%28x_i%29%20-%20z%29%7D%7B%5Cint_W%20k%28Z%28u%29%20-%20z%29%20%5C%2C%20%7B%5Crm%20d%7D%20u%7D%0A
+"
+\\hat\\rho(z) = \\frac{\\sum_{i=1}^n k(Z(x_i) - z)}{\\int_W k(Z(u) - z) \\, {\\rm d} u}
+")  
+where ![k()](https://latex.codecogs.com/png.latex?k%28%29 "k()") is a
+one-dimensional smoothing kernel. This is computed by `rhohat`.
 
 *Example*: mucosa data, enterochromaffin-like cells (ECL)
 
@@ -261,16 +320,19 @@ E <- split(mucosa)$ECL
 plot(E)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
-The wall of the gut is at the bottom of the picture. Cell density appears to decline as we go further away from the wall. Use the string `"y"` to refer to the ![y](https://latex.codecogs.com/png.latex?y "y") coordinate:
+The wall of the gut is at the bottom of the picture. Cell density
+appears to decline as we go further away from the wall. Use the string
+`"y"` to refer to the ![y](https://latex.codecogs.com/png.latex?y "y")
+coordinate:
 
 ``` r
 g <- rhohat(E, "y")
 plot(g)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-15-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 *Example*: Murchison gold survey.
 
@@ -283,81 +345,146 @@ D <- distfun(L)
 plot(solist(gold=X, faults=L, distance=D), main="", equal.scales=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
-Gold deposits are frequently found near a geological fault line. Here we converted the fault line pattern into a spatial covariate
-
+Gold deposits are frequently found near a geological fault line. Here we
+converted the fault line pattern into a spatial covariate   
 ![
+D(u) = \\mbox{ distance from } u \\mbox{ to nearest fault }
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%20D%28u%29%20%3D%20%5Cmbox%7B%20distance%20from%20%7D%20u%20%5Cmbox%7B%20to%20nearest%20fault%20%7D%0A
+"
     D(u) = \\mbox{ distance from } u \\mbox{ to nearest fault }
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%20D%28u%29%20%3D%20%5Cmbox%7B%20distance%20from%20%7D%20u%20%5Cmbox%7B%20to%20nearest%20fault%20%7D%0A "
-    D(u) = \mbox{ distance from } u \mbox{ to nearest fault }
-")
+")  
 
 ``` r
 h <- rhohat(X, D)
 plot(h)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-17-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-Parametric modelling
---------------------
+## Parametric modelling
 
-We can formulate a parametric model for the intensity and fit it to the point pattern data, using the `spatstat` function `ppm` (point process model).
+We can formulate a parametric model for the intensity and fit it to the
+point pattern data, using the `spatstat` function `ppm` (point process
+model).
 
-In its simplest form, `ppm` fits a *Poisson point process model* to the point pattern data.
+In its simplest form, `ppm` fits a *Poisson point process model* to the
+point pattern data.
 
 ### Poisson point process
 
-The *homogeneous Poisson process* with intensity ![\\lambda &gt; 0](https://latex.codecogs.com/png.latex?%5Clambda%20%3E%200 "\lambda > 0") in two-dimensional space is characterised by the following properties:
+The *homogeneous Poisson process* with intensity ![\\lambda
+\> 0](https://latex.codecogs.com/png.latex?%5Clambda%20%3E%200
+"\\lambda \> 0") in two-dimensional space is characterised by the
+following properties:
 
--   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the random number ![n(X \\cap B)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29 "n(X \cap B)") of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") follows a Poisson distribution;
--   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the expected number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") is ![E\[n(X \\cap B)\] = \\lambda \\, \\mbox{area}(B)](https://latex.codecogs.com/png.latex?E%5Bn%28X%20%5Ccap%20B%29%5D%20%3D%20%5Clambda%20%5C%2C%20%5Cmbox%7Barea%7D%28B%29 "E[n(X \cap B)] = \lambda \, \mbox{area}(B)");
--   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), given that ![n(X \\cap B) = n](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29%20%3D%20n "n(X \cap B) = n"), the ![n](https://latex.codecogs.com/png.latex?n "n") points are independent and uniformly distributed inside ![B](https://latex.codecogs.com/png.latex?B "B");
--   for any *disjoint* regions ![B\_1,\\ldots, B\_m](https://latex.codecogs.com/png.latex?B_1%2C%5Cldots%2C%20B_m "B_1,\ldots, B_m"), the numbers ![n(X \\cap B\_1), \\ldots, n(X \\cap B\_m)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B_1%29%2C%20%5Cldots%2C%20n%28X%20%5Ccap%20B_m%29 "n(X \cap B_1), \ldots, n(X \cap B_m)") of points falling in each region are independent random variables.
+  - for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the
+    random number ![n(X \\cap
+    B)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29
+    "n(X \\cap B)") of points falling in
+    ![B](https://latex.codecogs.com/png.latex?B "B") follows a Poisson
+    distribution;
+  - for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the
+    expected number of points falling in
+    ![B](https://latex.codecogs.com/png.latex?B "B") is ![E\[n(X \\cap
+    B)\] = \\lambda \\,
+    \\mbox{area}(B)](https://latex.codecogs.com/png.latex?E%5Bn%28X%20%5Ccap%20B%29%5D%20%3D%20%5Clambda%20%5C%2C%20%5Cmbox%7Barea%7D%28B%29
+    "E[n(X \\cap B)] = \\lambda \\, \\mbox{area}(B)");
+  - for any region ![B](https://latex.codecogs.com/png.latex?B "B"),
+    given that ![n(X \\cap B) =
+    n](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29%20%3D%20n
+    "n(X \\cap B) = n"), the ![n](https://latex.codecogs.com/png.latex?n
+    "n") points are independent and uniformly distributed inside
+    ![B](https://latex.codecogs.com/png.latex?B "B");
+  - for any *disjoint* regions ![B\_1,\\ldots,
+    B\_m](https://latex.codecogs.com/png.latex?B_1%2C%5Cldots%2C%20B_m
+    "B_1,\\ldots, B_m"), the numbers ![n(X \\cap B\_1), \\ldots, n(X
+    \\cap
+    B\_m)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B_1%29%2C%20%5Cldots%2C%20n%28X%20%5Ccap%20B_m%29
+    "n(X \\cap B_1), \\ldots, n(X \\cap B_m)") of points falling in each
+    region are independent random variables.
 
-Here are some realisations of the homogeneous Poisson process with intensity 100 (points per unit area):
+Here are some realisations of the homogeneous Poisson process with
+intensity 100 (points per unit area):
 
 ``` r
 plot(rpoispp(100, nsim=12), main="", main.panel="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
-The *inhomogeneous* Poisson process with intensity *function* ![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29 "\lambda(u)") is characterised by the following properties:
+The *inhomogeneous* Poisson process with intensity *function*
+![\\lambda(u)](https://latex.codecogs.com/png.latex?%5Clambda%28u%29
+"\\lambda(u)") is characterised by the following properties:
 
--   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the random number ![n(X \\cap B)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29 "n(X \cap B)") of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") follows a Poisson distribution;
--   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the expected number of points falling in ![B](https://latex.codecogs.com/png.latex?B "B") is
-
+  - for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the
+    random number ![n(X \\cap
+    B)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29
+    "n(X \\cap B)") of points falling in
+    ![B](https://latex.codecogs.com/png.latex?B "B") follows a Poisson
+    distribution;
+  - for any region ![B](https://latex.codecogs.com/png.latex?B "B"), the
+    expected number of points falling in
+    ![B](https://latex.codecogs.com/png.latex?B "B") is   
     ![
-      E\[n(X \\cap B)\] = \\int\_B \\lambda(u) \\, {\\rm d}u;
-    ](https://latex.codecogs.com/png.latex?%0A%20%20E%5Bn%28X%20%5Ccap%20B%29%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%3B%0A "
-      E[n(X \cap B)] = \int_B \lambda(u) \, {\rm d}u;
-    ")
+    E\[n(X \\cap B)\] = \\int\_B \\lambda(u) \\, {\\rm d}u;
+    ](https://latex.codecogs.com/png.latex?%0AE%5Bn%28X%20%5Ccap%20B%29%5D%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du%3B%0A
+    "
+    E[n(X \\cap B)] = \\int_B \\lambda(u) \\, {\\rm d}u;
+    ")  
+  - for any region ![B](https://latex.codecogs.com/png.latex?B "B"),
+    given that ![n(X \\cap B) =
+    n](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29%20%3D%20n
+    "n(X \\cap B) = n"), the ![n](https://latex.codecogs.com/png.latex?n
+    "n") points are independent and *identically* distributed inside
+    ![B](https://latex.codecogs.com/png.latex?B "B") with probability
+    density ![f(u)=
+    \\lambda(u)/\\Lambda](https://latex.codecogs.com/png.latex?f%28u%29%3D%20%5Clambda%28u%29%2F%5CLambda
+    "f(u)= \\lambda(u)/\\Lambda"), where ![\\Lambda = \\int\_B
+    \\lambda(u) \\, {\\rm
+    d}u](https://latex.codecogs.com/png.latex?%5CLambda%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du
+    "\\Lambda = \\int_B \\lambda(u) \\, {\\rm d}u");
+  - for any *disjoint* regions ![B\_1,\\ldots,
+    B\_m](https://latex.codecogs.com/png.latex?B_1%2C%5Cldots%2C%20B_m
+    "B_1,\\ldots, B_m"), the numbers ![n(X \\cap B\_1), \\ldots, n(X
+    \\cap
+    B\_m)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B_1%29%2C%20%5Cldots%2C%20n%28X%20%5Ccap%20B_m%29
+    "n(X \\cap B_1), \\ldots, n(X \\cap B_m)") of points falling in each
+    region are independent random variables.
 
--   for any region ![B](https://latex.codecogs.com/png.latex?B "B"), given that ![n(X \\cap B) = n](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B%29%20%3D%20n "n(X \cap B) = n"), the ![n](https://latex.codecogs.com/png.latex?n "n") points are independent and *identically* distributed inside ![B](https://latex.codecogs.com/png.latex?B "B") with probability density ![f(u)= \\lambda(u)/\\Lambda](https://latex.codecogs.com/png.latex?f%28u%29%3D%20%5Clambda%28u%29%2F%5CLambda "f(u)= \lambda(u)/\Lambda"), where ![\\Lambda = \\int\_B \\lambda(u) \\, {\\rm d}u](https://latex.codecogs.com/png.latex?%5CLambda%20%3D%20%5Cint_B%20%5Clambda%28u%29%20%5C%2C%20%7B%5Crm%20d%7Du "\Lambda = \int_B \lambda(u) \, {\rm d}u");
--   for any *disjoint* regions ![B\_1,\\ldots, B\_m](https://latex.codecogs.com/png.latex?B_1%2C%5Cldots%2C%20B_m "B_1,\ldots, B_m"), the numbers ![n(X \\cap B\_1), \\ldots, n(X \\cap B\_m)](https://latex.codecogs.com/png.latex?n%28X%20%5Ccap%20B_1%29%2C%20%5Cldots%2C%20n%28X%20%5Ccap%20B_m%29 "n(X \cap B_1), \ldots, n(X \cap B_m)") of points falling in each region are independent random variables.
-
-Here are some realisations of the inhomogeneous Poisson process with intensity function ![\\lambda((x,y)) = 100 x](https://latex.codecogs.com/png.latex?%5Clambda%28%28x%2Cy%29%29%20%3D%20100%20x "\lambda((x,y)) = 100 x"):
+Here are some realisations of the inhomogeneous Poisson process with
+intensity function ![\\lambda((x,y)) = 100
+x](https://latex.codecogs.com/png.latex?%5Clambda%28%28x%2Cy%29%29%20%3D%20100%20x
+"\\lambda((x,y)) = 100 x"):
 
 ``` r
 lam <- function(x,y) { 100 * x}
 plot(rpoispp(lam, nsim=12), main="", main.panel="")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ### Loglinear model for intensity
 
-`ppm` can fit a *Poisson point process model* to the point pattern data by maximum likelihood.
+`ppm` can fit a *Poisson point process model* to the point pattern data
+by maximum likelihood.
 
-A Poisson point process is completely specified by its intensity function. So the procedure for formulating a Poisson model is simply to write a mathematical expression for the intensity function.
+A Poisson point process is completely specified by its intensity
+function. So the procedure for formulating a Poisson model is simply to
+write a mathematical expression for the intensity function.
 
-In `ppm` the intensity is assumed to be a **loglinear** function of the **parameters**. That is,
-
-![\\log\\lambda(u) = \\beta\_1 Z\_1(u) + \\ldots + \\beta\_p Z\_p(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_1%20Z_1%28u%29%20%2B%20%5Cldots%20%2B%20%5Cbeta_p%20Z_p%28u%29 "\log\lambda(u) = \beta_1 Z_1(u) + \ldots + \beta_p Z_p(u)")
-
- where ![\\beta\_1, \\ldots, \\beta\_p](https://latex.codecogs.com/png.latex?%5Cbeta_1%2C%20%5Cldots%2C%20%5Cbeta_p "\beta_1, \ldots, \beta_p") are parameters to be estimated, and ![Z\_1, \\ldots, Z\_p](https://latex.codecogs.com/png.latex?Z_1%2C%20%5Cldots%2C%20Z_p "Z_1, \ldots, Z_p") are spatial covariates.
+In `ppm` the intensity is assumed to be a **loglinear** function of the
+**parameters**. That is,   
+![\\log\\lambda(u) = \\beta\_1 Z\_1(u) + \\ldots + \\beta\_p
+Z\_p(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_1%20Z_1%28u%29%20%2B%20%5Cldots%20%2B%20%5Cbeta_p%20Z_p%28u%29
+"\\log\\lambda(u) = \\beta_1 Z_1(u) + \\ldots + \\beta_p Z_p(u)")  
+where ![\\beta\_1, \\ldots,
+\\beta\_p](https://latex.codecogs.com/png.latex?%5Cbeta_1%2C%20%5Cldots%2C%20%5Cbeta_p
+"\\beta_1, \\ldots, \\beta_p") are parameters to be estimated, and
+![Z\_1, \\ldots,
+Z\_p](https://latex.codecogs.com/png.latex?Z_1%2C%20%5Cldots%2C%20Z_p
+"Z_1, \\ldots, Z_p") are spatial covariates.
 
 To fit this model to a point pattern dataset `X`, we type
 
@@ -371,25 +498,43 @@ Important notes:
 
 1.  The model is expressed in terms of the **log** of the intensity.
 
-2.  The covariates ![Z\_1(u), \\ldots, Z\_p(u)](https://latex.codecogs.com/png.latex?Z_1%28u%29%2C%20%5Cldots%2C%20Z_p%28u%29 "Z_1(u), \ldots, Z_p(u)") (called the "canonical covariates") can be anything; they are not necessarily the same as the original variables that we were given; they could be transformations and combinations of the original variables.
+2.  The covariates ![Z\_1(u), \\ldots,
+    Z\_p(u)](https://latex.codecogs.com/png.latex?Z_1%28u%29%2C%20%5Cldots%2C%20Z_p%28u%29
+    "Z_1(u), \\ldots, Z_p(u)") (called the “canonical covariates”) can
+    be anything; they are not necessarily the same as the original
+    variables that we were given; they could be transformations and
+    combinations of the original variables.
 
 ### Fit by maximum likelihood
 
-The Poisson process with intensity function ![\\lambda\_\\theta(u)](https://latex.codecogs.com/png.latex?%5Clambda_%5Ctheta%28u%29 "\lambda_\theta(u)"), controlled by a parameter vector ![\\theta](https://latex.codecogs.com/png.latex?%5Ctheta "\theta"), has log-likelihood
-
+The Poisson process with intensity function
+![\\lambda\_\\theta(u)](https://latex.codecogs.com/png.latex?%5Clambda_%5Ctheta%28u%29
+"\\lambda_\\theta(u)"), controlled by a parameter vector
+![\\theta](https://latex.codecogs.com/png.latex?%5Ctheta "\\theta"), has
+log-likelihood   
 ![
-    \\log L(\\theta) = \\sum\_{i=1}^n \\log \\lambda\_\\theta(x\_i)
-                    - \\int\_W \\lambda\_\\theta(u) \\, {\\rm d} u.
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Clog%20L%28%5Ctheta%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20%5Clog%20%5Clambda_%5Ctheta%28x_i%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-%20%5Cint_W%20%5Clambda_%5Ctheta%28u%29%20%5C%2C%20%7B%5Crm%20d%7D%20u.%0A "
-    \log L(\theta) = \sum_{i=1}^n \log \lambda_\theta(x_i)
-                    - \int_W \lambda_\theta(u) \, {\rm d} u.
-")
+\\log L(\\theta) = \\sum\_{i=1}^n \\log \\lambda\_\\theta(x\_i)
+\- \\int\_W \\lambda\_\\theta(u) \\, {\\rm d} u.
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Clog%20L%28%5Ctheta%29%20%3D%20%5Csum_%7Bi%3D1%7D%5En%20%5Clog%20%5Clambda_%5Ctheta%28x_i%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-%20%5Cint_W%20%5Clambda_%5Ctheta%28u%29%20%5C%2C%20%7B%5Crm%20d%7D%20u.%0A
+"
+    \\log L(\\theta) = \\sum_{i=1}^n \\log \\lambda_\\theta(x_i)
+                    - \\int_W \\lambda_\\theta(u) \\, {\\rm d} u.
+")  
+The value of ![\\theta](https://latex.codecogs.com/png.latex?%5Ctheta
+"\\theta") which maximises ![\\log
+L(\\theta)](https://latex.codecogs.com/png.latex?%5Clog%20L%28%5Ctheta%29
+"\\log L(\\theta)") is taken as the parameter estimate
+![\\hat\\theta](https://latex.codecogs.com/png.latex?%5Chat%5Ctheta
+"\\hat\\theta").
 
- The value of ![\\theta](https://latex.codecogs.com/png.latex?%5Ctheta "\theta") which maximises ![\\log L(\\theta)](https://latex.codecogs.com/png.latex?%5Clog%20L%28%5Ctheta%29 "\log L(\theta)") is taken as the parameter estimate ![\\hat\\theta](https://latex.codecogs.com/png.latex?%5Chat%5Ctheta "\hat\theta").
+From ![\\hat\\theta](https://latex.codecogs.com/png.latex?%5Chat%5Ctheta
+"\\hat\\theta") we can compute the fitted intensity ![\\hat\\lambda(u) =
+\\lambda\_{\\hat\\theta}(u)](https://latex.codecogs.com/png.latex?%5Chat%5Clambda%28u%29%20%3D%20%5Clambda_%7B%5Chat%5Ctheta%7D%28u%29
+"\\hat\\lambda(u) = \\lambda_{\\hat\\theta}(u)") and hence we can
+generate simulated realisations.
 
-From ![\\hat\\theta](https://latex.codecogs.com/png.latex?%5Chat%5Ctheta "\hat\theta") we can compute the fitted intensity ![\\hat\\lambda(u) = \\lambda\_{\\hat\\theta}(u)](https://latex.codecogs.com/png.latex?%5Chat%5Clambda%28u%29%20%3D%20%5Clambda_%7B%5Chat%5Ctheta%7D%28u%29 "\hat\lambda(u) = \lambda_{\hat\theta}(u)") and hence we can generate simulated realisations.
-
-Using the likelihood we are able to compute confidence intervals, perform analysis of deviance, conduct hypothesis tests, etc.
+Using the likelihood we are able to compute confidence intervals,
+perform analysis of deviance, conduct hypothesis tests, etc.
 
 *Example*: Murchison gold data
 
@@ -399,13 +544,21 @@ Using the Murchison data from above,
 fit <- ppm(X ~ D)
 ```
 
-The formula implies that the model is
+The formula implies that the model is   
+![\\log\\lambda(u) = \\beta\_0 + \\beta\_1
+D(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_0%20%2B%20%5Cbeta_1%20D%28u%29
+"\\log\\lambda(u) = \\beta_0 + \\beta_1 D(u)")  
+where ![D(u)](https://latex.codecogs.com/png.latex?D%28u%29 "D(u)") is
+the distance covariate (distance from location
+![u](https://latex.codecogs.com/png.latex?u "u") to nearest geological
+fault) and ![\\beta\_0,
+\\beta\_1](https://latex.codecogs.com/png.latex?%5Cbeta_0%2C%20%5Cbeta_1
+"\\beta_0, \\beta_1") are the regression coefficients. In other words,
+the model says that the intensity of gold deposits is an exponentially
+decreasing function of distance from the nearest fault.
 
-![\\log\\lambda(u) = \\beta\_0 + \\beta\_1 D(u)](https://latex.codecogs.com/png.latex?%5Clog%5Clambda%28u%29%20%3D%20%5Cbeta_0%20%2B%20%5Cbeta_1%20D%28u%29 "\log\lambda(u) = \beta_0 + \beta_1 D(u)")
-
- where ![D(u)](https://latex.codecogs.com/png.latex?D%28u%29 "D(u)") is the distance covariate (distance from location ![u](https://latex.codecogs.com/png.latex?u "u") to nearest geological fault) and ![\\beta\_0, \\beta\_1](https://latex.codecogs.com/png.latex?%5Cbeta_0%2C%20%5Cbeta_1 "\beta_0, \beta_1") are the regression coefficients. In other words, the model says that the intensity of gold deposits is an exponentially decreasing function of distance from the nearest fault.
-
-The result of `ppm` is a fitted model object of class `"ppm"`. There are many methods for this class:
+The result of `ppm` is a fitted model object of class `"ppm"`. There are
+many methods for this class:
 
 ``` r
 fit
@@ -455,22 +608,23 @@ anova(fit, test="Chi")
 plot(predict(fit))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-22-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
 
 ``` r
 plot(simulate(fit, drop=TRUE))
 plot(L, add=TRUE, col=3)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-23-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
-To visualise the intensity of the model as a function of one of the covariates, we can use the command `effectfun`:
+To visualise the intensity of the model as a function of one of the
+covariates, we can use the command `effectfun`:
 
 ``` r
 plot(effectfun(fit, "D"), xlim=c(0, 20))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-24-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
 
 *Example*: Japanese Pines data
 
@@ -478,9 +632,11 @@ plot(effectfun(fit, "D"), xlim=c(0, 20))
 plot(japanesepines, pch=16)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
-The symbols `x, y` refer to the Cartesian coordinates, and can be used to model spatial variation in the intensity when no other covariates are available:
+The symbols `x, y` refer to the Cartesian coordinates, and can be used
+to model spatial variation in the intensity when no other covariates are
+available:
 
 ``` r
 Jfit <- ppm(japanesepines ~ x + y)
@@ -534,7 +690,7 @@ Jfit2
 plot(predict(Jfit2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-26-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 anova(Jfit, Jfit2, test="Chi")
@@ -606,22 +762,23 @@ step(Jfit2)
     ## log(lambda) 4.174387 0.1240347 3.931284 4.417491   *** 33.65499
 
 ``` r
-plot(simulate(Jfit2))
+plot(simulate(Jfit2), main = "")
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 ``` r
-plot(simulate(Jfit2, nsim=12))
+plot(simulate(Jfit2, nsim=12), main = "")
 ```
 
     ## Generating 12 simulated patterns ...1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,  12.
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
 
 ### Intensity depending on marks
 
-In a *multi-type* point pattern the points have marks which are categorical values:
+In a *multi-type* point pattern the points have marks which are
+categorical values:
 
 ``` r
 mucosa
@@ -635,9 +792,10 @@ mucosa
 plot(mucosa, cols=c(2,3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
 
-We can fit a Poisson model in which the intensity depends on the type of point, using the variable name `marks` in the model formula.
+We can fit a Poisson model in which the intensity depends on the type of
+point, using the variable name `marks` in the model formula.
 
 ``` r
 model0 <- ppm(mucosa ~ marks)
@@ -669,17 +827,27 @@ coef(model0)
 plot(predict(model0), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
-In the formula, the `marks` variable is a categorical variable. The effect of the model formula `mucosa ~ marks` is to estimate a different intensity for each level, that is, a different intensity for each type of point. The model formula `mucosa ~ marks` is equivalent to saying that the intensity of the points of type ![i](https://latex.codecogs.com/png.latex?i "i") is
-
+In the formula, the `marks` variable is a categorical variable. The
+effect of the model formula `mucosa ~ marks` is to estimate a different
+intensity for each level, that is, a different intensity for each type
+of point. The model formula `mucosa ~ marks` is equivalent to saying
+that the intensity of the points of type
+![i](https://latex.codecogs.com/png.latex?i "i") is   
 ![
-    \\lambda\_i(u) = \\alpha\_i
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Clambda_i%28u%29%20%3D%20%5Calpha_i%0A "
-    \lambda_i(u) = \alpha_i
-")
-
- for each ![i = 1, 2, \\ldots](https://latex.codecogs.com/png.latex?i%20%3D%201%2C%202%2C%20%5Cldots "i = 1, 2, \ldots") where ![\\alpha\_1, \\alpha\_2, \\ldots](https://latex.codecogs.com/png.latex?%5Calpha_1%2C%20%5Calpha_2%2C%20%5Cldots "\alpha_1, \alpha_2, \ldots") are the different constant intensities to be estimated. The actual printed output will depend on the convention for handling *"contrasts"* in linear models.
+\\lambda\_i(u) = \\alpha\_i
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%20%5Clambda_i%28u%29%20%3D%20%5Calpha_i%0A
+"
+    \\lambda_i(u) = \\alpha_i
+")  
+for each ![i = 1, 2,
+\\ldots](https://latex.codecogs.com/png.latex?i%20%3D%201%2C%202%2C%20%5Cldots
+"i = 1, 2, \\ldots") where ![\\alpha\_1, \\alpha\_2,
+\\ldots](https://latex.codecogs.com/png.latex?%5Calpha_1%2C%20%5Calpha_2%2C%20%5Cldots
+"\\alpha_1, \\alpha_2, \\ldots") are the different constant intensities
+to be estimated. The actual printed output will depend on the convention
+for handling *“contrasts”* in linear models.
 
 The `marks` variable can be combined with other explanatory variables:
 
@@ -714,28 +882,40 @@ coef(model1)
 plot(predict(model1))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-33-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
 
-The model formula `~marks + y` states that
-
+The model formula `~marks + y` states that   
 ![
-   \\log \\lambda\_i((x,y)) = \\gamma\_i  + \\beta y
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Clog%20%5Clambda_i%28%28x%2Cy%29%29%20%3D%20%5Cgamma_i%20%20%2B%20%5Cbeta%20y%0A "
-   \log \lambda_i((x,y)) = \gamma_i  + \beta y
-")
-
- where ![\\gamma\_1, \\gamma\_2, \\ldots](https://latex.codecogs.com/png.latex?%5Cgamma_1%2C%20%5Cgamma_2%2C%20%5Cldots "\gamma_1, \gamma_2, \ldots") and ![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\beta") are parameters. That is, the dependence on the ![y](https://latex.codecogs.com/png.latex?y "y") coordinate has the same "slope" coefficient ![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\beta") for each type of point, but different types of points have different abundance overall.
+\\log \\lambda\_i((x,y)) = \\gamma\_i + \\beta y
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Clog%20%5Clambda_i%28%28x%2Cy%29%29%20%3D%20%5Cgamma_i%20%20%2B%20%5Cbeta%20y%0A
+"
+   \\log \\lambda_i((x,y)) = \\gamma_i  + \\beta y
+")  
+where ![\\gamma\_1, \\gamma\_2,
+\\ldots](https://latex.codecogs.com/png.latex?%5Cgamma_1%2C%20%5Cgamma_2%2C%20%5Cldots
+"\\gamma_1, \\gamma_2, \\ldots") and
+![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\\beta") are
+parameters. That is, the dependence on the
+![y](https://latex.codecogs.com/png.latex?y "y") coordinate has the same
+“slope” coefficient
+![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\\beta") for
+each type of point, but different types of points have different
+abundance overall.
 
 ``` r
 ## This requires spatstat 1.60-1.006 or later
-plot(effectfun(model1, "y", marks="other"),
-     log(.y) ~ .x, ylim=c(4,8), col=2, main="")
-plot(effectfun(model1, "y", marks="ECL"),
-      add=TRUE, col=3, log(.y) ~ .x)
-legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+if(packageVersion("spatstat") < "1.60-1.006"){
+  message("This version of spatstat cannot produce the relevant type of effect plot.")
+} else{
+  plot(effectfun(model1, "y", marks="other"),
+       log(.y) ~ .x, ylim=c(4,8), col=2, main="")
+  plot(effectfun(model1, "y", marks="ECL"),
+        add=TRUE, col=3, log(.y) ~ .x)
+  legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))
+}
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-34-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 ``` r
 model2 <- ppm(mucosa ~ marks * y)
@@ -769,28 +949,37 @@ coef(model2)
 plot(predict(model2))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-35-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
-The model formula `~marks * y` states that
-
+The model formula `~marks * y` states that   
 ![
-   \\log \\lambda\_i((x,y)) = \\gamma\_i  + \\beta\_i y
-](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Clog%20%5Clambda_i%28%28x%2Cy%29%29%20%3D%20%5Cgamma_i%20%20%2B%20%5Cbeta_i%20y%0A "
-   \log \lambda_i((x,y)) = \gamma_i  + \beta_i y
-")
-
- where ![\\gamma\_1, \\gamma\_2, \\ldots](https://latex.codecogs.com/png.latex?%5Cgamma_1%2C%20%5Cgamma_2%2C%20%5Cldots "\gamma_1, \gamma_2, \ldots") and ![\\beta\_1,\\beta\_2, \\ldots](https://latex.codecogs.com/png.latex?%5Cbeta_1%2C%5Cbeta_2%2C%20%5Cldots "\beta_1,\beta_2, \ldots") are parameters. The intensity may depend on the ![y](https://latex.codecogs.com/png.latex?y "y") coordinate in a completely different way for different types of points.
+\\log \\lambda\_i((x,y)) = \\gamma\_i + \\beta\_i y
+](https://latex.codecogs.com/png.latex?%0A%20%20%20%5Clog%20%5Clambda_i%28%28x%2Cy%29%29%20%3D%20%5Cgamma_i%20%20%2B%20%5Cbeta_i%20y%0A
+"
+   \\log \\lambda_i((x,y)) = \\gamma_i  + \\beta_i y
+")  
+where ![\\gamma\_1, \\gamma\_2,
+\\ldots](https://latex.codecogs.com/png.latex?%5Cgamma_1%2C%20%5Cgamma_2%2C%20%5Cldots
+"\\gamma_1, \\gamma_2, \\ldots") and ![\\beta\_1,\\beta\_2,
+\\ldots](https://latex.codecogs.com/png.latex?%5Cbeta_1%2C%5Cbeta_2%2C%20%5Cldots
+"\\beta_1,\\beta_2, \\ldots") are parameters. The intensity may depend
+on the ![y](https://latex.codecogs.com/png.latex?y "y") coordinate in a
+completely different way for different types of points.
 
 ``` r
 ## This requires spatstat 1.60-1.006 or later
-plot(effectfun(model2, "y", marks="other"),
-     log(.y) ~ .x, col=2, ylim=c(2,8), main="")
-plot(effectfun(model2, "y", marks="ECL"),
-     add=TRUE, col=3, log(.y) ~ .x)
-legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))     
+if(packageVersion("spatstat") < "1.60-1.006"){
+  message("This version of spatstat cannot produce the relevant type of effect plot.")
+} else{
+  plot(effectfun(model2, "y", marks="other"),
+       log(.y) ~ .x, col=2, ylim=c(2,8), main="")
+  plot(effectfun(model2, "y", marks="ECL"),
+       add=TRUE, col=3, log(.y) ~ .x)
+  legend("bottomleft", lwd=c(1,1), col=c(2,3), legend=c("other", "ECL"))
+}
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-36-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
 
 Other examples to discuss:
 
@@ -826,7 +1015,7 @@ coef(model1xy)
 plot(predict(model1xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-37-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
 
 ``` r
 model2xy <- ppm(mucosa ~ marks * (x + y))
@@ -866,7 +1055,7 @@ coef(model2xy)
 plot(predict(model2xy))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-38-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
 ``` r
 model3 <- ppm(mucosa ~ marks + polynom(x, y, 2))
@@ -907,7 +1096,7 @@ coef(model3)
 plot(predict(model3))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-39-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 ``` r
 model4 <- ppm(mucosa ~ marks * polynom(x,y,2))
@@ -974,27 +1163,30 @@ coef(model4)
 plot(predict(model4))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-40-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 ### Parametric estimation of spatially-varying probability
 
-When we have fitted a point process model to a multi-type point pattern, we can compute ratios of the intensities of different types. This is automated in *relrisk.ppm*:
+When we have fitted a point process model to a multi-type point pattern,
+we can compute ratios of the intensities of different types. This is
+automated in *relrisk.ppm*:
 
 ``` r
 plot(relrisk(model4, casecontrol=FALSE))
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-41-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
 ``` r
 plot(relrisk(model3, casecontrol=FALSE), equal.ribbon=TRUE)
 ```
 
-![](notes02_files/figure-markdown_github/unnamed-chunk-42-1.png)
+![](notes02_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 ### Test for segregation
 
-One way to test for segregation is to compare two models, with the null model stating that there is no segregation:
+One way to test for segregation is to compare two models, with the null
+model stating that there is no segregation:
 
 ``` r
 nullmodel <- ppm(mucosa ~ marks + polynom(x, y, 2))

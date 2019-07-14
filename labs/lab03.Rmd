@@ -24,17 +24,13 @@ in a large forest. We shall assume the pattern is stationary.
 
 2.  Plot the estimate of $K(r)$ against $r$
 
-3.  Plot the estimate of $K(r) - \pi\!r^2$ against $r$.
+3.  Plot the estimate of $K(r) - \pi\!r^2$ against $r$ (Hint: look at the `fmla`
+    argument in `plot.fv`).
 
-4.  Calculate the estimate of the $L$-function and plot it against
-    $r$.
-
-5.  Plot the estimate of $L(r) - r$ against $r$.
-
-6.  Calculate and plot an estimate of the pair correlation function
+4.  Calculate and plot an estimate of the pair correlation function
     using `pcf`.
 
-7.  Draw tentative conclusions from these plots about interpoint
+5.  Draw tentative conclusions from these plots about interpoint
     interaction in the data.
 
 ### Exercise 2

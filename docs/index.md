@@ -9,7 +9,7 @@ _Analysing Spatial Point Patterns_ given by Adrian Baddeley and Ege Rubak as par
 In order to follow the exercises, 
 you will need to have installed the following on your computer:
 
-* [R](http://r-project.org) or [Rstudio](http://rstudio.com)
+* [R](http://r-project.org) (and possibly [Rstudio](http://rstudio.com))
 * the `R` package [spatstat](http://cran.r-project.org/package=spatstat)
 
 ### Course materials (draft)
@@ -18,9 +18,9 @@ The course comprises short lectures and software demonstrations followed by "lab
 
 Notes                                       |   Labs                     |  Solutions
 ------------------------------------------- | -------------------------- | --------------------------------------------------
-[Notes for Session 1](./notes/notes01.html) | [Lab 1](./labs/lab01.html) | [Solutions to Lab 1](./solutions/solution01.html)
-[Notes for Session 2](./notes/notes02.html) | [Lab 2](./labs/lab02.html) | [Solutions to Lab 2](./solutions/solution02.html)
-[Notes for Session 3](./notes/notes03.html) | [Lab 3](./labs/lab03.html) | [Solutions to Lab 3](./solutions/solution03.html)
+[Notes for Session 1](./notes/notes01.html) | [Lab 1](./labs/lab01.html) | [Solutions to Lab 1 (Not ready yet)](./solutions/solution01.html)
+[Notes for Session 2](./notes/notes02.html) | [Lab 2](./labs/lab02.html) | [Solutions to Lab 2 (Not ready yet)](./solutions/solution02.html)
+[Notes for Session 3](./notes/notes03.html) | [Lab 3](./labs/lab03.html) | [Solutions to Lab 3 (Not ready yet)](./solutions/solution03.html)
 
 ### Information for developers
 
@@ -28,5 +28,3 @@ The `Rmarkdown` source code is available at
 [https://github.com/spatstat/ECAS2019](https://github.com/spatstat/ECAS2019)
 
 **This material is Copyright (C) Adrian Baddeley and Ege Rubak 2019**
-
-
