@@ -105,12 +105,12 @@ In this question we fit a Strauss point process model to the
 
 1.  We need a guess at the interaction distance
     ![R](https://latex.codecogs.com/png.latex?R "R"). Compute and plot
-    the ![L](https://latex.codecogs.com/png.latex?L "L")-function of the
+    the ![K](https://latex.codecogs.com/png.latex?K "K")-function of the
     dataset and choose the value
     ![r](https://latex.codecogs.com/png.latex?r "r") which maximises the
-    discrepancy
-    ![|L(r)-r|](https://latex.codecogs.com/png.latex?%7CL%28r%29-r%7C
-    "|L(r)-r|").
+    discrepancy ![|K(r)-\\pi
+    r^2|](https://latex.codecogs.com/png.latex?%7CK%28r%29-%5Cpi%20r%5E2%7C
+    "|K(r)-\\pi r^2|").
 
 2.  Fit the stationary Strauss model with the chosen interaction
     distance using
@@ -120,11 +120,11 @@ In this question we fit a Strauss point process model to the
     ```
     
     where `R` is your chosen value.
-    
-    3.  Interpret the printout: how strong is the interaction?
-    
-    4.  Plot the fitted pairwise interaction function using
-        `plot(fitin(fit))`.
+
+3.  Interpret the printout: how strong is the interaction?
+
+4.  Plot the fitted pairwise interaction function using
+    `plot(fitin(fit))`.
 
 ### Exercise 6
 
@@ -178,35 +178,11 @@ pseudolikelihood.
 
 ### Exercise 7
 
-For the Strauss model fitted in Question 5,
-
-1.  Generate and plot a simulated realisation of the fitted model using
-    `simulate`.
-
-2.  Plot the ![L](https://latex.codecogs.com/png.latex?L "L")-function
-    of the data along with the global simulation envelopes from 19
-    realisations of the fitted model.
-
-### Exercise 8
-
-1.  Read the help file for `Geyer`.
-
-2.  Fit a stationary Geyer saturation process to `swedishpines`, with
-    the same interaction distance as for the Strauss model computed in
-    Question 6, and trying different values of the saturation parameter
-    `sat = 1, 2, 3` say.
-
-3.  Fit the same model with the addition of a log-quadratic trend.
-
-4.  Plot the fitted trend and conditional intensity.
-
-### Exercise 9
-
 Modify Question 5 by using the Huang-Ogata approximate maximum
 likelihood algorithm (`method="ho"`) instead of maximum pseudolikelihood
 (the default, `method="mpl"`).
 
-### Exercise 10
+### Exercise 8
 
 Repeat Question 6 for the inhomogeneous Strauss process with
 log-quadratic trend. The corresponding call to `profilepl` is
@@ -214,11 +190,3 @@ log-quadratic trend. The corresponding call to `profilepl` is
 ``` r
 fitp <- profilepl(D, Strauss, swedishpines ~ polynom(x,y,2))
 ```
-
-### Exercise 11
-
-Repeat Question 7 for the inhomogeneous Strauss process with
-log-quadratic trend, using the inhomogeneous
-![L](https://latex.codecogs.com/png.latex?L "L")-function `Linhom` in
-place of the usual ![L](https://latex.codecogs.com/png.latex?L
-"L")-function.
