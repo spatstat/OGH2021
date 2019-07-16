@@ -18,9 +18,9 @@ The course comprises short lectures and software demonstrations followed by "lab
 
 Notes                                       |   Labs                     |  Solutions
 ------------------------------------------- | -------------------------- | --------------------------------------------------
-[Notes for Session 1](./notes/notes01.html) | [Lab 1](./labs/lab01.html) | [Solutions to Lab 1 (Not ready yet)](./solutions/solution01.html)
-[Notes for Session 2](./notes/notes02.html) | [Lab 2](./labs/lab02.html) | [Solutions to Lab 2 (Not ready yet)](./solutions/solution02.html)
-[Notes for Session 3](./notes/notes03.html) | [Lab 3](./labs/lab03.html) | [Solutions to Lab 3 (Not ready yet)](./solutions/solution03.html)
+[Notes for Session 1](./notes/notes01.html) | [Lab 1](./labs/lab01.html) | [Solutions to Lab 1](./solutions/solution01.html)
+[Notes for Session 2](./notes/notes02.html) | [Lab 2](./labs/lab02.html) | [Solutions to Lab 2](./solutions/solution02.html)
+[Notes for Session 3](./notes/notes03.html) | [Lab 3](./labs/lab03.html) | [Solutions to Lab 3](./solutions/solution03.html)
 [Transcript of live coding sessions](./transcript.R)| |
 
 ### Information for developers
