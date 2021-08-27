@@ -6,4 +6,4 @@ Statistics (ECAS) 2019 in Lisbon.
 
 See the course website for the actual course material:
 
-http://spatstat.org/ECAS2019/
+http://spatstat.org/OGH2021/

@@ -26,6 +26,6 @@ Notes                                       |   Labs                     |  Solu
 ### Information for developers
 
 The `Rmarkdown` source code is available at
-[https://github.com/spatstat/ECAS2019](https://github.com/spatstat/ECAS2019)
+[https://github.com/spatstat/OGH2021](https://github.com/spatstat/OGH2021)
 
 **This material is Copyright (C) Adrian Baddeley and Ege Rubak 2019**

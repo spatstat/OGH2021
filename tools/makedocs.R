@@ -10,11 +10,11 @@ fname <- function(prefix, i, suffix) {
 }
 
 copy_to_docs <- function(x){
-  file.copy(x, sub("ECAS2019", "ECAS2019/docs", x, fixed = TRUE), overwrite = TRUE)
+  file.copy(x, sub("OGH2021", "OGH2021/docs", x, fixed = TRUE), overwrite = TRUE)
   ## Substitute .md extension to copy figure directory
   from_dir <- sub(".md", "_files/", x, fixed = TRUE)
   if(dir.exists(from_dir)) {
-    to_dir <- sub("ECAS2019", "ECAS2019/docs", dirname(x), fixed = TRUE)
+    to_dir <- sub("OGH2021", "OGH2021/docs", dirname(x), fixed = TRUE)
     if(!dir.exists(to_dir)) dir.create(to_dir)
     file.copy(from_dir, to_dir, recursive = TRUE)
   }

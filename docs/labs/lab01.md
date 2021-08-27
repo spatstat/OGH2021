@@ -89,9 +89,9 @@ and plot the point pattern.
 ### Exercise 5
 
 The file `anthills.txt` is available in the Data directory on
-[GitHub](https://github.com/spatstat/ECAS2019) and downloadable by [this
+[GitHub](https://github.com/spatstat/OGH2021) and downloadable by [this
 direct
-link](https://raw.githubusercontent.com/spatstat/ECAS2019/master/Data/anthills.txt)
+link](https://raw.githubusercontent.com/spatstat/OGH2021/master/Data/anthills.txt)
 (right click and save).
 
 It records the locations of anthills recorded in a 1200x1500 metre study
