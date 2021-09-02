@@ -25,4 +25,10 @@ Notes                                       |   Labs                     |  Solu
 [Notes for Session 2](./notes/notes02.html) | [Lab 2](./labs/lab02.html) | [Solutions to Lab 2](./solutions/solution02.html)
 [Notes for Session 3](./notes/notes03.html) | [Lab 3](./labs/lab03.html) | [Solutions to Lab 3](./solutions/solution03.html)
 
+### Slides and tutorial
+
+- Slides: [PDF](./talk/OGH2021talk.pdf) and [html](./talk/OGH2021talk.html)
+- [Tutorial](./talk/OGH2021tutorial.html)
+- Sources (Rmd) are available at <https://github.com/spatstat/OGH2021>
+
 **This material is Copyright (C) Adrian Baddeley and Ege Rubak 2021**

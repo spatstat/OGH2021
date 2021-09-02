@@ -1,0 +1,384 @@
+---
+title: 'OGH tutorial: Analysing spatial point patterns with spatstat'
+author: "Ege Rubak"
+date: "2 September 2021"
+output: 
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float:  
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+editor_options: 
+  markdown: 
+    wrap: 72
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This tutorial is for the 2021 OpenGeoHub summer school. It is written with very 
+brief explanations of the content. Please watch the recorded tutorial 
+presentation for detailed explanations of the content.
+
+To follow along you need `spatstat` installed along with its dependencies.
+You can install the development version like this (but the CRAN version is fine for this tutorial):
+```{r eval=FALSE}
+options(repos = c(
+    spatstat = 'https://spatstat.r-universe.dev',
+    CRAN = 'https://cloud.r-project.org'))
+install.packages("spatstat", dependencies = TRUE)
+```
+
+Now load spatstat and the needed sub-packages:
+```{r}
+library(spatstat)
+```
+
+## Point pattern data
+
+Planar coordinates (x,y) are assumed almost everywhere in
+`spatstat`, so **geographic (lng,lat) coordinates must be projected**. You can
+use [`sf`](https://github.com/r-spatial/sf) and <https://projectionwizard.org> 
+for this (in rare cases `sp` and `maptools` may be useful).
+
+As a first example consider the built-in Chorley-Ribble cancer data:
+
+```{r}
+plot(chorley, cols = c("red", "blue"))
+```
+
+It is stored as planar point pattern `ppp` with many S3 methods available
+for plotting, summarising, subsetting, etc.
+
+```{r}
+class(chorley)
+methods(class = "ppp")
+summary(chorley)
+```
+
+**The spatial region where the points were observed (observation
+window, `owin`) is part of the `ppp` object.**
+There are many polygonal operations available to manipulate these (handled by `polyclip` package). E.g:
+
+```{r fig.width=12, fig.height=5}
+W <- Window(chorley)
+Wplus <- dilation(W, 2)
+Wminus <- erosion(W, 2)
+plot(Wplus, main = "Dilation and erosion")
+plot(W, add = TRUE)
+plot(Wminus, add = TRUE)
+```
+
+# Case study: Murchison gold deposits
+
+-   Objective: Determine gold prospectivity from predictors which are
+    easier to observe than gold deposits directly.
+
+```{r}
+murchison
+plot(murchison, equal.scales = TRUE, main = "")
+```
+
+Rescaling to km:
+
+```{r}
+gold <- rescale(murchison$gold, 1000, "km")
+faults <- rescale(murchison$faults, 1000, "km")
+gs <- rescale(murchison$greenstone, 1000, "km")
+```
+
+Distance to fault lines (resulting raster image is called an `im` in
+`spatstat`):
+
+```{r}
+dfaults <- distmap(faults, eps = 1) # 1km resolution
+plot(dfaults)
+plot(faults, add = TRUE, col = "white")
+plot(gold, add = TRUE, cols = "gold")
+```
+
+## Relationship between gold intensity and fault line distance
+
+Dividing space according to distance (tessellation according to
+quantiles):
+
+```{r}
+qt <- quantess(Window(gold), dfaults, 4)
+plot(qt, las = 1) # horizontal labels on axis (colourmap)
+```
+
+Deposits in each band around fault lines:
+
+```{r}
+gold4 <- quadratcount(gold, tess = qt)
+gold4
+barplot(intensity(gold4))
+```
+
+```{r}
+gold8 <- quadratcount(gold, tess = quantess(Window(gold), dfaults, 8))
+gold8
+barplot(intensity(gold8))
+```
+
+Kernel smoothed version (estimate of true functional relationship
+between covariate and intensity with pointwise CI):
+
+```{r}
+rh <- rhohat(gold, dfaults)
+plot(rh, legendpos = "topright", xlim = c(0,30))
+```
+
+Predictions from this relationship compared to kernel smoothed
+intensity:
+
+```{r}
+pred_list <- solist(
+  rhohat = predict(rh),
+  kernel = density(gold, sigma = 5),
+  adaptive = adaptive.density(gold, method = "kernel")
+)
+plot(pred_list, equal.ribbon = TRUE)
+```
+
+## ROC curve
+
+Another view is to compare fault distances for observed gold deposits
+with fault distances for uniformly random points.
+
+First we need to extract values of the distmap at gold locations (we can use `[`
+to extract a spatial subset):
+
+```{r}
+dgold <- dfaults[gold]
+head(dgold)
+```
+
+More precise values are obtained by using `distfun()`:
+
+```{r}
+dfaults_fun <- distfun(faults)
+dfaults_fun
+dgold <- dfaults_fun(gold)
+head(dgold)
+```
+
+Comparing histograms:
+
+```{r}
+rand <- runifpoint(ex = gold)
+drand <- dfaults_fun(rand)
+hist(drand, col = rgb(.8,0,0,.1), ylim = c(0,150))
+hist_dgold <- hist(dgold, plot = FALSE)
+plot(hist_dgold, col = rgb(0,0,.8,.1), add = TRUE)
+```
+
+In terms of the ROC:
+
+```{r}
+plot(roc(gold, dfaults_fun, high = FALSE))
+```
+
+Interpretation: If you explore the 10% of the region that is closest to
+fault lines you find \~60% of the gold deposits. At 20% it is \~80%.
+
+## Poisson models
+
+**Log**-linear models for the intensity follow the syntax of `lm`/`glm`:
+
+```{r}
+(model_dist <- ppm(gold ~ dfaults_fun, eps=1))
+```
+
+The fitted model is of the form
+$$
+\lambda(u) = \exp( \alpha + \beta d(u) ).  
+$$
+That is, the estimated intensity of gold deposits in the immediate
+vicinity of a geological fault is about
+$\exp(\hat{\alpha}) = `r exp(coef(model_dist)[1])`$ and decreases by a
+*factor* of $\exp(\hat{\beta}) = `r exp(coef(model_dist)[2])`$ for every
+additional kilometre away from a fault.
+
+Use `effectfun()` to see the effect of the distance covariate on the
+intensity:
+
+```{r}
+ef_dist <- effectfun(model_dist, "dfaults_fun", se.fit = TRUE)
+plot(ef_dist)
+```
+
+Use `simulate()` to generate realizations from the model:
+
+```{r}
+s_dist <- simulate(model_dist, nsim = 8)
+s_dist[[9]] <- gold
+names(s_dist)[9] <- "gold"
+plot(s_dist)
+```
+
+Models with two covariates:
+
+```{r}
+(model_add <- ppm(gold ~ dfaults_fun + gs, eps=1))
+(model_int <- ppm(gold ~ dfaults_fun * gs, eps=1))
+```
+
+Formal test between nested models:
+
+```{r}
+anova(model_add, model_int, test = "Chi")
+```
+
+Simulations from interaction model:
+
+```{r}
+s_int <- simulate(model_int, nsim = 8)
+s_int[[9]] <- gold
+names(s_int)[9] <- "gold"
+plot(s_int)
+```
+
+## Model diagnostics
+
+The classical tools from GLMs have extensions to point process models:
+
+```{r}
+lev <- leverage(model_int)
+inf <- influence(model_int)
+dfb <- dfbetas(model_int)
+```
+
+High leverage of areas within greenstone far from faults. I.e. adding and 
+deleting points in this area has a large effect on the fitted model.
+```{r}
+plot(lev, showcut = FALSE)
+plot(faults, add = TRUE, col = "white")
+plot(gs, add = TRUE, border = "green", )
+```
+
+Most influential data points are in greenstone far from fault lines:
+```{r}
+plot(inf)
+plot(faults, add = TRUE, col = "grey")
+plot(gs, add = TRUE, border = "green", )
+```
+
+The sign of the effect on each parameter can be found by studying `dfbetas()`:
+```{r}
+plot(dfb)
+```
+
+# Other models and simulation
+
+## Log-Gaussian Cox Process
+
+This uses the `RandomFields` package internally, so it must be
+installed.
+
+```{r}
+model_clust <- kppm(gold ~ dfaults*gs, clusters = "LGCP", eps = 2, method = "clik2")
+```
+
+Notice how the standard errors now are larger than the Poisson case:
+
+```{r}
+coef(summary(model_clust))
+coef(summary(model_int))
+```
+
+Simulations from the model:
+
+```{r}
+s_clust <- simulate(model_clust, nsim = 8)
+s_clust[[9]] <- gold
+names(s_clust)[9] <- "gold"
+plot(s_clust)
+```
+
+## Gibbs models for patterns with inhibition
+
+- Synthetic example:
+
+```{r}
+X <- rStraussHard(beta = 200, gamma = 0.4, R = 0.06, H = 0.03, nsim = 9)
+plot(X)
+```
+
+- Model fitting using so-called pseudo-likelihood:
+
+```{r}
+(model_gibbs <- ppm(X[[1]] ~ 1, interaction = StraussHard(r = 0.06, hc = 0.03)))
+```
+
+Ripley's K-function is the normalized expected number of further points within distance r given that you are at a point of the process:
+
+```{r}
+plot(Kest(X[[1]]))
+```
+
+The pair-correlation function is the derivative and has the advantage of not being cumulative:
+
+```{r}
+plot(pcf(X[[1]]))
+```
+
+
+# Appendix: Other popular capabilities of spatstat
+
+## Simulation envelopes
+
+Default simulation under homogeneous Poisson:
+```{r}
+env_gibbs_wrong <- envelope(X[[1]], Kest)
+plot(env_gibbs_wrong, .-pi*r^2 ~ r)
+```
+
+Simulation from the model:
+```{r}
+env_gibbs_right <- envelope(model_gibbs, Kest)
+plot(env_gibbs_right, .-pi*r^2 ~ r)
+```
+
+## Linear networks
+
+Street crimes in Chicago:
+```{r}
+chicago
+plot(chicago)
+```
+
+Intensity of crimes:
+```{r}
+lam <- density(chicago, sigma = 100)
+plot(lam)
+```
+
+```{r}
+lam2 <- densityVoronoi(chicago, nrep = 50, f = .2)
+plot(lam2)
+```
+
+See the session by Andrea Gilardi for much more on networks.
+
+## Tessellations
+
+Dirichlet tesselation of gold pattern:
+```{r}
+gold_tess <- dirichlet(gold)
+plot(gold_tess)
+```
+
+Dirichlet tessellation on network for Chicago crimes:
+```{r}
+XX <- chicago
+Window(XX) <- grow.rectangle(Window(chicago), 1) ## Needed due to a minor bug
+chicago_tess <- lineardirichlet(XX)
+plot(chicago_tess)
+```
